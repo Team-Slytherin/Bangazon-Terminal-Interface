@@ -3,15 +3,15 @@
 
 ## Testing
 
-[ ] I have added passing tests for all new functionality.
+- [] I have added passing tests for all new functionality.
 
-[ ] I have confirmed that all test prior to this pull request still PASS.
+- [] I have confirmed that all test prior to this pull request still PASS.
 
 ## Documentation
 
-[ ] I have fully documented features in this PR's code. Please put an `X` in the box to confirm.
+- [] I have fully documented features in this PR's code. Please put an `X` in the box to confirm.
 
-[ ] This PR does **NOT** require documentation.
+- [] This PR does **NOT** require documentation.
 
 ## Description
 A few sentences describing the overall goals of the pull request's commits.
