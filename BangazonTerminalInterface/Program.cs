@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BangazonTerminalInterface.DAL.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,10 +34,11 @@ namespace BangazonTerminalInterface
                 + "> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
-
                 switch (userInput)
                 {
                     case "1":
+                        var CustomerInfo = new CustomerRepository();
+                        CustomerInfo.ValidateInput();
                         break;
                     case "2":
                         break;
