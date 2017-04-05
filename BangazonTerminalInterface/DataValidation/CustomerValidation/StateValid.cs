@@ -10,7 +10,7 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
     class StateValid
     {
         public bool ValidateState(string state)
-        {
+        { 
             // checks for numbers in the string
             bool isNumeric = Regex.IsMatch(state, @"[0-9]");
             if(state.Length == 2 && !isNumeric)
