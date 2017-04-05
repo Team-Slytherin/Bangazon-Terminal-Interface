@@ -1,4 +1,6 @@
-﻿using BangazonTerminalInterface.DAL.Repository;
+﻿using BangazonTerminalInterface.Controllers;
+using BangazonTerminalInterface.DAL.Repository;
+using BangazonTerminalInterface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,8 +40,8 @@ namespace BangazonTerminalInterface
                 switch (userInput)
                 {
                     case "1":
-                        var CustomerInfo = new CustomerRepository();
-                        CustomerInfo.ValidateInput();
+                        Console.Clear();
+                        var CustomerInfo = new CustomerController();
                         break;
                     case "2":
                         break;
@@ -52,11 +54,11 @@ namespace BangazonTerminalInterface
                     case "6":
                         ProductRepository repo = new ProductRepository();
                         var products = repo.GetAllProducts();
-                        foreach(Product product in products)
+                        foreach (Product product in products)
                         {
                             Console.WriteLine(product.ProductName);
                         }
-                        
+
                         break;
                     case "7":
                         Console.WriteLine("Goodbye!");

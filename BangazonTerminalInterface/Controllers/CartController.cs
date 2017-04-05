@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BangazonTerminalInterface.DataValidation.PaymentValidation
+namespace BangazonTerminalInterface.Controllers
 {
-    class AccountNumberValid
+    class CartController
     {
     }
 }
