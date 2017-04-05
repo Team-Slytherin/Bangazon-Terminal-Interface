@@ -13,7 +13,7 @@ namespace BangazonTerminalInterface
         {
             Console.SetWindowSize(57, 35);
             string menuChoice = "0";
-            while (menuChoice != "7")
+            while (menuChoice != "7" && menuChoice != "8")
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -30,6 +30,7 @@ namespace BangazonTerminalInterface
                 + "5.Complete an order" + "\n"
                 + "6.See product popularity" + "\n"
                 + "7.Leave Bangazon!" + "\n"
+                + "8.SQL connection test" + "\n"
                 + "> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
@@ -52,6 +53,10 @@ namespace BangazonTerminalInterface
                         Console.WriteLine("Goodbye!");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
+                        break;
+                    case "8":
+                        SQLConnectionTest testConnection = new SQLConnectionTest();
+                        testConnection.GetProducts();
                         break;
                     default:
                         Console.WriteLine("please select a valid menu item...");
