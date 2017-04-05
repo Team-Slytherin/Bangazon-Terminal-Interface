@@ -14,8 +14,8 @@ namespace BangazonTerminalInterface.DAL.Repository
             ValidateName();
             Console.Clear();
             ValidateStreetAddress();
-            //Console.Clear();
-            //ValidateCity();
+            Console.Clear();
+            ValidateCity();
             //Console.Clear();
             //ValidateState();
             //Console.Clear();
