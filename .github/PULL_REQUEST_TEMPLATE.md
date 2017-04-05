@@ -1,5 +1,10 @@
+## Description
+
+## Related to Issue Number
+
 ## Status
-**READY/IN DEVELOPMENT**
+
+-------
 
 ## Testing
 
@@ -12,11 +17,6 @@
 - [] I have fully documented features in this PR's code. Please put an `X` in the box to confirm.
 
 - [] This PR does **NOT** require documentation.
-
-## Description
-A few sentences describing the overall goals of the pull request's commits.
-
-## Resolves Issue Number
 
 ## Deploy Notes
 Notes regarding deployment the contained body of work.  These should note any
