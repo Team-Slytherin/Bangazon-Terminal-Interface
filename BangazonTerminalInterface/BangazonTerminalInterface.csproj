@@ -48,6 +48,17 @@
     <Compile Include="DAL\Repository\CustomerRepository.cs" />
     <Compile Include="DAL\Repository\PaymentRepository.cs" />
     <Compile Include="DAL\Repository\ProductRepository.cs" />
+    <Compile Include="DataValidation\CartValidation\ExistingCart.cs" />
+    <Compile Include="DataValidation\CustomerValidation\CityValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\CustomerNameValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\ExistingCustomer.cs" />
+    <Compile Include="DataValidation\CustomerValidation\PhoneValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\StateValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\StreetAddressValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\ZipValid.cs" />
+    <Compile Include="DataValidation\PaymentValidation\AccountNumberValid.cs" />
+    <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
+    <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartDetail.cs" />
     <Compile Include="Models\Customer.cs" />
