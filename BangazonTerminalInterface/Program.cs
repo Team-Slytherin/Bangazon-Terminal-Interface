@@ -40,7 +40,6 @@ namespace BangazonTerminalInterface
                     case "1":
                         Console.Clear();
                         var CustomerInfo = new CustomerRepository();
-                        //CustomerInfo();
                         break;
                     case "2":
                         break;

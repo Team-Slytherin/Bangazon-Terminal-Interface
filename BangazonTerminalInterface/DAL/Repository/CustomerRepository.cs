@@ -12,16 +12,21 @@ namespace BangazonTerminalInterface.DAL.Repository
         public  CustomerRepository()
         {
             ValidateName();
+            Console.Clear();
             ValidateStreetAddress();
-            ValidateCity();
-            ValidateState();
-            ValidateZip();
-            ValidatePhoneNumber();
+            //Console.Clear();
+            //ValidateCity();
+            //Console.Clear();
+            //ValidateState();
+            //Console.Clear();
+            //ValidateZip();
+            //Console.Clear();
+            //ValidatePhoneNumber();
         }
 
         private void ValidateName()
         {
-            CustomerNameValid customerNameValid = new CustomerNameValid();
+            CustomerNameValid repo = new CustomerNameValid();
             string customerName = "";
 
             Console.WriteLine(
@@ -29,16 +34,26 @@ namespace BangazonTerminalInterface.DAL.Repository
               + "> ");
             do
             {
-                // add the ability to hit a key to excape to main menu
+                // add the ability to hit a key to escape to main menu
                 customerName = Console.ReadLine();
             }
-            while (!customerNameValid.ValidateName(customerName));
-
+            while (!repo.ValidateName(customerName));
         }
-
+       
         private void ValidateStreetAddress()
         {
-            throw new NotImplementedException();
+            StreetAddressValid repo = new StreetAddressValid();
+            string customerStreet = "";
+
+            Console.WriteLine(
+              "1.Enter Address" + "\n"
+              + "> ");
+            do
+            {
+                // add the ability to hit a key to escape to main menu
+                customerStreet = Console.ReadLine();
+            }
+            while (!repo.ValidateStreetAddress(customerStreet));
         }
 
         private void ValidateCity()
