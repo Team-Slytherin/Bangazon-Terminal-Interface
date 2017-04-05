@@ -1,4 +1,5 @@
-﻿using BangazonTerminalInterface.DAL.Repository;
+﻿using BangazonTerminalInterface.Controllers;
+using BangazonTerminalInterface.DAL.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace BangazonTerminalInterface
                 {
                     case "1":
                         Console.Clear();
-                        var CustomerInfo = new CustomerRepository();
+                        var CustomerInfo = new CustomerController();
                         break;
                     case "2":
                         break;

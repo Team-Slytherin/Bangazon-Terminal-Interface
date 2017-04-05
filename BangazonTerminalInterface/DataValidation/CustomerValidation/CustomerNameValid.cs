@@ -18,15 +18,9 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 
             // still need to check database for name
             if (validName && !isNumeric)
-            {
                 return true;
-            }
             else
-            {
-                Console.WriteLine("Invalid input please enter in the format John Smith" + "\n"
-                    + "> ");
                 return false;
-            }
         }
     }
 }

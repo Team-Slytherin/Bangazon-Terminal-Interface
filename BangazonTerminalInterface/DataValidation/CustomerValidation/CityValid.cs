@@ -16,11 +16,7 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
             if (city.Length > 2 && !isNumeric)
                 return true;
             else
-            {
-                Console.WriteLine("City must have more than 2 Characters and not contain numbers" + "\n"
-                    + "> ");
                 return false;
-            }
         }
     }
 }

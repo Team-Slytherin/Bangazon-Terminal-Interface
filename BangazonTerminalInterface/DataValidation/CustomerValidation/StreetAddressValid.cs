@@ -13,15 +13,9 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
         {
             bool isNumeric = Regex.IsMatch(street, @"[0-9]");
             if (isNumeric)
-            {
                 return true;
-            }
             else
-            {
-                Console.WriteLine("Invalid Please a valid street address." + "\n"
-                    + "> ");
                 return false;
-            }
         }
     }
 }
