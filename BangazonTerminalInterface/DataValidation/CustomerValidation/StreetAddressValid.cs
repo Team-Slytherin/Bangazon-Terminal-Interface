@@ -11,9 +11,31 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
     {
         public bool ValidateStreetAddress(string street)
         {
-            // How to validate street address????
-            Console.WriteLine("street = " + street);
-            return true;     
+            bool isNumeric = Regex.IsMatch(street, @"[0-9]");
+            if (isNumeric)
+            {
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid Please a valid street address." + "\n"
+                    + "> ");
+                return false;
+            }
         }
     }
 }
+
+
+// checks for numbers in the string
+//bool isNumeric = Regex.IsMatch(state, @"[0-9]");
+//            if(state.Length == 2 && !isNumeric)
+//            {
+//                return true;
+//            }
+//            else
+//            {
+//                Console.WriteLine("Invalid Please enter the abbreviate for the state." + "\n"
+//                    + "> ");
+//                return false;
+//            }
