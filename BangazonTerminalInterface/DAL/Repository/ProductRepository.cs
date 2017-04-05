@@ -1,19 +1,18 @@
 ﻿using BangazonTerminalInterface.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BangazonTerminalInterface.Models;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Data;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace BangazonTerminalInterface.DAL.Repository
 {
     public class ProductRepository : IProduct
     {
-        SqlConnection slytherBangConnection = new SqlConnection();
+        SqlConnection slytherBangConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
+
         public List<Product> GetAllProducts()
         {
             slytherBangConnection.Open();
@@ -42,7 +41,10 @@ namespace BangazonTerminalInterface.DAL.Repository
 
                 return products;
             }
-            catch (Exception ex) { }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
             finally
             {
                 slytherBangConnection.Close();
@@ -79,7 +81,10 @@ namespace BangazonTerminalInterface.DAL.Repository
                     return product;
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
             finally
             {
                 slytherBangConnection.Close();
