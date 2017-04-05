@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BangazonTerminalInterface.DataValidation.CustomerValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,36 +11,56 @@ namespace BangazonTerminalInterface.DAL.Repository
     {
         public  CustomerRepository()
         {
-
+            ValidateName();
+            ValidateStreetAddress();
+            ValidateCity();
+            ValidateState();
+            ValidateZip();
+            ValidatePhoneNumber();
         }
 
-        public void ValidateInput()
+        private void ValidateName()
         {
-            Console.SetWindowSize(57, 35);
-            Console.Clear();
+            CustomerNameValid customerNameValid = new CustomerNameValid();
+            string customerName = "";
+
             Console.WriteLine(
               "1.Enter Customer Name" + "\n"
               + "> ");
-            var customerName = Console.ReadLine();
-            if(customerName is string)
+            do
             {
-                Console.WriteLine("Name is valid");
-                Console.ReadLine();
+                // add the ability to hit a key to excape to main menu
+                customerName = Console.ReadLine();
             }
+            while (!customerNameValid.ValidateName(customerName));
+
         }
 
-        public bool ValidName(string name)
+        private void ValidateStreetAddress()
         {
-            if (name is string)
-            {
-                Console.WriteLine("Name is valid");
-                return true;
-            } else
-            {
-                return false;
-            }
+            throw new NotImplementedException();
         }
- 
+
+        private void ValidateCity()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidatePhoneNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidateZip()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ValidateState()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
 

@@ -38,8 +38,9 @@ namespace BangazonTerminalInterface
                 switch (userInput)
                 {
                     case "1":
+                        Console.Clear();
                         var CustomerInfo = new CustomerRepository();
-                        CustomerInfo.ValidateInput();
+                        //CustomerInfo();
                         break;
                     case "2":
                         break;

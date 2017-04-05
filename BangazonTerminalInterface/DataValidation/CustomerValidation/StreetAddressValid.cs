@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BangazonTerminalInterface.DataValidation.NewCustomerValidation
+namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 {
     class StreetAddressValid
     {
