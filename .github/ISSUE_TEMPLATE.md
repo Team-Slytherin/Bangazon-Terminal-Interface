@@ -1,8 +1,6 @@
 ### Feature Description
 
 ### Recommended Actions
->Refer to the [project requirements](https://github.com/TeamCharles/bangazon-inc/blob/master/projects/CUSTOMER_SERVICE_INCIDENTS.md) before filling out this section.
-
-1.
+>Refer to the [project requirements](https://github.com/Team-Slytherin/Bangazon-Terminal-Interface/blob/master/README.md.) before filling out this section.
 
 ### Related Issues/PRs
