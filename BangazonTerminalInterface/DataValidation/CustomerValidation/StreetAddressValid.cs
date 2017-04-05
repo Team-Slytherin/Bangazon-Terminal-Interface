@@ -13,7 +13,6 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
         {
             // How to validate street address????
             Console.WriteLine("street = " + street);
-            Console.ReadLine();
             return true;     
         }
     }

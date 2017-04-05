@@ -16,8 +16,8 @@ namespace BangazonTerminalInterface.DAL.Repository
             ValidateStreetAddress();
             Console.Clear();
             ValidateCity();
-            //Console.Clear();
-            //ValidateState();
+            Console.Clear();
+            ValidateState();
             //Console.Clear();
             //ValidateZip();
             //Console.Clear();
@@ -58,12 +58,23 @@ namespace BangazonTerminalInterface.DAL.Repository
 
         private void ValidateCity()
         {
-            throw new NotImplementedException();
+            CityValid repo = new CityValid();
+            string customerCity = "";
+
+            Console.WriteLine(
+              "1.Enter City" + "\n"
+              + "> ");
+            do
+            {
+                // add the ability to hit a key to escape to main menu
+                customerCity = Console.ReadLine();
+            }
+            while (!repo.ValidateCity(customerCity));
         }
 
         private void ValidatePhoneNumber()
         {
-            throw new NotImplementedException();
+
         }
 
         private void ValidateZip()
@@ -73,7 +84,18 @@ namespace BangazonTerminalInterface.DAL.Repository
 
         private void ValidateState()
         {
-            throw new NotImplementedException();
+            StateValid repo = new StateValid();
+            string customerState = "";
+
+            Console.WriteLine(
+              "1.Enter State" + "\n"
+              + "> ");
+            do
+            {
+                // add the ability to hit a key to escape to main menu
+                customerState = Console.ReadLine();
+            }
+            while (!repo.ValidateState(customerState));
         }
 
     }
