@@ -8,6 +8,12 @@ namespace BangazonTerminalInterface.Components
 {
     class Cart
     {
+        public int CartId { get; set; }
 
+        public int CustomerId { get; set; }
+
+        public int PaymentId { get; set; }
+
+        public bool Active { get; set; }
     }
 }
