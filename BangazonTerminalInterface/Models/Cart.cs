@@ -15,6 +15,5 @@ namespace BangazonTerminalInterface.Components
         public int PaymentId { get; set; }
 
         public bool Active { get; set; }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BangazonTerminalInterface.DAL.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace BangazonTerminalInterface
         {
             Console.SetWindowSize(57, 35);
             string menuChoice = "0";
-            while (menuChoice != "7")
+            while (menuChoice != "7" && menuChoice != "8")
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -30,13 +31,15 @@ namespace BangazonTerminalInterface
                 + "5.Complete an order" + "\n"
                 + "6.See product popularity" + "\n"
                 + "7.Leave Bangazon!" + "\n"
+                + "8.SQL connection test" + "\n"
                 + "> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
-
                 switch (userInput)
                 {
                     case "1":
+                        var CustomerInfo = new CustomerRepository();
+                        CustomerInfo.ValidateInput();
                         break;
                     case "2":
                         break;
@@ -47,11 +50,22 @@ namespace BangazonTerminalInterface
                     case "5":
                         break;
                     case "6":
+                        ProductRepository repo = new ProductRepository();
+                        var products = repo.GetAllProducts();
+                        foreach(Product product in products)
+                        {
+                            Console.WriteLine(product.ProductName);
+                        }
+                        
                         break;
                     case "7":
                         Console.WriteLine("Goodbye!");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
+                        break;
+                    case "8":
+                        SQLConnectionTest testConnection = new SQLConnectionTest();
+                        testConnection.GetProducts();
                         break;
                     default:
                         Console.WriteLine("please select a valid menu item...");
