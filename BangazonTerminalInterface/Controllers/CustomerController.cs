@@ -11,16 +11,16 @@ namespace BangazonTerminalInterface.Controllers
     {
         public  CustomerController()
         {
-            //EnterName();
-            //Console.Clear();
-            //EnterStreetAddress();
-            //Console.Clear();
-            //EnterCity();
-            //Console.Clear();
-            //EnterState();
-            //Console.Clear();
-            //EnterZip();
-            //Console.Clear();
+            EnterName();
+            Console.Clear();
+            EnterStreetAddress();
+            Console.Clear();
+            EnterCity();
+            Console.Clear();
+            EnterState();
+            Console.Clear();
+            EnterZip();
+            Console.Clear();
             EnterPhoneNumber();
         }
 
