@@ -1,4 +1,5 @@
-﻿using BangazonTerminalInterface.Controllers;
+﻿using BangazonTerminalInterface.Components;
+using BangazonTerminalInterface.Controllers;
 using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Models;
 using System;
@@ -14,6 +15,7 @@ namespace BangazonTerminalInterface
     {
         static void Main(string[] args)
         {
+            Customer activeCustomer = null;
             Console.SetWindowSize(57, 35);
             string menuChoice = "0";
             while (menuChoice != "7" && menuChoice != "8")
@@ -48,16 +50,33 @@ namespace BangazonTerminalInterface
                     case "3":
                         break;
                     case "4":
-                        break;
-                    case "5":
-                        break;
-                    case "6":
+                        if (activeCustomer == null) break;
+                    SHOWPRODUCTS:
+                        Console.Clear();
                         ProductRepository repo = new ProductRepository();
                         var products = repo.GetAllProducts();
                         foreach (Product product in products)
                         {
-                            Console.WriteLine(product.ProductName);
+                            Console.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
                         }
+                        Console.WriteLine("> ");
+                        var selectedProduct = Convert.ToInt32(Console.ReadLine());
+                        if (selectedProduct >= 1 && selectedProduct <= 9)
+                        {
+                            var CartAction = new CartController();
+                            CartAction.addProduct(activeCustomer, selectedProduct);
+                            goto SHOWPRODUCTS;
+                        }
+                        else if (selectedProduct > 9)
+                        {
+                            Console.WriteLine("Please choose a valid product number!");
+                            goto SHOWPRODUCTS;
+                        }
+                        break;
+                    case "5":
+                        break;
+                    case "6":
+                        
 
                         break;
                     case "7":
