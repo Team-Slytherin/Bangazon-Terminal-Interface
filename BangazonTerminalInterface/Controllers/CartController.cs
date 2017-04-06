@@ -44,8 +44,14 @@ namespace BangazonTerminalInterface.Controllers
 
                     // update order active to false
                     cartRepo.EditCartStatus(activeCart.CartId, paymentId);
+                    Console.WriteLine("Your order is complete! Press any key to return to main menu.\n");
+                    Console.ReadLine();
+                    return;
                 }
+                return;
             }
+            Console.WriteLine("Please add some products to your order first. Press any key to return to main menu.\n");
+            Console.ReadLine();
         }
     }
 }
