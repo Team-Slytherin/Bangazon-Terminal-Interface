@@ -28,7 +28,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var getProductsCommand = slytherBangConnection.CreateCommand();
                 getProductsCommand.CommandText =
-              @"SELECT distinct Top 1
+              @"SELECT distinct Top 10
                   ProductName,
                   COUNT(distinct CartDetailId) as Orders,
                   COUNT(distinct CustomerId) as Customers,
