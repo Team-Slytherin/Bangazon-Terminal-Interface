@@ -61,10 +61,9 @@ namespace BangazonTerminalInterface
                         }
                         Console.WriteLine("> ");
                         var selectedProduct = Convert.ToInt32(Console.ReadLine());
-                        if (selectedProduct >= 1 && selectedProduct <= 9)
+                        if (selectedProduct >= 1 && selectedProduct < 9)
                         {
-                            var CartAction = new CartController();
-                            CartAction.addProduct(activeCustomer, selectedProduct);
+                            (new CartController()).addProduct(activeCustomer, selectedProduct);
                             goto SHOWPRODUCTS;
                         }
                         else if (selectedProduct > 9)
@@ -74,6 +73,9 @@ namespace BangazonTerminalInterface
                         }
                         break;
                     case "5":
+                        if (activeCustomer == null) break;
+                        var CartAction = new CartController();
+                        CartAction.checkout(activeCustomer);
                         break;
                     case "6":
                         

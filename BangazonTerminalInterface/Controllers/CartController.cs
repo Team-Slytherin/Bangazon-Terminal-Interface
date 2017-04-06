@@ -37,6 +37,8 @@ namespace BangazonTerminalInterface.Controllers
                 if (userInput == "Y")
                 {
                     // get active customer payment option and show
+                    // function needed in PaymentRepository
+
                     // read userinput
                     var paymentId = Convert.ToInt32(Console.ReadLine());
 
