@@ -11,6 +11,6 @@ namespace BangazonTerminalInterface.Interfaces
     {
         // Read
         Product GetProductById(int productId);
-        List<Product> GetAllProducts();
+        //List<Product> GetAllProducts();
     }
 }

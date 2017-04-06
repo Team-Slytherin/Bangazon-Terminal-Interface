@@ -53,12 +53,7 @@ namespace BangazonTerminalInterface
                         break;
                     case "6":
                         ProductRepository repo = new ProductRepository();
-                        var products = repo.GetAllProducts();
-                        foreach (Product product in products)
-                        {
-                            Console.WriteLine(product.ProductName);
-                        }
-
+                        repo.GetProductPopularity();
                         break;
                     case "7":
                         Console.WriteLine("Goodbye!");
