@@ -36,6 +36,7 @@ namespace BangazonTerminalInterface
                 + "6.See product popularity" + "\n"
                 + "7.Leave Bangazon!" + "\n"
                 + "8.SQL connection test" + "\n"
+                + "9.Test Add Customer" + "\n"
                 + "> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
