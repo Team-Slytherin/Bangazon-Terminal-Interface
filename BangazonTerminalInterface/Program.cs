@@ -47,6 +47,9 @@ namespace BangazonTerminalInterface
                         var CustomerInfo = new CustomerController();
                         break;
                     case "2":
+                        Console.Clear();
+                        var selectCustomerCtrl = new SelectCustomerController();
+                        activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
                         break;
                     case "3":
                         break;

@@ -47,6 +47,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\SelectCustomerController.cs" />
     <Compile Include="DAL\Repository\CartDetailRepository.cs" />
     <Compile Include="DAL\Repository\CartRepository.cs" />
     <Compile Include="DAL\Repository\CustomerRepository.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="DataValidation\PaymentValidation\AccountNumberValid.cs" />
     <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
     <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IProduct.cs" />
     <Compile Include="Misc\SplashScreen.cs" />
