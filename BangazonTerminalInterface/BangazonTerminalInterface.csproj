@@ -47,6 +47,7 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\SelectCustomerController.cs" />
     <Compile Include="DAL\Repository\CartDetailRepository.cs" />
     <Compile Include="DAL\Repository\CartRepository.cs" />
     <Compile Include="DAL\Repository\CustomerRepository.cs" />
