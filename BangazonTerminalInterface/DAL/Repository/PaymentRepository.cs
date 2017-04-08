@@ -56,7 +56,50 @@ namespace BangazonTerminalInterface.DAL.Repository
             } 
         }
 
-        public Payment GetPayment(int customerId)
+        public List<Payment> GetAllPayments(int customerId)
+        {
+            _sqlConnection.Open();
+
+            try
+            {
+                var getPaymentsCommand = _sqlConnection.CreateCommand();
+                getPaymentsCommand.CommandText = @"
+                    SELECT PaymentId, CustomerId, Type, Account 
+                    FROM Payment";
+
+                var reader = getPaymentsCommand.ExecuteReader();
+
+                var payments = new List<Payment>();
+                while (reader.Read())
+                {
+                    var payment = new Payment
+                    {
+                        PaymentId = reader.GetInt32(0),
+                        CustomerId = reader.GetInt32(1),
+                        Type = reader.GetString(2),
+                        Account = reader.GetInt32(3)
+
+                    };
+
+                    payments.Add(payment);
+                }
+
+                return payments;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                _sqlConnection.Close();
+            }
+
+            return new List<Payment>();
+        }
+
+        public Payment GetPaymentById(int paymentId)
         {
             _sqlConnection.Open();
 
@@ -66,10 +109,10 @@ namespace BangazonTerminalInterface.DAL.Repository
                 getPaymentCommand.CommandText = @"
                     SELECT PaymentId, CustomerId, Type, Account 
                     FROM Payment 
-                    WHERE CustomerId = @customerId";
-                var paymentIdParam = new SqlParameter("customerId", SqlDbType.Int);
-                paymentIdParam.Value = customerId;
-                getPaymentCommand.Parameters.Add(paymentIdParam);
+                    WHERE PaymentId = @paymentId";
+                var productIdParam = new SqlParameter("paymentId", SqlDbType.Int);
+                productIdParam.Value = paymentId;
+                getPaymentCommand.Parameters.Add(productIdParam);
 
                 var reader = getPaymentCommand.ExecuteReader();
 
@@ -80,7 +123,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                         PaymentId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
                         Type = reader.GetString(2),
-                        Account = reader.GetInt32(3),
+                        Account = reader.GetInt32(3)
                     };
                     return payment;
                 }
@@ -97,5 +140,6 @@ namespace BangazonTerminalInterface.DAL.Repository
 
             return null;
         }
+
     }
 }
