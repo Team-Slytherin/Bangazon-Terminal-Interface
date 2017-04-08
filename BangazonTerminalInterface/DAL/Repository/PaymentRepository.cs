@@ -21,13 +21,13 @@ namespace BangazonTerminalInterface.DAL.Repository
             _sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
-        public void AddPayment(int customerId, string paymentType, int accountNumber)
+        public void AddPayment(int customerId, string paymentType, string accountNumber)
         {
             _sqlConnection.Open();
             try
             {
                 var addPaymentCommand = _sqlConnection.CreateCommand();
-                addPaymentCommand.CommandText = "INSERT into Payment(CustomerId, PaymentType, PaymentAccountNumber) values(@customerId, @paymentType,@accountNumber)";
+                addPaymentCommand.CommandText = "INSERT into Payment(CustomerId, PaymentType, PaymentAccountNumber) values(@customerId, @paymentType, @accountNumber)";
 
                 var customerParameter = new SqlParameter("customerId", SqlDbType.Int);
                 customerParameter.Value = customerId;
@@ -37,7 +37,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                 typeParameter.Value = paymentType;
                 addPaymentCommand.Parameters.Add(typeParameter);
 
-                var accountParameter = new SqlParameter("accountNumber", SqlDbType.Int);
+                var accountParameter = new SqlParameter("accountNumber", SqlDbType.VarChar);
                 accountParameter.Value = accountNumber;
                 addPaymentCommand.Parameters.Add(accountParameter);
 
@@ -77,7 +77,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                         PaymentId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
                         Type = reader.GetString(2),
-                        Account = reader.GetInt32(3)
+                        Account = reader.GetString(3)
 
                     };
 
@@ -123,7 +123,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                         PaymentId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
                         Type = reader.GetString(2),
-                        Account = reader.GetInt32(3)
+                        Account = reader.GetString(3)
                     };
                     return payment;
                 }

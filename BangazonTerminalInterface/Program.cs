@@ -51,6 +51,13 @@ namespace BangazonTerminalInterface
                         activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
                         break;
                     case "3":
+                        if (activeCustomer == null)
+                        {
+                            selectCustomerCtrl = new SelectCustomerController();
+                            activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
+                        };
+                        Console.Clear();
+                        var selectPaymentCtrl = new PaymentController();
                         break;
                     case "4":
                         if (activeCustomer == null) break;
