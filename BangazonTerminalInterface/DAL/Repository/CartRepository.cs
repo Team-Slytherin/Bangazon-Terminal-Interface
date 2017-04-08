@@ -1,6 +1,7 @@
 ﻿using BangazonTerminalInterface.Components;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -14,31 +15,22 @@ namespace BangazonTerminalInterface.DAL.Repository
     {
         IDbConnection _bangzonConnection;
 
-        public CartRepository(IDbConnection bangzonConnection)
+        public CartRepository()
         {
-            _bangzonConnection = bangzonConnection;
+            _bangzonConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
-        public void AddCart(int cartId, int customerId, int paymentId, bool active)
+        public void AddCart(int customerId)
         {
             _bangzonConnection.Open();
 
             try
             {
                 var addCartCommand = _bangzonConnection.CreateCommand();
-                addCartCommand.CommandText = @"insert into Cart(cartId, customerId, paymentId, active) values(@cartId, @customerId, @paymentId, @active)";
-                var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
-                cartIdParameter.Value = cartId;
-                addCartCommand.Parameters.Add(cartIdParameter);
+                addCartCommand.CommandText = @"insert into Cart(CustomerId, Active) values(@customerId, true)";
                 var customerIdParameter = new SqlParameter("customerId", SqlDbType.Int);
                 customerIdParameter.Value = customerId;
                 addCartCommand.Parameters.Add(customerIdParameter);
-                var paymentIdParameter = new SqlParameter("paymentId", SqlDbType.Int);
-                paymentIdParameter.Value = paymentId;
-                addCartCommand.Parameters.Add(paymentIdParameter);
-                var activeParameter = new SqlParameter("active", SqlDbType.Int);
-                activeParameter.Value = active;
-                addCartCommand.Parameters.Add(activeParameter);
 
                 addCartCommand.ExecuteNonQuery();
             }
@@ -53,20 +45,20 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
         }
 
-        public Cart GetCart(int cartId)
+        public Cart GetActiveCart(int customerId)
         {
             _bangzonConnection.Open();
 
             try
             {
-                var getCartCommand = _bangzonConnection.CreateCommand();
-                getCartCommand.CommandText = @"SELECT CartId, CustomerId, PaymentId, Active 
+                var getActiveCartCommand = _bangzonConnection.CreateCommand();
+                getActiveCartCommand.CommandText = @"SELECT CartId, CustomerId, PaymentId, Active 
                                                 FROM Cart 
-                                                WHERE CartId = @cartId";
-                var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
-                cartIdParameter.Value = cartId;
-                getCartCommand.Parameters.Add(cartIdParameter);
-                var reader = getCartCommand.ExecuteReader();
+                                                WHERE CustomerId = @customerId AND Active = true";
+                var customerIdParameter = new SqlParameter("customerId", SqlDbType.Int);
+                customerIdParameter.Value = customerId;
+                getActiveCartCommand.Parameters.Add(customerIdParameter);
+                var reader = getActiveCartCommand.ExecuteReader();
 
                 while (reader.Read())
                 {
@@ -91,6 +83,39 @@ namespace BangazonTerminalInterface.DAL.Repository
                 _bangzonConnection.Close();
             }
             return null;
+        }
+
+        public void EditCartStatus(int cartId, int paymentId)
+        {
+            _bangzonConnection.Open();
+
+            try
+            {
+                var editCartCommand = _bangzonConnection.CreateCommand();
+                editCartCommand.CommandText = @"UPDATE Cart
+                                                SET PaymentId = @paymentId, Active = false
+                                                WHERE CartId = @cartId";
+                var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
+                cartIdParameter.Value = cartId;
+                editCartCommand.Parameters.Add(cartIdParameter);
+                var paymentIdParameter = new SqlParameter("paymentId", SqlDbType.VarChar);
+                paymentIdParameter.Value = paymentId;
+                editCartCommand.Parameters.Add(paymentIdParameter);
+
+                var rowsAffected = editCartCommand.ExecuteNonQuery();
+                if (rowsAffected != 1)
+                {
+                    throw new Exception("Query didn't work!");
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            finally
+            {
+                _bangzonConnection.Close();
+            }
+
         }
     }
 }

@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.Interfaces
 {
-    interface IProduct
+    public interface ICustomer
     {
+        // Create
+
+        void AddCustomer(Customer customer);
+
         // Read
-        Product GetProductById(int productId);
-        //List<Product> GetAllProducts();
+        Customer GetCustomerById(int customerId);
+        List<Customer> GetAllCustomers();
+
     }
 }

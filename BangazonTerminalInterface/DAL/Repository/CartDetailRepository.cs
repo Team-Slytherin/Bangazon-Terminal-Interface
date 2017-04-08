@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -15,12 +16,12 @@ namespace BangazonTerminalInterface.DAL.Repository
     {
         IDbConnection _bangzonConnection;
 
-        public CartDetailRepository(IDbConnection bangzonConnection)
+        public CartDetailRepository()
         {
-            _bangzonConnection = bangzonConnection;
+            _bangzonConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
-        public void AddProduct(int cartDetailId, int cartId, int productId, int qty)
+        public void AddProduct(int cartId, int productId, int qty)
         {
             _bangzonConnection.Open();
 
@@ -28,9 +29,6 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var addProductCommand = _bangzonConnection.CreateCommand();
                 addProductCommand.CommandText = @"insert into CartDetail(CartDetailId, CartId, ProductId, Qty) values(@cartDetailId, @cartId, @productId, @qty)";
-                var cartDetailIdParameter = new SqlParameter("cartDetailId", SqlDbType.Int);
-                cartDetailIdParameter.Value = cartDetailId;
-                addProductCommand.Parameters.Add(cartDetailIdParameter);
                 var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
                 cartIdParameter.Value = cartId;
                 addProductCommand.Parameters.Add(cartIdParameter);

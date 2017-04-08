@@ -11,107 +11,95 @@ namespace BangazonTerminalInterface.Controllers
     {
         public  CustomerController()
         {
-            ValidateName();
+            EnterName();
             Console.Clear();
-            ValidateStreetAddress();
+            EnterStreetAddress();
             Console.Clear();
-            ValidateCity();
+            EnterCity();
             Console.Clear();
-            ValidateState();
+            EnterState();
             Console.Clear();
-            ValidateZip();
-            //Console.Clear();
-            //ValidatePhoneNumber();
+            EnterZip();
+            Console.Clear();
+            EnterPhoneNumber();
         }
 
-        private void ValidateName()
+        private void EnterName()
         {
             CustomerNameValid repo = new CustomerNameValid();
-            string customerName = "";
-            Console.WriteLine("Enter Customer Name" + "\n"
-                    + "> ");
 
-            customerName = Console.ReadLine();
+            string customerName = WriteToConsole("1.Enter Customer Name > ");
+
             while (!repo.ValidateName(customerName))
             {
-                Console.WriteLine("Invalid input please enter in the format John Smith" + "\n"
-                    + "> ");
-                customerName = Console.ReadLine();
-            }
-            
+                customerName = WriteToConsole("Invalid input please enter in the format John Smith > ");
+            }  
         }
 
-        private void ValidateStreetAddress()
+        private void EnterStreetAddress()
         {
             StreetAddressValid repo = new StreetAddressValid();
-            string customerName = "";
 
-            Console.WriteLine("Enter Address" + "\n"
-                    + "> ");
+            string customerStreetAddress = WriteToConsole("1.Enter Street Address > ");
 
-            customerName = Console.ReadLine();
-            while (!repo.ValidateStreetAddress(customerName))
+            while (!repo.ValidateStreetAddress(customerStreetAddress))
             {
-                Console.WriteLine("Invalid input please enter in format 123 main st" + "\n"
-                    + "> ");
-                customerName = Console.ReadLine();
+                customerStreetAddress = WriteToConsole("Invalid Ensure address is in this format 123 Main ST > ");
             }
         }
 
-        private void ValidateCity()
+        private void EnterCity()
         {
             CityValid repo = new CityValid();
-            string customerCity = "";
 
-            Console.WriteLine("Enter City" + "\n"
-                    + "> ");
+            string customerCity = WriteToConsole("1.Enter City > ");
 
-            customerCity = Console.ReadLine();
             while (!repo.ValidateCity(customerCity))
             {
-                Console.WriteLine("City must have more than 2 Characters and not contain numbers" + "\n"
-                    + "> ");
-                customerCity = Console.ReadLine();
+                customerCity = WriteToConsole("Invalid City must have 3 characters > ");
             }
         }
 
-        private void ValidatePhoneNumber()
+        private void EnterPhoneNumber()
         {
+            PhoneValid repo = new PhoneValid();
 
+            string customerPhone = WriteToConsole("1.Enter Phone Number > ");
+
+            while (!repo.ValidatePhone(customerPhone))
+            {
+                customerPhone = WriteToConsole("Invalid Phone Number must be in the following format 555-555-5555 > ");
+            }
         }
 
-        private void ValidateZip()
+        private void EnterZip()
         {
             ZipValid repo = new ZipValid();
-            string customerZip = "";
 
-            Console.WriteLine(
-              "1.Enter Zip" + "\n"
-              + "> ");
+            string customerZip = WriteToConsole("1.Enter Zip > ");
 
-            customerZip = Console.ReadLine();
             while (!repo.ValidateZip(customerZip))
             {
-                Console.WriteLine("Zip must have 5 numbers and not contain Letters" + "\n"
-                 + "> ");
-                customerZip = Console.ReadLine();
+                customerZip = WriteToConsole("Invalid input Zip must be 5 numbers > ");
             }
         }
 
-        private void ValidateState()
+        private void EnterState()
         {
             StateValid repo = new StateValid();
-            string customerState = "";
 
-            Console.WriteLine(
-              "1.Enter State" + "\n"
-              + "> ");
-            do
+            string customerState = WriteToConsole("1.Enter State > ");
+
+            while (!repo.ValidateState(customerState))
             {
-                // add the ability to hit a key to escape to main menu
-                customerState = Console.ReadLine();
+                customerState = WriteToConsole("Invalid please enter the state abbreviation > ");
             }
-            while (!repo.ValidateState(customerState));
+        }
+
+        private string WriteToConsole(string input)
+        {
+            Console.Write(input);
+            return Console.ReadLine();
         }
     }
 }
