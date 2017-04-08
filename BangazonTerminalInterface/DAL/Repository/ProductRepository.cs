@@ -87,47 +87,48 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
         }
 
- // replaced with function located above by TH 
+        // replaced with function located above by TH 
 
-//public List<Product> GetAllProducts()
-//        {
-//            slytherBangConnection.Open();
+        public List<Product> GetAllProducts()
+        {
+            slytherBangConnection.Open();
 
-//            try
-//            {
-//                var getProductCommand = slytherBangConnection.CreateCommand();
-//                getProductCommand.CommandText = @"
-//                    SELECT ProductId, ProductName, ProductPrice 
-//                    FROM Product";
+            try
+            {
+                var getProductCommand = slytherBangConnection.CreateCommand();
+                getProductCommand.CommandText = @"
+                    SELECT ProductId, ProductName, ProductPrice 
+                    FROM Product";
 
-//                var reader = getProductCommand.ExecuteReader();
+                var reader = getProductCommand.ExecuteReader();
 
-//                var products = new List<Product>();
-//                while (reader.Read())
-//                {
-//                    var product = new Product
-//                    {
-//                        ProductId = reader.GetInt32(0),
-//                        ProductName = reader.GetString(1),
-//                        ProductPrice = reader.GetSqlMoney(2).ToDecimal()
-//                    };
+                var products = new List<Product>();
+                while (reader.Read())
+                {
+                    var product = new Product
+                    {
+                        ProductId = reader.GetInt32(0),
+                        ProductName = reader.GetString(1),
+                        ProductPrice = reader.GetSqlMoney(2).ToDecimal()
+                    };
 
-//                    products.Add(product);
-//                }
+                    products.Add(product);
+                }
 
-//                return products;
-//            }
-//            catch (Exception ex) {
-//                Debug.WriteLine(ex.Message);
-//                Debug.WriteLine(ex.StackTrace);
-//            }
-//            finally
-//            {
-//                slytherBangConnection.Close();
-//            }
+                return products;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                slytherBangConnection.Close();
+            }
 
-//            return new List<Product>();
-//        }
+            return new List<Product>();
+        }
 
         public Product GetProductById(int productId)
         {
