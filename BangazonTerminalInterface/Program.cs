@@ -15,8 +15,7 @@ namespace BangazonTerminalInterface
         static void Main(string[] args)
         {
             Console.SetWindowSize(57, 35);
-            string menuChoice = "0";
-            while (menuChoice != "7" && menuChoice != "8")
+            SHOWMENU:
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -74,6 +73,7 @@ namespace BangazonTerminalInterface
                         Thread.Sleep(1000);
                         break;
                 }
+                goto SHOWMENU;
             }
         }
     }
