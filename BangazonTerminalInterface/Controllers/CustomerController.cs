@@ -31,6 +31,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterName()
         {
+            Header("Customer Name");
+
             CustomerNameValid repo = new CustomerNameValid();
 
             string customerName = Helper.WriteToConsole("1.Enter Customer Name > ");
@@ -44,6 +46,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterStreetAddress()
         {
+            Header("Customer Address");
+
             StreetAddressValid repo = new StreetAddressValid();
 
             string customerStreetAddress = Helper.WriteToConsole("1.Enter Street Address > ");
@@ -57,6 +61,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterCity()
         {
+            Header("Customer City");
+
             CityValid repo = new CityValid();
 
             string customerCity = Helper.WriteToConsole("1.Enter City > ");
@@ -70,6 +76,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterPhoneNumber()
         {
+            Header("Customer Phone Number");
+
             PhoneValid repo = new PhoneValid();
 
             string customerPhone = Helper.WriteToConsole("1.Enter Phone Number > ");
@@ -83,6 +91,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterZip()
         {
+            Header("Customer Zip");
+
             ZipValid repo = new ZipValid();
 
             string customerZip = Helper.WriteToConsole("1.Enter Zip > ");
@@ -96,6 +106,8 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterState()
         {
+            Header("Customer State");
+
             StateValid repo = new StateValid();
 
             string customerState = Helper.WriteToConsole("1.Enter State > ");
@@ -107,10 +119,28 @@ namespace BangazonTerminalInterface.Controllers
             customer.CustomerState = customerState;
         }
 
+
+        private void Header(string currentTask)
+        {
+            char padChar = ' ';
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("*********************************************************");
+            Console.WriteLine(("**                   " + currentTask).PadRight(55, padChar) + "**");
+            Console.WriteLine("*********************************************************");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+      
+        private string WriteToConsole(string input)
+        {
+            Console.Write(input);
+            return Console.ReadLine();
+        }
+      
         private void WriteToDb()
         {
             CustomerRepository repo = new CustomerRepository();
             repo.AddCustomer(customer);
         }
+
     }
 }

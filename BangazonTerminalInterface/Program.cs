@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using BangazonTerminalInterface.Misc;
 
 namespace BangazonTerminalInterface
 {
@@ -15,8 +16,10 @@ namespace BangazonTerminalInterface
     {
         static void Main(string[] args)
         {
-            Customer activeCustomer = null;
+            SplashScreen splash = new SplashScreen();
+            splash.GenerateSplashScreen();
             Console.SetWindowSize(57, 35);
+            Customer activeCustomer = null;
             SHOWMENU:
             {
                 Console.Clear();
@@ -34,8 +37,6 @@ namespace BangazonTerminalInterface
                 + "5.Complete an order" + "\n"
                 + "6.See product popularity" + "\n"
                 + "7.Leave Bangazon!" + "\n"
-                + "8.SQL connection test" + "\n"
-                + "9.Test Add Customer" + "\n"
                 + "> ");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
@@ -90,11 +91,6 @@ namespace BangazonTerminalInterface
                         Thread.Sleep(1500);
                         Environment.Exit(0);
                         break;
-                    case "8":
-                        SQLConnectionTest testConnection = new SQLConnectionTest();
-                        testConnection.GetProducts();
-                        break;
-                       
                     default:
                         Console.WriteLine("please select a valid menu item...");
                         Thread.Sleep(1000);
