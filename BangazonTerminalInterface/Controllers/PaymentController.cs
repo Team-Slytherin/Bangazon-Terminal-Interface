@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BangazonTerminalInterface.DataValidation.PaymentValidation;
 using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Components;
+using BangazonTerminalInterface.Models;
 
 namespace BangazonTerminalInterface.Controllers
 {
