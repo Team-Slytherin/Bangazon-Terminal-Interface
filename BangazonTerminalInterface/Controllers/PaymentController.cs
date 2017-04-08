@@ -14,9 +14,20 @@ namespace BangazonTerminalInterface.Controllers
     class PaymentController
     {
         string paymentType; //To Capture the payment type
-        int paymentAccountNumber; //To capture the account number
-        
-        private void requestPaymentType() // Ask for payment Type
+        string paymentAccountNumber; //To capture the account number
+        Payment payment = new Payment();
+        PaymentRepository newPayment = new PaymentRepository();
+
+        public PaymentController()
+        {
+            requestPaymentType();
+            Console.Clear();
+            requestPaymentActNumber();
+            Console.Clear();
+            newPayment.AddPayment(payment.CustomerId, payment.Type, payment.Account);
+        }
+
+        public void requestPaymentType() // Ask for payment Type
         {
             PaymentTypeValid repo = new PaymentTypeValid();
             Console.WriteLine("Enter Payment Type" + "\n"
@@ -26,8 +37,9 @@ namespace BangazonTerminalInterface.Controllers
             while (!repo.ValidatePaymentType(paymentType))  // Send Reponse to Validator
             {
                 Console.WriteLine("payment type invalid.  we only accept visa or mastercard.");
-                Console.ReadLine();
-            }  
+                paymentType = Console.ReadLine();
+            }
+            payment.Type = paymentType;
         }
 
         private void requestPaymentActNumber() // Ask for payment account number
@@ -35,20 +47,22 @@ namespace BangazonTerminalInterface.Controllers
             AccountNumberValid repo = new AccountNumberValid();
             Console.WriteLine("Enter Payment Account Number" + "\n"
                     + "> ");
-            paymentType = Console.ReadLine();
+            paymentAccountNumber = Console.ReadLine();
 
             while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator
             {
                 Console.WriteLine("Account number invalid.  Please input ####-####-####-####.");
-                Console.ReadLine();
+                paymentAccountNumber = Console.ReadLine();
             }
+            payment.Account = paymentAccountNumber;
+
         }
 
-        public void addNewPayment(Customer activeCustomer, string paymentType, int paymentAccountNumber)
-        {
-            PaymentRepository newPayment = new PaymentRepository();
-            newPayment.AddPayment(activeCustomer.CustomerId, paymentType, paymentAccountNumber);
-        }
+        // public void addNewPayment(Customer activeCustomer, string paymentType, string paymentAccountNumber)
+        //{
+          //  PaymentRepository newPayment = new PaymentRepository();
+            //newPayment.AddPayment(activeCustomer.CustomerId, paymentType, paymentAccountNumber);
+        //}
 
     }
 }

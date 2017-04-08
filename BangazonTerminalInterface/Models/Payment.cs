@@ -14,7 +14,7 @@ namespace BangazonTerminalInterface.Components
 
         public string Type { get; set; }
 
-        public int Account { get; set; }
+        public string Account { get; set; }
 
     }
 }
