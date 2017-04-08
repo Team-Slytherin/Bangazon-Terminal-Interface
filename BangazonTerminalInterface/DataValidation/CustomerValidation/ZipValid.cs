@@ -11,10 +11,6 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
     {
         public bool ValidateZip(string zip)
         {
-
-            String s = "123456";
-            String regex = "\\d{5}";
-
             // bug in regex you can enter 5555e
             bool isNumeric = Regex.IsMatch(zip, @"[0-9]");
             if (zip.Length == 5 && isNumeric)
