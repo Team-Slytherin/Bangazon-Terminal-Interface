@@ -55,6 +55,7 @@ namespace BangazonTerminalInterface
                     SHOWPRODUCTS:
                         Console.Clear();
                         ProductRepository repo = new ProductRepository();
+
                         var products = repo.GetAllProducts();
                         foreach (Product product in products)
                         {
