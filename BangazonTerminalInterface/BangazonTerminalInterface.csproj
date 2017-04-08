@@ -63,6 +63,7 @@
     <Compile Include="DataValidation\PaymentValidation\AccountNumberValid.cs" />
     <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
     <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IProduct.cs" />
     <Compile Include="Models\Cart.cs" />
