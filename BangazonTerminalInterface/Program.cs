@@ -46,6 +46,9 @@ namespace BangazonTerminalInterface
                         var CustomerInfo = new CustomerController();
                         break;
                     case "2":
+                        Console.Clear();
+                        var selectCustomerCtrl = new SelectCustomerController();
+                        activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
                         break;
                     case "3":
                         break;
@@ -91,6 +94,7 @@ namespace BangazonTerminalInterface
                         SQLConnectionTest testConnection = new SQLConnectionTest();
                         testConnection.GetProducts();
                         break;
+                       
                     default:
                         Console.WriteLine("please select a valid menu item...");
                         Thread.Sleep(1000);
