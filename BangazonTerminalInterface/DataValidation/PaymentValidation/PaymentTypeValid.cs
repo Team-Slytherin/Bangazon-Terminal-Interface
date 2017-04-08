@@ -10,8 +10,14 @@ namespace BangazonTerminalInterface.DataValidation.PaymentValidation
     {
         public bool ValidatePaymentType(string type)
         {
-            // something in here
-            return true; //or false ... something here, just had it return true to kill the red squiggles
+            var lowerType = type.ToLower();
+            if (lowerType == "visa" || lowerType == "mastercard")
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 }

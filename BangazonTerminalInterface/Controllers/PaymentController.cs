@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BangazonTerminalInterface.DataValidation.PaymentValidation;
+using BangazonTerminalInterface.DAL.Repository;
+using BangazonTerminalInterface.Components;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -11,7 +14,6 @@ namespace BangazonTerminalInterface.Controllers
     {
         string paymentType; //To Capture the payment type
         int paymentAccountNumber; //To capture the account number
-        string newPayment; //To build the new payment that will be added to the DB
         
         private void requestPaymentType() // Ask for payment Type
         {
@@ -19,21 +21,33 @@ namespace BangazonTerminalInterface.Controllers
             Console.WriteLine("Enter Payment Type" + "\n"
                     + "> ");
             paymentType = Console.ReadLine();
-        }
-        
-        ValidatePaymentType(string paymentType); // Send Reponse to Validator
 
-       
-        private void requestPaymentAccountNumber() // Ask for account number
+            while (!repo.ValidatePaymentType(paymentType))  // Send Reponse to Validator
+            {
+                Console.WriteLine("payment type invalid.  we only accept visa or mastercard.");
+                Console.ReadLine();
+            }  
+        }
+
+        private void requestPaymentActNumber() // Ask for payment account number
         {
-            PaymentTypeValid repo = new PaymentTypeValid();
+            AccountNumberValid repo = new AccountNumberValid();
             Console.WriteLine("Enter Payment Account Number" + "\n"
                     + "> ");
-            paymentAccountNumber = Console.ReadLine();
+            paymentType = Console.ReadLine();
+
+            while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator
+            {
+                Console.WriteLine("Account number invalid.  Please input ####-####-####-####.");
+                Console.ReadLine();
+            }
         }
 
-        
-        ValidatePaymentAccountNumber(int paymentAccountNumber); // Send Reponse to Validator
+        public void addNewPayment(Customer activeCustomer, string paymentType, int paymentAccountNumber)
+        {
+            PaymentRepository newPayment = new PaymentRepository();
+            newPayment.AddPayment(activeCustomer.CustomerId, paymentType, paymentAccountNumber);
+        }
 
     }
 }
