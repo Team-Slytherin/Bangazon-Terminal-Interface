@@ -51,9 +51,22 @@ namespace BangazonTerminalInterface
                         activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
                         break;
                     case "3":
+                        if (activeCustomer == null)
+                        {
+                            Console.Clear();
+                            var selectCustomerCtrl1 = new SelectCustomerController();
+                            activeCustomer = selectCustomerCtrl1.SelectActiveCustomer();
+                        }
+                        var paymentCtrl = new PaymentController(activeCustomer);
+                        paymentCtrl.addNewPayment();
                         break;
                     case "4":
-                        if (activeCustomer == null) break;
+                        if (activeCustomer == null)
+                        {
+                            Console.Clear();
+                            var selectCustomerCtrl2 = new SelectCustomerController();
+                            activeCustomer = selectCustomerCtrl2.SelectActiveCustomer();
+                        }
                     SHOWPRODUCTS:
                         Console.Clear();
                         ProductRepository repo = new ProductRepository();
@@ -63,21 +76,28 @@ namespace BangazonTerminalInterface
                         {
                             Console.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
                         }
+                        Console.WriteLine($"{products.Count + 1}" + ". Done adding products.\n");
                         Console.WriteLine("> ");
+
                         var selectedProduct = Convert.ToInt32(Console.ReadLine());
-                        if (selectedProduct >= 1 && selectedProduct < 9)
+                        if (selectedProduct >= 1 && selectedProduct < products.Count)
                         {
                             (new CartController()).addProduct(activeCustomer, selectedProduct);
                             goto SHOWPRODUCTS;
                         }
-                        else if (selectedProduct > 9)
+                        else if (selectedProduct > products.Count + 1)
                         {
                             Console.WriteLine("Please choose a valid product number!");
                             goto SHOWPRODUCTS;
                         }
                         break;
                     case "5":
-                        if (activeCustomer == null) break;
+                        if (activeCustomer == null)
+                        {
+                            Console.Clear();
+                            var selectCustomerCtrl2 = new SelectCustomerController();
+                            activeCustomer = selectCustomerCtrl2.SelectActiveCustomer();
+                        }
                         var CartAction = new CartController();
                         CartAction.checkout(activeCustomer);
                         break;

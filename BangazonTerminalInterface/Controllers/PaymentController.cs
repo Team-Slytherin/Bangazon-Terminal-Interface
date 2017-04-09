@@ -8,46 +8,51 @@ using BangazonTerminalInterface.DataValidation.PaymentValidation;
 using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Components;
 using BangazonTerminalInterface.Models;
+using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.Controllers
 {
     class PaymentController
     {
-        string paymentType; //To Capture the payment type
-        int paymentAccountNumber; //To capture the account number
-        
+        //To add new payment option
+        Payment payment = new Payment();
+        public  PaymentController(Customer customer)
+        {
+            payment.CustomerId = customer.CustomerId;
+            Console.Clear();
+            requestPaymentType();
+            Console.Clear();
+            requestPaymentActNumber();
+        }
+
         private void requestPaymentType() // Ask for payment Type
         {
             PaymentTypeValid repo = new PaymentTypeValid();
-            Console.WriteLine("Enter Payment Type" + "\n"
-                    + "> ");
-            paymentType = Console.ReadLine();
+            var paymentType = Helper.WriteToConsole("Enter Payment Type" + "\n" + "> ");
 
             while (!repo.ValidatePaymentType(paymentType))  // Send Reponse to Validator
             {
-                Console.WriteLine("payment type invalid.  we only accept visa or mastercard.");
-                Console.ReadLine();
-            }  
+                paymentType = Helper.WriteToConsole("payment type invalid.  we only accept visa or mastercard." + "\n" + "> ");
+            }
+            payment.PaymentType = paymentType;
         }
 
         private void requestPaymentActNumber() // Ask for payment account number
         {
             AccountNumberValid repo = new AccountNumberValid();
-            Console.WriteLine("Enter Payment Account Number" + "\n"
-                    + "> ");
-            paymentType = Console.ReadLine();
+            var paymentAccountNumber = Helper.WriteToConsole("Enter Payment Account Number" + "\n" + "> ");
 
             while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator
             {
-                Console.WriteLine("Account number invalid.  Please input ####-####-####-####.");
-                Console.ReadLine();
+                paymentAccountNumber = Helper.WriteToConsole("Account number invalid.  Please input 16 digits." + "\n" + "> ");
             }
+            payment.PaymentAccountNumber = Convert.ToInt64(paymentAccountNumber);
         }
 
-        public void addNewPayment(Customer activeCustomer, string paymentType, int paymentAccountNumber)
+        public void addNewPayment()
         {
             PaymentRepository newPayment = new PaymentRepository();
-            newPayment.AddPayment(activeCustomer.CustomerId, paymentType, paymentAccountNumber);
+            newPayment.AddPayment(payment.CustomerId, payment.PaymentType, payment.PaymentAccountNumber);
         }
 
     }
