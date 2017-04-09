@@ -81,7 +81,7 @@ namespace BangazonTerminalInterface
                         Console.WriteLine("> ");
 
                         var selectedProduct = Convert.ToInt32(Console.ReadLine());
-                        if (selectedProduct >= 1 && selectedProduct < products.Count)
+                        if (selectedProduct >= 1 && selectedProduct <= products.Count)
                         {
                             (new CartController()).addProduct(activeCustomer, selectedProduct);
                             goto SHOWPRODUCTS;
