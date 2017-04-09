@@ -15,6 +15,5 @@ namespace BangazonTerminalInterface.Components
         public string PaymentType { get; set; }
 
         public long PaymentAccountNumber { get; set; }
-
     }
 }

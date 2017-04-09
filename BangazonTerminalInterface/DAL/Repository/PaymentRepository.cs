@@ -21,13 +21,15 @@ namespace BangazonTerminalInterface.DAL.Repository
             _sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
+
         public void AddPayment(int customerId, string paymentType, long accountNumber)
+
         {
             _sqlConnection.Open();
             try
             {
                 var addPaymentCommand = _sqlConnection.CreateCommand();
-                addPaymentCommand.CommandText = "INSERT into Payment(CustomerId, PaymentType, PaymentAccountNumber) values(@customerId, @paymentType,@accountNumber)";
+                addPaymentCommand.CommandText = "INSERT into Payment(CustomerId, PaymentType, PaymentAccountNumber) values(@customerId, @paymentType, @accountNumber)";
 
                 var customerParameter = new SqlParameter("customerId", SqlDbType.Int);
                 customerParameter.Value = customerId;
@@ -82,7 +84,6 @@ namespace BangazonTerminalInterface.DAL.Repository
                         CustomerId = reader.GetInt32(1),
                         PaymentType = reader.GetString(2),
                         PaymentAccountNumber = reader.GetInt64(3)
-
                     };
 
                     payments.Add(payment);

@@ -54,6 +54,5 @@ namespace BangazonTerminalInterface.Controllers
             PaymentRepository newPayment = new PaymentRepository();
             newPayment.AddPayment(payment.CustomerId, payment.PaymentType, payment.PaymentAccountNumber);
         }
-
     }
 }
