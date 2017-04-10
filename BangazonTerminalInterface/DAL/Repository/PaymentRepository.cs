@@ -21,7 +21,9 @@ namespace BangazonTerminalInterface.DAL.Repository
             _sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
-        public void AddPayment(int customerId, string paymentType, string accountNumber)
+
+        public void AddPayment(int customerId, string paymentType, long accountNumber)
+
         {
             _sqlConnection.Open();
             try
@@ -37,7 +39,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                 typeParameter.Value = paymentType;
                 addPaymentCommand.Parameters.Add(typeParameter);
 
-                var accountParameter = new SqlParameter("accountNumber", SqlDbType.VarChar);
+                var accountParameter = new SqlParameter("accountNumber", SqlDbType.BigInt);
                 accountParameter.Value = accountNumber;
                 addPaymentCommand.Parameters.Add(accountParameter);
 
@@ -64,9 +66,13 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var getPaymentsCommand = _sqlConnection.CreateCommand();
                 getPaymentsCommand.CommandText = @"
-                    SELECT PaymentId, CustomerId, Type, Account 
-                    FROM Payment";
+                    SELECT PaymentId, CustomerId, PaymentType, PaymentAccountNumber 
+                    FROM Payment
+                    WHERE CustomerId = @customerId";
 
+                var customerParameter = new SqlParameter("customerId", SqlDbType.Int);
+                customerParameter.Value = customerId;
+                getPaymentsCommand.Parameters.Add(customerParameter);
                 var reader = getPaymentsCommand.ExecuteReader();
 
                 var payments = new List<Payment>();
@@ -76,9 +82,8 @@ namespace BangazonTerminalInterface.DAL.Repository
                     {
                         PaymentId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
-                        Type = reader.GetString(2),
-                        Account = reader.GetString(3)
-
+                        PaymentType = reader.GetString(2),
+                        PaymentAccountNumber = reader.GetInt64(3)
                     };
 
                     payments.Add(payment);
@@ -107,7 +112,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var getPaymentCommand = _sqlConnection.CreateCommand();
                 getPaymentCommand.CommandText = @"
-                    SELECT PaymentId, CustomerId, Type, Account 
+                    SELECT PaymentId, CustomerId, PaymentType, PaymentAccountNumber 
                     FROM Payment 
                     WHERE PaymentId = @paymentId";
                 var productIdParam = new SqlParameter("paymentId", SqlDbType.Int);
@@ -122,8 +127,8 @@ namespace BangazonTerminalInterface.DAL.Repository
                     {
                         PaymentId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
-                        Type = reader.GetString(2),
-                        Account = reader.GetString(3)
+                        PaymentType = reader.GetString(2),
+                        PaymentAccountNumber = reader.GetInt32(3)
                     };
                     return payment;
                 }

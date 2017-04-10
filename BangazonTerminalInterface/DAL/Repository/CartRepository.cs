@@ -27,7 +27,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             try
             {
                 var addCartCommand = _bangzonConnection.CreateCommand();
-                addCartCommand.CommandText = @"insert into Cart(CustomerId, Active) values(@customerId, true)";
+                addCartCommand.CommandText = @"insert into Cart(CustomerId, Active) values(@customerId, '1')";
                 var customerIdParameter = new SqlParameter("customerId", SqlDbType.Int);
                 customerIdParameter.Value = customerId;
                 addCartCommand.Parameters.Add(customerIdParameter);
@@ -54,22 +54,20 @@ namespace BangazonTerminalInterface.DAL.Repository
                 var getActiveCartCommand = _bangzonConnection.CreateCommand();
                 getActiveCartCommand.CommandText = @"SELECT CartId, CustomerId, PaymentId, Active 
                                                 FROM Cart 
-                                                WHERE CustomerId = @customerId AND Active = true";
+                                                WHERE CustomerId = @customerId AND Active = '1'";
                 var customerIdParameter = new SqlParameter("customerId", SqlDbType.Int);
                 customerIdParameter.Value = customerId;
                 getActiveCartCommand.Parameters.Add(customerIdParameter);
                 var reader = getActiveCartCommand.ExecuteReader();
 
-                while (reader.Read())
+                if (reader.Read())
                 {
-                    reader.Read();
-
                     var Cart = new Cart()
                     {
                         CartId = reader.GetInt32(0),
                         CustomerId = reader.GetInt32(1),
-                        PaymentId = reader.GetInt32(2),
-                        Active = reader.GetBoolean(3)
+                        PaymentId = 0,
+                        Active = reader.GetString(3)
                     };
                     return Cart;
                 }
@@ -77,6 +75,8 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
             finally
             {
@@ -93,7 +93,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var editCartCommand = _bangzonConnection.CreateCommand();
                 editCartCommand.CommandText = @"UPDATE Cart
-                                                SET PaymentId = @paymentId, Active = false
+                                                SET PaymentId = @paymentId, Active = '0'
                                                 WHERE CartId = @cartId";
                 var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
                 cartIdParameter.Value = cartId;
@@ -110,6 +110,8 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
             finally
             {
