@@ -7,6 +7,7 @@ using System.Data;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.DAL.Repository
 {
@@ -41,12 +42,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                 GROUP BY ProductName
                 ORDER BY COUNT(distinct CartDetailId) desc; ";
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(
-                  "*********************************************************" + "\n"
-                + "**                  Product Popularity                 **" + "\n"
-                + "*********************************************************");
-                Console.ForegroundColor = ConsoleColor.White;
+                Helper.WriteHeaderToConsole("Product Popularity Report");
                 Console.WriteLine("Product           Orders     Customers  Revenue          ");
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("*********************************************************");
