@@ -15,45 +15,26 @@ namespace BangazonTerminalInterface.Controllers
         Customer customer = new Customer();
 
         private bool UserContinue = true;
-        public CustomerController()
-        {
-            //EnterName();
-            //Console.Clear();
-            //EnterStreetAddress();
-            //Console.Clear();
-            //EnterCity();
-            //Console.Clear();
-            //EnterState();
-            //Console.Clear();
-            //EnterZip();
-            //Console.Clear();
-            //EnterPhoneNumber();
-            //WriteToDb();
-        }
+        private bool IsComplete = false;
 
         public void CreateCustomer ()
         {
-            //if (!EnterName())
-            //{
-            //    return false;
-            //}
-
-            //if (!EnterStreetAddress())
-            //{
-            //    return false;
-            //}
-
-            //if (!EnterCity())
-            //{
-            //    return false;
-            //}
-            //return true;
-
-            while (UserContinue)
+            while (!IsComplete)
             {
                 EnterName();
                 if (!UserContinue) break;
                 EnterStreetAddress();
+                if (!UserContinue) break;
+                EnterCity();
+                if (!UserContinue) break;
+                EnterPhoneNumber();
+                if (!UserContinue) break;
+                EnterZip();
+                if (!UserContinue) break;
+                EnterState();
+                if (!UserContinue) break;
+                WriteToDb();
+                if (!UserContinue) break;
             }
         }
 
@@ -75,7 +56,7 @@ namespace BangazonTerminalInterface.Controllers
 
             if (!repo.ValidateName(input))
             {
-                Console.WriteLine("Invalid input please enter in the format John Smith");
+                Console.WriteLine("Invalid input please enter in the format John Smith.");
                 goto EnterName;
             }
 
@@ -108,70 +89,107 @@ namespace BangazonTerminalInterface.Controllers
             return true;
         }
 
-        private void EnterCity()
+        private bool EnterCity()
         {
             Helper.WriteHeaderToConsole("Customer City");
 
             CityValid repo = new CityValid();
 
-            string customerCity = Helper.WriteToConsole("1.Enter City > ");
+            EnterCity:
+            string input = Helper.WriteToConsole("Enter City > ");
 
-            while (!repo.ValidateCity(customerCity))
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                customerCity = Helper.WriteToConsole("Invalid City must have 3 characters > ");
+                return false;
             }
-            customer.CustomerCity = customerCity;
+            while (!repo.ValidateCity(input))
+            {
+                Console.WriteLine("Invalid input City must have 3 Characters. ");
+                goto EnterCity;
+            }
+            customer.CustomerCity = input;
+            return true;
         }
 
-        private void EnterPhoneNumber()
+        private bool EnterPhoneNumber()
         {
             Helper.WriteHeaderToConsole("Customer Phone Number");
 
             PhoneValid repo = new PhoneValid();
 
-            string customerPhone = Helper.WriteToConsole("1.Enter Phone Number > ");
+            EnterPhoneNumber:
+            string input = Helper.WriteToConsole("Enter Phone Number > ");
 
-            while (!repo.ValidatePhone(customerPhone))
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                customerPhone = Helper.WriteToConsole("Invalid Phone Number must be in the following format 555-555-5555 > ");
+                return false;
             }
-            customer.CustomerPhone = customerPhone;
+            while (!repo.ValidatePhone(input))
+            {
+                Console.WriteLine("Invalid Phone Number Must be in the format 555-555-5555. ");
+                goto EnterPhoneNumber;
+            }
+            customer.CustomerPhone = input;
+            return true;
         }
 
-        private void EnterZip()
+        private bool EnterZip()
         {
             Helper.WriteHeaderToConsole("Customer Zip");
 
             ZipValid repo = new ZipValid();
 
-            string customerZip = Helper.WriteToConsole("1.Enter Zip > ");
+            EnterZip:
+            string input = Helper.WriteToConsole("Enter Zip Code > ");
 
-            while (!repo.ValidateZip(customerZip))
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                customerZip = Helper.WriteToConsole("Invalid input Zip must be 5 numbers > ");
+                return false;
             }
-            customer.CustomerZip = customerZip;
+            while (!repo.ValidateZip(input))
+            {
+                Console.WriteLine("Invalid Zip Must be in the format 12345. ");
+                goto EnterZip;
+            }
+            customer.CustomerZip = input;
+            return true;
         }
 
-        private void EnterState()
+        private bool EnterState()
         {
             Helper.WriteHeaderToConsole("Customer State");
 
             StateValid repo = new StateValid();
 
-            string customerState = Helper.WriteToConsole("1.Enter State > ");
+            EnterState:
+            string input = Helper.WriteToConsole("Enter Zip Code > ");
 
-            while (!repo.ValidateState(customerState))
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                customerState = Helper.WriteToConsole("Invalid please enter the state abbreviation > ");
+                return false;
             }
-            customer.CustomerState = customerState;
+            while (!repo.ValidateState(input))
+            {
+                Console.WriteLine("Invalid input must be in the format TN. ");
+                goto EnterState;
+            }
+            customer.CustomerState = input;
+            return true;
         }
       
         private void WriteToDb()
         {
             CustomerRepository repo = new CustomerRepository();
             repo.AddCustomer(customer);
+            IsComplete = true; // Seems a little hacky, but I have to do this to break out of the while look.
         }
 
     }
