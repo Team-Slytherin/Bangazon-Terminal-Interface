@@ -11,7 +11,7 @@ namespace BangazonTerminalInterface.DataValidation.PaymentValidation
         public bool ValidatePaymentType(string type)
         {
             var lowerType = type.ToLower();
-            if (lowerType == "visa" || lowerType == "mastercard")
+            if (lowerType == "visa" || lowerType == "mastercard" || lowerType == "american express" || lowerType == "discover")
             {
                 return true;
             }

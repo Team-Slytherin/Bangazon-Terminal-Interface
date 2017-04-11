@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using BangazonTerminalInterface.Misc;
+using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface
 {
@@ -23,12 +24,7 @@ namespace BangazonTerminalInterface
             SHOWMENU:
             {
                 Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(
-                  "*********************************************************" + "\n"
-                + "**   Welcome to Bangazon!Command Line Ordering System  **" + "\n"
-                + "*********************************************************");
-                Console.ForegroundColor = ConsoleColor.White;
+                Helper.WriteHeaderToConsole("Welcome to Bangazon!");
                 Console.WriteLine(
                   "1.Create a customer account" + "\n"
                 + "2.Choose active customer" + "\n"
@@ -36,15 +32,15 @@ namespace BangazonTerminalInterface
                 + "4.Add product to shopping cart" + "\n"
                 + "5.Complete an order" + "\n"
                 + "6.See product popularity" + "\n"
-                + "7.Leave Bangazon!" + "\n"
-                + "> ");
+                + "7.Leave Bangazon!");
                 Console.ForegroundColor = ConsoleColor.White;
-                var userInput = Console.ReadKey(true).KeyChar.ToString();
+                var userInput = Helper.WriteToConsole("> ");
                 switch (userInput)
                 {
                     case "1":
                         Console.Clear();
                         var CustomerInfo = new CustomerController();
+                        CustomerInfo.CreateCustomer();
                         break;
                     case "2":
                         Console.Clear();

@@ -17,14 +17,21 @@ namespace BangazonTerminalInterface.Controllers
         {
             SHOWPRODUCTS:
                 Console.Clear();
+                Helper.WriteHeaderToConsole("Add Products to Cart");
                 ProductRepository repo = new ProductRepository();
 
                 var products = repo.GetAllProducts();
+                Console.WriteLine("Product                   Price       ");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("**************************************");
+                char spacePad = ' ';
                 foreach (Product product in products)
                 {
-                    Console.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
+                    Console.WriteLine(product.ProductId + ". " + product.ProductName.PadRight(24, spacePad).Substring(0, 23) + "$" + product.ProductPrice);
                 }
-                Console.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu\n");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("**************************************");
+                Console.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu");
                 Console.WriteLine($"{products.Count + 2}" + ". Checkout\n");
                 try
                 {
@@ -69,12 +76,15 @@ namespace BangazonTerminalInterface.Controllers
 
         public void checkout(Customer activeCustomer)
         {
+            CHOOSEPAYMENT:
+            Console.Clear();
+            Helper.WriteHeaderToConsole("Check Out");
             var cartRepo = new CartRepository();
             var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
             if (activeCart != null)
             {
                 var cartDetail = new CartDetailRepository();
-                Console.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
+                Console.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase?\n");
                 var userInput = Helper.WriteToConsole("Y/N > ");
                 if (userInput.ToLower() == "y")
                 {
@@ -83,19 +93,31 @@ namespace BangazonTerminalInterface.Controllers
                     var payments = paymentRepo.GetAllPayments(activeCustomer.CustomerId);
 
                     Console.WriteLine("\nYour payment options:\n");
+                    int counter = 1;
                     foreach (Payment payment in payments)
                     {
-                        Console.WriteLine(payment.PaymentId + ". " + payment.PaymentType + "\n");
+                        Console.WriteLine(counter + ". " + payment.PaymentType + "\n");
+                        counter++;
                     }
+                    Console.WriteLine(counter + ". " + "Go Back To Main Menu\n");
 
                     // read userinput
-                    var paymentId = Convert.ToInt32(Helper.WriteToConsole("Choose payment type by number >\n"));
-
-                    // update order active to false
-                    cartRepo.EditCartStatus(activeCart.CartId, paymentId);
-                    Console.WriteLine("Your order is complete! Press any key to return to main menu.\n");
-                    Console.ReadKey();
-                    return;
+                    var paymentChoice = Convert.ToInt32(Helper.WriteToConsole("Choose payment option >\n"));
+                    if (paymentChoice == counter) return;
+                    else if (paymentChoice > 0 && paymentChoice < counter)
+                    {
+                        var paymentId = payments[paymentChoice - 1].PaymentId;
+                        // update order active to false
+                        cartRepo.EditCartStatus(activeCart.CartId, paymentId);
+                        Console.WriteLine("Your order is complete! Press any key to return to main menu.\n");
+                        Console.ReadKey();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter the numbers showed on screen!");
+                        goto CHOOSEPAYMENT;
+                    }
                 }
                 return;
             }

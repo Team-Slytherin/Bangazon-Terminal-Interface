@@ -10,58 +10,107 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.Controllers
 {
-    class CustomerController
+    public class CustomerController
     {
         Customer customer = new Customer();
-        public  CustomerController()
+
+        private bool UserContinue = true;
+        public CustomerController()
         {
-            EnterName();
-            Console.Clear();
-            EnterStreetAddress();
-            Console.Clear();
-            EnterCity();
-            Console.Clear();
-            EnterState();
-            Console.Clear();
-            EnterZip();
-            Console.Clear();
-            EnterPhoneNumber();
-            WriteToDb();
+            //EnterName();
+            //Console.Clear();
+            //EnterStreetAddress();
+            //Console.Clear();
+            //EnterCity();
+            //Console.Clear();
+            //EnterState();
+            //Console.Clear();
+            //EnterZip();
+            //Console.Clear();
+            //EnterPhoneNumber();
+            //WriteToDb();
+        }
+
+        public void CreateCustomer ()
+        {
+            //if (!EnterName())
+            //{
+            //    return false;
+            //}
+
+            //if (!EnterStreetAddress())
+            //{
+            //    return false;
+            //}
+
+            //if (!EnterCity())
+            //{
+            //    return false;
+            //}
+            //return true;
+
+            while (UserContinue)
+            {
+                EnterName();
+                if (!UserContinue) break;
+                EnterStreetAddress();
+            }
         }
 
         private void EnterName()
         {
-            Header("Customer Name");
+            Helper.WriteHeaderToConsole("Customer Name");
 
             CustomerNameValid repo = new CustomerNameValid();
+            EnterName:
+            string input = Helper.WriteToConsole("Enter Customer Name > ");
 
-            string customerName = Helper.WriteToConsole("1.Enter Customer Name > ");
+            bool userContinue = Helper.CheckForUserExit(input);
 
-            while (!repo.ValidateName(customerName))
+            if(userContinue)
             {
-                customerName = Helper.WriteToConsole("Invalid input please enter in the format John Smith > ");
+                UserContinue = false;
+                return;
             }
-            customer.CustomerName = customerName;
+
+            if (!repo.ValidateName(input))
+            {
+                Console.WriteLine("Invalid input please enter in the format John Smith");
+                goto EnterName;
+            }
+
+            customer.CustomerName = input;
         }
 
-        private void EnterStreetAddress()
+        private bool EnterStreetAddress()
         {
-            Header("Customer Address");
+            Helper.WriteHeaderToConsole("Customer Address");
 
             StreetAddressValid repo = new StreetAddressValid();
 
-            string customerStreetAddress = Helper.WriteToConsole("1.Enter Street Address > ");
+            EnterAddress:
+            string input = Helper.WriteToConsole("Enter Customer Address > ");
 
-            while (!repo.ValidateStreetAddress(customerStreetAddress))
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                customerStreetAddress = Helper.WriteToConsole("Invalid Ensure address is in this format 123 Main ST > ");
+                return false;
             }
-            customer.CustomerStreetAddress = customerStreetAddress;
+
+            if (!repo.ValidateStreetAddress(input))
+            {
+                Console.WriteLine("Invalid input please enter in the format 123 Main St.");
+                goto EnterAddress;
+            }
+
+            customer.CustomerStreetAddress = input;
+            return true;
         }
 
         private void EnterCity()
         {
-            Header("Customer City");
+            Helper.WriteHeaderToConsole("Customer City");
 
             CityValid repo = new CityValid();
 
@@ -76,7 +125,7 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterPhoneNumber()
         {
-            Header("Customer Phone Number");
+            Helper.WriteHeaderToConsole("Customer Phone Number");
 
             PhoneValid repo = new PhoneValid();
 
@@ -91,7 +140,7 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterZip()
         {
-            Header("Customer Zip");
+            Helper.WriteHeaderToConsole("Customer Zip");
 
             ZipValid repo = new ZipValid();
 
@@ -106,7 +155,7 @@ namespace BangazonTerminalInterface.Controllers
 
         private void EnterState()
         {
-            Header("Customer State");
+            Helper.WriteHeaderToConsole("Customer State");
 
             StateValid repo = new StateValid();
 
@@ -117,23 +166,6 @@ namespace BangazonTerminalInterface.Controllers
                 customerState = Helper.WriteToConsole("Invalid please enter the state abbreviation > ");
             }
             customer.CustomerState = customerState;
-        }
-
-
-        private void Header(string currentTask)
-        {
-            char padChar = ' ';
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("*********************************************************");
-            Console.WriteLine(("**                   " + currentTask).PadRight(55, padChar) + "**");
-            Console.WriteLine("*********************************************************");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-      
-        private string WriteToConsole(string input)
-        {
-            Console.Write(input);
-            return Console.ReadLine();
         }
       
         private void WriteToDb()
