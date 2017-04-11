@@ -25,6 +25,31 @@ namespace BangazonTerminalInterface
             {
                 Console.Clear();
                 Helper.WriteHeaderToConsole("Welcome to Bangazon!");
+                if (activeCustomer != null)
+                {
+                    string custString = $"Customer: {activeCustomer.CustomerName}";
+                    string cartString = "";
+                    var cartRepo = new CartRepository();
+                    var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                    if (activeCart == null)
+                    {
+                        cartRepo.AddCart(activeCustomer.CustomerId);
+                        activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                    }
+                    else
+                    {
+                        var cartDetail = new CartDetailRepository();
+                        cartString = $"Cart({cartDetail.GetTotleItemsInCart(activeCart.CartId)}) {cartDetail.GetCartPrice(activeCart.CartId)}";
+                    }
+                    string space = new string(' ', (56 - cartString.Length - custString.Length));
+                    if(cartString.Length < 1)
+                    {
+                        Console.WriteLine($"{custString}\n");
+                    }else
+                    {
+                        Console.WriteLine($"{custString}{space}{cartString}\n");
+                    }
+                }
                 Console.WriteLine(
                   "1.Create a customer account" + "\n"
                 + "2.Choose active customer" + "\n"
@@ -32,7 +57,8 @@ namespace BangazonTerminalInterface
                 + "4.Add product to shopping cart" + "\n"
                 + "5.Complete an order" + "\n"
                 + "6.See product popularity" + "\n"
-                + "7.Leave Bangazon!");
+                + "7.Logout Current User" + "\n"
+                + "8.Leave Bangazon!");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = Helper.WriteToConsole("> ");
                 switch (userInput)
@@ -104,6 +130,20 @@ namespace BangazonTerminalInterface
                         popularityRepo.GetProductPopularity();
                         break;
                     case "7":
+                        if (activeCustomer != null)
+                        {
+                            Console.WriteLine($"\nUser {activeCustomer.CustomerName} is being logged out!");
+                            activeCustomer = null;
+                            Thread.Sleep(1500);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\nNo customer currently logged in!");
+                            Thread.Sleep(1500);
+                        }
+
+                        break;
+                    case "8":
                         Console.WriteLine("Goodbye!");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
