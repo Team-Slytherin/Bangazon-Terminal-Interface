@@ -13,7 +13,7 @@ using System.Configuration;
 
 namespace BangazonTerminalInterface.DAL.Repository
 {
-    class CustomerRepository : ICustomer
+    public class CustomerRepository : ICustomer
     {
 
         IDbConnection _sqlConnection;
