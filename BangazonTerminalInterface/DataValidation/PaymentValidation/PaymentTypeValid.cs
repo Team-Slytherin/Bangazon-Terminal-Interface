@@ -15,7 +15,8 @@ namespace BangazonTerminalInterface.DataValidation.PaymentValidation
             {
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }

@@ -38,7 +38,7 @@ namespace BangazonTerminalInterface.Controllers
             }
         }
 
-        private void EnterName()
+        private bool EnterName()
         {
             Helper.WriteHeaderToConsole("Customer Name");
 
@@ -52,8 +52,7 @@ namespace BangazonTerminalInterface.Controllers
 
             if(userContinue)
             {
-                UserContinue = false;
-                return;
+                return false;
             }
 
             if (!repo.ValidateName(input))
@@ -63,6 +62,7 @@ namespace BangazonTerminalInterface.Controllers
             }
 
             customer.CustomerName = input;
+            return true;
         }
 
         private bool EnterStreetAddress()
