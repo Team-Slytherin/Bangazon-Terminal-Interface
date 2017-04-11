@@ -11,8 +11,7 @@ namespace BangazonTerminalInterface.DataValidation.PaymentValidation
     {
         public bool ValidatePaymentAccountNumber(string accountNumberStr)
         {
-            bool isValidCC = Regex.IsMatch(accountNumberStr, @"^\d{4}-\d{4}-\d{4}-\d{4}$");
-            if (isValidCC)
+            if (accountNumberStr.Length == 16)
                 return true;
             else
                 return false;

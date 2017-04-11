@@ -33,7 +33,7 @@ namespace BangazonTerminalInterface.Controllers
             if (activeCart != null)
             {
                 var cartDetail = new CartDetailRepository();
-                Console.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
+                Console.Write($"Your order total is {cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
                 Console.Write("Y/N > ");
                 var userInput = Console.ReadKey(true).KeyChar.ToString();
                 if (userInput.ToLower() == "y")
