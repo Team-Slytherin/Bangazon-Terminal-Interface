@@ -43,6 +43,8 @@ namespace BangazonTerminalInterface.Controllers
             Helper.WriteHeaderToConsole("Customer Name");
 
             CustomerNameValid repo = new CustomerNameValid();
+            Helper.WriteExitCommand();
+
             EnterName:
             string input = Helper.WriteToConsole("Enter Customer Name > ");
 
@@ -168,7 +170,7 @@ namespace BangazonTerminalInterface.Controllers
             StateValid repo = new StateValid();
 
             EnterState:
-            string input = Helper.WriteToConsole("Enter Zip Code > ");
+            string input = Helper.WriteToConsole("Enter State Abbreviation > ");
 
             bool userContinue = Helper.CheckForUserExit(input);
 
