@@ -12,17 +12,20 @@ using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.Controllers
 {
-    class PaymentController
+    public class PaymentController
     {
         //To add new payment option
         Payment payment = new Payment();
-        public  PaymentController(Customer customer)
+
+        private bool UserContinue = true;
+
+        public PaymentController(Customer customer)
         {
             payment.CustomerId = customer.CustomerId;
-            Console.Clear();
-            requestPaymentType();
-            Console.Clear();
-            requestPaymentActNumber();
+            //Console.Clear();
+            //requestPaymentType();
+            //Console.Clear();
+            //requestPaymentActNumber();
         }
 
         private void requestPaymentType() // Ask for payment Type
