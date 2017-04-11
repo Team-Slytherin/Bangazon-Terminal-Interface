@@ -1,5 +1,6 @@
 ﻿using BangazonTerminalInterface.Components;
 using BangazonTerminalInterface.DAL.Repository;
+using BangazonTerminalInterface.Helpers;
 using BangazonTerminalInterface.Models;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,58 @@ namespace BangazonTerminalInterface.Controllers
 {
     class CartController
     {
-        public void addProduct(Customer activeCustomer, int selectedProductId)
+        public void addProduct(Customer activeCustomer)
         {
-            var cartRepo = new CartRepository();
-            var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            if (activeCart == null)
-            {
-                cartRepo.AddCart(activeCustomer.CustomerId);
-                activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            }
-            var cartDetail = new CartDetailRepository();
-            cartDetail.AddProduct(activeCart.CartId, selectedProductId, 1);
+            SHOWPRODUCTS:
+                Console.Clear();
+                ProductRepository repo = new ProductRepository();
+
+                var products = repo.GetAllProducts();
+                foreach (Product product in products)
+                {
+                    Console.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
+                }
+                Console.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu\n");
+                Console.WriteLine($"{products.Count + 2}" + ". Checkout\n");
+                try
+                {
+                    var selectedProduct = Convert.ToInt32(Helper.WriteToConsole("> "));
+                
+                    if (selectedProduct >= 1 && selectedProduct <= products.Count)
+                    {
+                        var cartRepo = new CartRepository();
+                        var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                        if (activeCart == null)
+                        {
+                            cartRepo.AddCart(activeCustomer.CustomerId);
+                            activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                        }
+                        var cartDetail = new CartDetailRepository();
+                        cartDetail.AddProduct(activeCart.CartId, selectedProduct, 1);
+                        Console.WriteLine("One item has been put into your cart.");
+                        Thread.Sleep(1500);
+                        goto SHOWPRODUCTS;
+                    }
+                    else if (selectedProduct == products.Count + 1)
+                    {
+                        return;
+                    }
+                    else if (selectedProduct == products.Count + 2)
+                    {
+                        checkout(activeCustomer);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please choose a valid product number!");
+                        goto SHOWPRODUCTS;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Please enter the numbers showed on screen!");
+                    Thread.Sleep(1000);
+                    goto SHOWPRODUCTS;
+                }
         }
 
         public void checkout(Customer activeCustomer)
@@ -33,8 +75,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 var cartDetail = new CartDetailRepository();
                 Console.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
-                Console.Write("Y/N > ");
-                var userInput = Console.ReadKey(true).KeyChar.ToString();
+                var userInput = Helper.WriteToConsole("Y/N > ");
                 if (userInput.ToLower() == "y")
                 {
                     // get active customer payment option and show
@@ -46,10 +87,9 @@ namespace BangazonTerminalInterface.Controllers
                     {
                         Console.WriteLine(payment.PaymentId + ". " + payment.PaymentType + "\n");
                     }
-                    Console.WriteLine("Choose payment type by number>\n");
 
                     // read userinput
-                    var paymentId = Convert.ToInt32(Console.ReadLine());
+                    var paymentId = Convert.ToInt32(Helper.WriteToConsole("Choose payment type by number >\n"));
 
                     // update order active to false
                     cartRepo.EditCartStatus(activeCart.CartId, paymentId);
