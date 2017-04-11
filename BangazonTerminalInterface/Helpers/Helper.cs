@@ -13,5 +13,26 @@ namespace BangazonTerminalInterface.Helpers
             Console.Write(input);
             return Console.ReadLine();
         }
+
+        public static void WriteHeaderToConsole (string headerText)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("*********************************************************");
+            int headerTextLength = headerText.Length;
+            if (headerTextLength % 2 != 0) headerTextLength = headerTextLength - 1;
+            string space = new string(' ', (56 - headerText.Length) / 2);
+            Console.WriteLine((space + headerText + space));
+            Console.WriteLine("*********************************************************");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static bool CheckForUserExit (string exitString)
+        {
+            if (exitString.ToLower().Equals("exit") || exitString.ToLower().Equals("x"))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

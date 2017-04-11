@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -42,9 +43,11 @@ namespace BangazonTerminalInterface.Controllers
                     var payments = paymentRepo.GetAllPayments(activeCustomer.CustomerId);
 
                     Console.WriteLine("\nYour payment options:\n");
+                    int counter = 1;
                     foreach (Payment payment in payments)
                     {
-                        Console.WriteLine(payment.PaymentId + ". " + payment.PaymentType + "\n");
+                        Console.WriteLine(counter + ". " + payment.PaymentType + "\n");
+                        counter++;
                     }
                     Console.WriteLine("Choose payment type by number>\n");
 

@@ -28,6 +28,7 @@ namespace BangazonTerminalInterface.Controllers
         private void requestPaymentType() // Ask for payment Type
         {
             PaymentTypeValid repo = new PaymentTypeValid();
+            Helper.WriteHeaderToConsole("Create a Payment Type");
             var paymentType = Helper.WriteToConsole("Enter Payment Type" + "\n" + "> ");
 
             while (!repo.ValidatePaymentType(paymentType))  // Send Reponse to Validator
@@ -40,6 +41,7 @@ namespace BangazonTerminalInterface.Controllers
         private void requestPaymentActNumber() // Ask for payment account number
         {
             AccountNumberValid repo = new AccountNumberValid();
+            Helper.WriteHeaderToConsole("Create a Payment Type");
             var paymentAccountNumber = Helper.WriteToConsole("Enter Payment Account Number" + "\n" + "> ");
 
             while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator

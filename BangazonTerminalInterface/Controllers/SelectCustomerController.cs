@@ -1,5 +1,6 @@
 ﻿using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Models;
+using BangazonTerminalInterface.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,15 @@ namespace BangazonTerminalInterface.Controllers
         public Customer SelectActiveCustomer()
         {
             int ctr = 0;
-            SetupHeader();
+            Helper.WriteHeaderToConsole("Select a Bangazon Customer");
             var allCustomers = repo.GetAllCustomers();
             foreach (Customer customer in allCustomers)
             {
                 ctr++;
                 Console.WriteLine($"{ctr}. {customer.CustomerName} - {customer.CustomerStreetAddress} {customer.CustomerCity} {customer.CustomerState}, {customer.CustomerZip}");
             }
-            var selection = Console.ReadLine();
+            var selection = Helper.WriteToConsole("> ");
+
             if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
             {
                 return allCustomers[Convert.ToInt32(selection) - 1];
@@ -35,25 +37,13 @@ namespace BangazonTerminalInterface.Controllers
             }
             return null;
         }
-
-        private void SetupHeader()
-        {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(
-                 "*********************************************************" + "\n"
-               + "**************   Select a Bangazon Customer *s************" + "\n"
-               + "*********************************************************");
-            Console.ForegroundColor = ConsoleColor.White;
-
-        }
+            
 
         private void InvalidCustomer()
         {
-            Console.Clear();
-            SetupHeader();
             Console.WriteLine("Invalid Customer selected");
             Thread.Sleep(2000);
+            Console.Clear();
             SelectActiveCustomer();
         }
     }
