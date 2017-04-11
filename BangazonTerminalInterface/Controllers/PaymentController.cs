@@ -44,7 +44,7 @@ namespace BangazonTerminalInterface.Controllers
 
             while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator
             {
-                paymentAccountNumber = Helper.WriteToConsole("Account number invalid.  Please input 16 digits." + "\n" + "> ");
+                paymentAccountNumber = Helper.WriteToConsole("Account number invalid." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
             }
             payment.PaymentAccountNumber = Convert.ToInt64(paymentAccountNumber);
         }
