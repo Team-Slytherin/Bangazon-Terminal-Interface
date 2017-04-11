@@ -14,50 +14,83 @@ namespace BangazonTerminalInterface.Controllers
 {
     public class PaymentController
     {
-        //To add new payment option
         Payment payment = new Payment();
 
         private bool UserContinue = true;
+        private bool IsComplete = false;
 
-        public PaymentController(Customer customer)
+        public void RequestPayment(Customer customer)
         {
             payment.CustomerId = customer.CustomerId;
-            //Console.Clear();
-            //requestPaymentType();
-            //Console.Clear();
-            //requestPaymentActNumber();
+            while (!IsComplete)
+            {
+                requestPaymentType();
+                if (!UserContinue) break;
+                requestPaymentActNumber();
+                if (!UserContinue) break;
+                addPaymentToDb();
+                if (!UserContinue) break;
+            }
         }
 
         private void requestPaymentType() // Ask for payment Type
         {
+            Helper.WriteHeaderToConsole("Payment Type");
+
             PaymentTypeValid repo = new PaymentTypeValid();
-            Helper.WriteHeaderToConsole("Create a Payment Type");
-            var paymentType = Helper.WriteToConsole("Enter Payment Type" + "\n" + "> ");
+            Helper.WriteExitCommand();
 
-            while (!repo.ValidatePaymentType(paymentType))  // Send Reponse to Validator
+        EnterType:
+            string input = Helper.WriteToConsole("Enter Payment Type > ");
+
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                paymentType = Helper.WriteToConsole("payment type invalid.  we only accept visa or mastercard." + "\n" + "> ");
+                UserContinue = false;
+                return;
             }
-            payment.PaymentType = paymentType;
+
+            if (!repo.ValidatePaymentType(input))
+            {
+                Helper.WriteToConsole("Invalid input." + "/n" + "We only accept visa / mastercard / discover / american express." + "\n" + "> ");
+                goto EnterType;
+            }
+            payment.PaymentType = input;
         }
 
-        private void requestPaymentActNumber() // Ask for payment account number
+        private void requestPaymentActNumber()
         {
-            AccountNumberValid repo = new AccountNumberValid();
-            Helper.WriteHeaderToConsole("Create a Payment Type");
-            var paymentAccountNumber = Helper.WriteToConsole("Enter Payment Account Number" + "\n" + "> ");
+            Helper.WriteHeaderToConsole("Account Number");
 
-            while (!repo.ValidatePaymentAccountNumber(paymentAccountNumber))  // Send Reponse to Validator
+            AccountNumberValid repo = new AccountNumberValid();
+            Helper.WriteExitCommand();
+
+            EnterAccount:
+            string input = Helper.WriteToConsole("Enter Payment Type > ");
+
+            bool userContinue = Helper.CheckForUserExit(input);
+
+            if (userContinue)
             {
-                paymentAccountNumber = Helper.WriteToConsole("Account number invalid." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
+                UserContinue = false;
+                return;
             }
-            payment.PaymentAccountNumber = Convert.ToInt64(paymentAccountNumber);
+
+            if (!repo.ValidatePaymentAccountNumber(input))
+            {
+                Helper.WriteToConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
+                goto EnterAccount;
+            }
+            payment.PaymentAccountNumber = Convert.ToInt64(input);
         }
 
-        public void addNewPayment()
+        public void addPaymentToDb()
         {
             PaymentRepository newPayment = new PaymentRepository();
             newPayment.AddPayment(payment.CustomerId, payment.PaymentType, payment.PaymentAccountNumber);
+            IsComplete = true;
+
         }
     }
 }

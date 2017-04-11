@@ -27,7 +27,7 @@ namespace BangazonTerminalInterface
                 Helper.WriteHeaderToConsole("Welcome to Bangazon!");
                 if (activeCustomer != null)
                 {
-                    string custString = $"Customer: {activeCustomer.CustomerName}";
+                    string custString = $"Logged In As: {activeCustomer.CustomerName}";
                     string cartString = "";
                     var cartRepo = new CartRepository();
                     var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
@@ -51,12 +51,12 @@ namespace BangazonTerminalInterface
                     }
                 }
                 Console.WriteLine(
-                  "1.Create a customer account" + "\n"
-                + "2.Choose active customer" + "\n"
-                + "3.Create a payment option" + "\n"
-                + "4.Add product to shopping cart" + "\n"
+                  "1.Create a new customer account" + "\n"
+                + "2.Choose an existing customer" + "\n"
+                + "3.Create a new payment option" + "\n"
+                + "4.Add product(s) to shopping cart" + "\n"
                 + "5.Complete an order" + "\n"
-                + "6.See product popularity" + "\n"
+                + "6.View product popularity" + "\n"
                 + "7.Logout Current User" + "\n"
                 + "8.Leave Bangazon!");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -80,8 +80,9 @@ namespace BangazonTerminalInterface
                             var selectCustomerCtrl1 = new SelectCustomerController();
                             activeCustomer = selectCustomerCtrl1.SelectActiveCustomer();
                         }
-                        var paymentCtrl = new PaymentController(activeCustomer);
-                        paymentCtrl.addNewPayment();
+                        Console.Clear();
+                        var PaymentCtrl = new PaymentController();
+                        PaymentCtrl.RequestPayment(activeCustomer);
                         break;
                     case "4":
                         if (activeCustomer == null)
