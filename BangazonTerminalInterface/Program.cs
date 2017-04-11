@@ -25,6 +25,31 @@ namespace BangazonTerminalInterface
             {
                 Console.Clear();
                 Helper.WriteHeaderToConsole("Welcome to Bangazon!");
+                if (activeCustomer != null)
+                {
+                    string custString = $"Customer: {activeCustomer.CustomerName}";
+                    string cartString = "";
+                    var cartRepo = new CartRepository();
+                    var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                    if (activeCart == null)
+                    {
+                        cartRepo.AddCart(activeCustomer.CustomerId);
+                        activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                    }
+                    else
+                    {
+                        var cartDetail = new CartDetailRepository();
+                        cartString = $"Cart({cartDetail.GetTotleItemsInCart(activeCart.CartId)}) {cartDetail.GetCartPrice(activeCart.CartId)}";
+                    }
+                    string space = new string(' ', (56 - cartString.Length - custString.Length));
+                    if(cartString.Length < 1)
+                    {
+                        Console.WriteLine($"{custString}\n");
+                    }else
+                    {
+                        Console.WriteLine($"{custString}{space}{cartString}\n");
+                    }
+                }
                 Console.WriteLine(
                   "1.Create a customer account" + "\n"
                 + "2.Choose active customer" + "\n"
