@@ -14,6 +14,15 @@ namespace BangazonTerminalInterface.Helpers
             return Console.ReadLine();
         }
 
+        public static void WriteExitCommand()
+        {
+            Console.Write("Type");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(" \"exit\" ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("if you would like to retun to the main menu. \n");
+        }
+
         public static void WriteHeaderToConsole (string headerText)
         {
             Console.ForegroundColor = ConsoleColor.Green;
