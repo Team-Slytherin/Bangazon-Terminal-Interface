@@ -25,26 +25,23 @@ namespace BangazonTerminalInterface.Controllers
                 ctr++;
                 Console.WriteLine($"{ctr}. {customer.CustomerName} - {customer.CustomerStreetAddress} {customer.CustomerCity} {customer.CustomerState}, {customer.CustomerZip}");
             }
+
             var selection = Helper.WriteToConsole("> ");
 
             if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
             {
                 return allCustomers[Convert.ToInt32(selection) - 1];
             }
-            else
-            {
-                InvalidCustomer();
-            }
-            return null;
+            return InvalidCustomer();
         }
             
 
-        private void InvalidCustomer()
+        private Customer InvalidCustomer()
         {
             Console.WriteLine("Invalid Customer selected");
             Thread.Sleep(2000);
             Console.Clear();
-            SelectActiveCustomer();
+            return SelectActiveCustomer();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
         }
 
-        public decimal GetCartPrice(int cartId)
+        public string GetCartPrice(int cartId)
         {
             decimal totalPrice = 0;
 
@@ -73,7 +74,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                 {
                     totalPrice = totalPrice + reader.GetInt32(0) * reader.GetDecimal(1);
                 }
-                return totalPrice;
+                return totalPrice.ToString("C", CultureInfo.CurrentCulture);
 
             }
             catch (Exception ex)
@@ -85,7 +86,42 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 _bangzonConnection.Close();
             }
-            return totalPrice;
+            return totalPrice.ToString("C", CultureInfo.CurrentCulture); ;
+        }
+
+        public int GetTotleItemsInCart(int cartId)
+        {
+            _bangzonConnection.Open();
+
+            try
+            {
+                var getCartDetailCommand = _bangzonConnection.CreateCommand();
+                getCartDetailCommand.CommandText = @"SELECT Sum(Qty)
+                                                    FROM (SELECT * FROM CartDetail WHERE CartDetail.CartId = @cartId) a
+                                                        JOIN Product ON a.ProductId = Product.ProductId";
+                var cartIdParameter = new SqlParameter("cartId", SqlDbType.Int);
+                cartIdParameter.Value = cartId;
+                getCartDetailCommand.Parameters.Add(cartIdParameter);
+
+                var reader = getCartDetailCommand.ExecuteReader();
+                int count = 0;
+                while (reader.Read())
+                {
+                    count += reader.GetInt32(0);
+                }
+                return count;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                _bangzonConnection.Close();
+            }
+            return 0;
         }
     }
 }
