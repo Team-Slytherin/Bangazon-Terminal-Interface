@@ -20,7 +20,7 @@ namespace BangazonTerminalInterface.Helpers
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(" \"exit\" ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("if you would like to retun to the main menu. \n");
+            Console.Write("if you would like to return to the main menu. \n");
         }
 
         public static void WriteHeaderToConsole (string headerText)
