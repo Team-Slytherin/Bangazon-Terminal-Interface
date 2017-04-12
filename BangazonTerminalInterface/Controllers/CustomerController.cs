@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces;
-using BangazonTerminalInterface.Interfaces;
+using System.Threading;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -17,7 +17,6 @@ namespace BangazonTerminalInterface.Controllers
     {
         Customer customer = new Customer();
         private bool IsComplete = false;
-        private bool firstAttempt = true;
         private ICustomerNameValidation _customerName;
         private IConsoleHelper _consoleHelper;
         private ICustomerAddressValidation _customerAddress;
@@ -55,126 +54,115 @@ namespace BangazonTerminalInterface.Controllers
         }
 
 
-        public void CreateCustomer ()
+        public Customer CreateCustomer ()
         {
             // Get/Validate New Customer's Name
             while (true)
             {
-                if(firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer Name");
+                CurrentCustomer();
                 var input = EnterName();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerName.ValidateName(input))
                 {
+                    Console.Clear();
                     customer.CustomerName = input;
-                    firstAttempt = true;
                     break;
                 }
                 else
                 {
-                    firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. Please enter First and Last Name");
+                    _consoleHelper.ErrorMessage("Invalid. Please enter first and last name.");
                 }
             }
             // Get/Validate New Customer's Address
             while (true)
             {
-                if (firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer Address");
+                CurrentCustomer();
                 var input = EnterStreetAddress();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerAddress.ValidateStreetAddress(input))
                 {
+                    Console.Clear();
                     customer.CustomerStreetAddress = input;
-                    firstAttempt = true;
                     break;
                 }
                 else
                 {
-                    _consoleHelper.WriteLine("Invalid. Please enter address as 123 main st.");
-                    firstAttempt = false;
+                    _consoleHelper.ErrorMessage("Invalid. Please enter in the following format 123 main st.");
                 }
-                
             }
             // Get/Validate New Customer's City
             while (true)
             {
-                if (firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer City");
+                CurrentCustomer();
                 var input = EnterCity();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerCity.ValidateCity(input))
                 {
+                    Console.Clear();
                     customer.CustomerCity = input;
-                    firstAttempt = true;
                     break;
                 }
                 else
                 {
-                    _consoleHelper.WriteLine("Invalid. City must contain more than 2 characters.");
-                    firstAttempt = false;
+                    _consoleHelper.ErrorMessage("Invalid. City must contain at least 3 characters.");
                 }
             }
             // Get/Validate New Customer's State
             while (true)
             {
-                if (firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer State");
+                CurrentCustomer();
                 var input = EnterState();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerState.ValidateState(input))
                 {
                     customer.CustomerState = input;
-                    firstAttempt = true;
+                    Console.Clear();
                     break;
                 }
                 else
                 {
-                    firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. State must be Abbreviated.");
+                    _consoleHelper.ErrorMessage("Invalid. State must be Abbreviated.");
                 }
             }
             // Get/Validate New Customer's Zip
             while (true)
             {
-                if (firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer Zip");
+                CurrentCustomer();
                 var input = EnterZip();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerZip.ValidateZip(input))
                 {
+                    Console.Clear();
                     customer.CustomerZip = input;
-                    firstAttempt = true;
                     break;
                 }
                 else
                 {
-                    firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. Zip must be 5 numbers.");
+                    _consoleHelper.ErrorMessage("Invalid. Zip must be 5 numbers.");
                 }
             }
             // Get/Validate New Customer's Phone Number
             while (true)
             {
-                if (firstAttempt == true)
-                    _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
+                CurrentCustomer();
                 var input = EnterPhoneNumber();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerPhone.ValidatePhone(input))
                 {
+                    Console.Clear();
                     customer.CustomerPhone = input;
                     IsComplete = true;
                     break;
                 }
                 else
                 {
-                    firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. Phone number must be in the formatt 111-111-1111.");
+                    _consoleHelper.ErrorMessage("Invalid. Phone number must be in the format 111-111-1111.");
                 }
             }
             // Add To Database
             if (IsComplete)
                 WriteToDb(customer);
+            return customer;
         }
 
         public string EnterName()
@@ -212,6 +200,17 @@ namespace BangazonTerminalInterface.Controllers
             CustomerRepository repo = new CustomerRepository();
             repo.AddCustomer(addCustomer);
             //IsComplete = true; // Seems a little hacky, but I have to do this to break out of the while look.
+        }
+
+        public void CurrentCustomer()
+        {
+            _consoleHelper.WriteHeaderToConsole("Create Customer");
+            _consoleHelper.WriteLine($"Name: {customer.CustomerName}");
+            _consoleHelper.WriteLine($"Address: {customer.CustomerStreetAddress}");
+            _consoleHelper.WriteLine($"City: {customer.CustomerCity}");
+            _consoleHelper.WriteLine($"State: {customer.CustomerState}");
+            _consoleHelper.WriteLine($"Zip: {customer.CustomerZip}");
+            _consoleHelper.WriteLine($"Phone: {customer.CustomerPhone}");
         }
 
     }

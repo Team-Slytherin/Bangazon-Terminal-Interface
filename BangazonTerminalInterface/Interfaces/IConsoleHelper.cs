@@ -16,5 +16,6 @@ namespace BangazonTerminalInterface.Interfaces
         void Write(string input);
         string ReadLine();
         string ReadKey();
+        void ErrorMessage(string errorMessage);
     }
 }

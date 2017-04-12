@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BangazonTerminalInterface.Interfaces;
+using System.Threading;
 
 namespace BangazonTerminalInterface.Helpers
 {
@@ -64,6 +65,13 @@ namespace BangazonTerminalInterface.Helpers
         public string ReadKey()
         {
             return Console.ReadKey().Key.ToString();         
+        }
+
+        public void ErrorMessage(string errorMessage)
+        {
+            WriteLine(errorMessage);
+            Thread.Sleep(1500);
+            Console.Clear();
         }
     }
 }
