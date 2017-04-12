@@ -104,8 +104,9 @@ namespace BangazonTerminalInterface
                         (new CartController()).checkout(activeCustomer);
                         break;
                     case "6":
-                        ProductRepository popularityRepo = new ProductRepository();
-                        popularityRepo.GetProductPopularity();
+                        Console.Clear();
+                        var productPopularityController = new ProductPopularityController();
+                        productPopularityController.DisplayPopularProducts();
                         break;
                     case "7":
                         if (activeCustomer != null)
