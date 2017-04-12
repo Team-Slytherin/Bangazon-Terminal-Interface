@@ -9,6 +9,7 @@ namespace BangazonTerminalInterface.Helpers
 {
     public class ConsoleHelper : IConsoleHelper
     {
+
         public string WriteAndReadFromConsole(string input)
         {
             Write(input);
