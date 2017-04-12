@@ -24,6 +24,7 @@ namespace BangazonTerminalInterface.Controllers
         private ICustomerAddressValidator _customerAddress;
         private ICustomerCityValidation _customerCity;
         private ICustomerStateValidation _customerState;
+        private ICustomerZipValidator _customerZip;
 
         public CustomerController()
         {
@@ -32,15 +33,22 @@ namespace BangazonTerminalInterface.Controllers
             _customerAddress = new CustomerAddressValidator();
             _customerCity = new CustomerCityValidator();
             _customerState = new CustomerStateValidator();
+            _customerZip = new CustomerZipValidator();
         }
 
-        public CustomerController (ICustomerNameValidator nameValidator, IConsoleHelper consoleHelper, ICustomerAddressValidator addressValidator, ICustomerCityValidation cityValidator, ICustomerStateValidation stateValidator)
+        public CustomerController (ICustomerNameValidator nameValidator, 
+                                    IConsoleHelper consoleHelper, 
+                                    ICustomerAddressValidator addressValidator, 
+                                    ICustomerCityValidation cityValidator, 
+                                    ICustomerStateValidation stateValidator,
+                                    ICustomerZipValidator zipValidator)
         {
             _customerName = nameValidator;
             _consoleHelper = consoleHelper;
             _customerAddress = addressValidator;
             _customerCity = cityValidator;
             _customerState = stateValidator;
+            _customerZip = zipValidator;
         }
 
 
@@ -105,12 +113,47 @@ namespace BangazonTerminalInterface.Controllers
                 if (_customerState.ValidateState(input))
                 {
                     customer.CustomerState = input;
+                    firstAttempt = true;
                     break;
                 }
                 else
                 {
                     firstAttempt = false;
                     _consoleHelper.WriteLine("Invalid. State must be Abbreviated.");
+                }
+            }
+            // Get/Validate New Customer's Zip
+            while (true)
+            {
+                var input = EnterZip(firstAttempt);
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_customerZip.ValidateZip(input))
+                {
+                    customer.CustomerZip = input;
+                    firstAttempt = true;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. Zip must be 5 numbers.");
+                }
+            }
+            // Get/Validate New Customer's Phone Number
+            while (true)
+            {
+                var input = EnterZip(firstAttempt);
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_customerZip.ValidateZip(input))
+                {
+                    customer.CustomerZip = input;
+                    firstAttempt = true;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. Zip must be 5 numbers.");
                 }
             }
 
@@ -216,28 +259,14 @@ namespace BangazonTerminalInterface.Controllers
             return true;
         }
 
-        private bool EnterZip()
+        private string EnterZip(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer Zip");
-
-            ZipValid repo = new ZipValid();
-
-            EnterZip:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter Zip Code > ");
-
-            bool userContinue = _consoleHelper.CheckForUserExit(input);
-
-            if (userContinue)
+            if (attempt)
             {
-                return false;
+                _consoleHelper.WriteHeaderToConsole("Customer Zip");
             }
-            while (!repo.ValidateZip(input))
-            {
-                _consoleHelper.WriteLine("Invalid Zip Must be in the format 12345. ");
-                goto EnterZip;
-            }
-            customer.CustomerZip = input;
-            return true;
+
+            return _consoleHelper.WriteAndReadFromConsole("Enter Zip > ");
         }
 
         private string EnterState(bool attempt)
@@ -247,7 +276,7 @@ namespace BangazonTerminalInterface.Controllers
                 _consoleHelper.WriteHeaderToConsole("Customer State");
             }
 
-            return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation(TN) > ");
+            return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
         }
       
         private void WriteToDb()

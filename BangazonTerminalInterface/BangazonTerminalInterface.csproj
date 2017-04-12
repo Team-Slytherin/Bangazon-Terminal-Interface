@@ -64,13 +64,14 @@
     <Compile Include="DataValidation\CustomerValidation\PhoneValid.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerStateValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerAddressValidator.cs" />
-    <Compile Include="DataValidation\CustomerValidation\ZipValid.cs" />
+    <Compile Include="DataValidation\CustomerValidation\CustomerZipValidator.cs" />
     <Compile Include="DataValidation\PaymentValidation\AccountNumberValid.cs" />
     <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
     <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
     <Compile Include="Helpers\ConsoleHelper.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerAddressValidator.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerStateValidation.cs" />
+    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerZipValidator.cs" />
     <Compile Include="Interfaces\IConsoleHelper.cs" />
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IPayment.cs" />
