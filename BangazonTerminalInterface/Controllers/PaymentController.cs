@@ -21,7 +21,7 @@ namespace BangazonTerminalInterface.Controllers
         private bool UserContinue = true;
         private bool IsComplete = false;
         ConsoleHelper _consoleHelper;
-        public PaymentController ()
+        public PaymentController()
         {
             _consoleHelper = new ConsoleHelper();
         }
@@ -43,7 +43,7 @@ namespace BangazonTerminalInterface.Controllers
         private void requestPaymentType() // Ask for payment Type
         {
             PaymentTypeValid repo = new PaymentTypeValid();
-                     
+
             ENTERTYPE:
             _consoleHelper.WriteHeaderToConsole("Payment Type");
             _consoleHelper.WriteExitCommand();
@@ -125,7 +125,7 @@ namespace BangazonTerminalInterface.Controllers
                 _consoleHelper.WriteAndReadFromConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
                 goto EnterAccount;
             }
-            payment.PaymentAccountNumber = Convert.ToInt64(input.Replace("-",""));
+            payment.PaymentAccountNumber = Convert.ToInt64(input.Replace("-", ""));
         }
 
         public void addPaymentToDb()
