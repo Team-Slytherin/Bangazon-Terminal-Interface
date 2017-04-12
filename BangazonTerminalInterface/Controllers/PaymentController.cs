@@ -11,10 +11,11 @@ using BangazonTerminalInterface.Models;
 using BangazonTerminalInterface.Helpers;
 using System.Threading;
 using System.Diagnostics;
+using BangazonTerminalInterface.Interfaces;
 
 namespace BangazonTerminalInterface.Controllers
 {
-    public class PaymentController
+    public class PaymentController : IPayment
     {
         Payment payment = new Payment();
 
