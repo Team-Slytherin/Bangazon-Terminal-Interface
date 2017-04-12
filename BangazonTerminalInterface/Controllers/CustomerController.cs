@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -15,31 +16,84 @@ namespace BangazonTerminalInterface.Controllers
     {
         Customer customer = new Customer();
 
+        private bool UserContinue = true;
+        private bool IsComplete = false;
+        private bool firstAttempt = true;
+        private ICustomerNameValidator _customerName;
+        private Interfaces.IConsoleHelper _consoleHelper;
+        private ICustomerAddressValidator _customerAddress;
+        private ICustomerCityValidation _customerCity;
+
         public CustomerController()
         {
-            _customerName = new CustomerNameValid();
+            _customerName = new CustomerNameValidator();
             _consoleHelper = new ConsoleHelper();
+            _customerAddress = new CustomerAddressValidator();
+            _customerCity = new CustomerCityValidator();
         }
 
-        public CustomerController (ICustomerNameValid nameValidator, IConsoleHelper consoleHelper)
+        public CustomerController (ICustomerNameValidator nameValidator, IConsoleHelper consoleHelper, ICustomerAddressValidator addressValidator, ICustomerCityValidation cityValidator)
         {
             _customerName = nameValidator;
             _consoleHelper = consoleHelper;
+            _customerAddress = addressValidator;
+            _customerCity = cityValidator;
         }
 
-        private bool UserContinue = true;
-        private bool IsComplete = false;
-        private ICustomerNameValid _customerName;
-        private Interfaces.IConsoleHelper _consoleHelper;
 
         public void CreateCustomer ()
         {
+            // Get/Validate New Customer's Name
             while(true)
             {
-                var input = EnterName();
+                var input = EnterName(firstAttempt);
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
-                if(_customerName.ValidateName(input)) { break; };
+                if (_customerName.ValidateName(input))
+                {
+                    customer.CustomerName = input;
+                    firstAttempt = true;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. Please enter First and Last Name");
+                }
             }
+            // Get/Validate New Customer's Address
+            while (true)
+            {
+                var input = EnterStreetAddress(firstAttempt);
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_customerAddress.ValidateStreetAddress(input))
+                {
+                    customer.CustomerStreetAddress = input;
+                    firstAttempt = true;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. Please enter address as 123 main st.");
+                }
+            }
+            // Get/Validate New Customer's City
+            while (true)
+            {
+                var input = EnterCity(firstAttempt);
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_customerCity.ValidateCity(input))
+                {
+                    customer.CustomerStreetAddress = input;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. City must contain 2 characters.");
+                }
+            }
+
 
             //while (!IsComplete)
             //{
@@ -88,61 +142,34 @@ namespace BangazonTerminalInterface.Controllers
         //    return true;
         //}
 
-        public string EnterName()
+        public string EnterName(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer Name");
+            if (attempt)
+            {
+                _consoleHelper.WriteHeaderToConsole("Customer Name");
+            }
 
-            return _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
+            return _consoleHelper.WriteAndReadFromConsole("Enter Name > ");
         }
 
-        private bool EnterStreetAddress()
+        private string EnterStreetAddress(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer Address");
-
-            StreetAddressValid repo = new StreetAddressValid();
-
-            EnterAddress:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Address > ");
-
-            bool userContinue = _consoleHelper.CheckForUserExit(input);
-
-            if (userContinue)
+            if (attempt)
             {
-                return false;
+                _consoleHelper.WriteHeaderToConsole("Customer Street Address");
             }
 
-            if (!repo.ValidateStreetAddress(input))
-            {
-                _consoleHelper.WriteLine("Invalid input please enter in the format 123 Main St.");
-                goto EnterAddress;
-            }
-
-            customer.CustomerStreetAddress = input;
-            return true;
+            return _consoleHelper.WriteAndReadFromConsole("Enter Address > ");
         }
 
-        private bool EnterCity()
+        private string EnterCity(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer City");
-
-            CityValid repo = new CityValid();
-
-            EnterCity:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter City > ");
-
-            bool userContinue = _consoleHelper.CheckForUserExit(input);
-
-            if (userContinue)
+            if (attempt)
             {
-                return false;
+                _consoleHelper.WriteHeaderToConsole("Customer City");
             }
-            while (!repo.ValidateCity(input))
-            {
-                _consoleHelper.WriteLine("Invalid input City must have 3 Characters. ");
-                goto EnterCity;
-            }
-            customer.CustomerCity = input;
-            return true;
+
+            return _consoleHelper.WriteAndReadFromConsole("Enter City > ");
         }
 
         private bool EnterPhoneNumber()
