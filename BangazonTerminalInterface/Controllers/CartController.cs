@@ -3,6 +3,8 @@ using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Helpers;
 using BangazonTerminalInterface.Models;
 using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -18,25 +20,25 @@ namespace BangazonTerminalInterface.Controllers
         {
             SHOWPRODUCTS:
                 Console.Clear();
-                Helper.WriteHeaderToConsole("Add Products to Cart");
+                _consoleHelper.WriteHeaderToConsole("Add Products to Cart");
                 ProductRepository repo = new ProductRepository();
 
                 var products = repo.GetAllProducts();
-                Console.WriteLine("Product                   Price       ");
+                 _consoleHelper.WriteLine("Product                   Price       ");
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("**************************************");
+                _consoleHelper.WriteLine("**************************************");
                 char spacePad = ' ';
                 foreach (Product product in products)
                 {
-                    Console.WriteLine(product.ProductId + ". " + product.ProductName.PadRight(24, spacePad).Substring(0, 23) + "$" + product.ProductPrice);
+                _consoleHelper.WriteLine(product.ProductId + ". " + product.ProductName.PadRight(24, spacePad).Substring(0, 23) + "$" + product.ProductPrice);
                 }
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("**************************************");
-                Console.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu");
-                Console.WriteLine($"{products.Count + 2}" + ". Checkout\n");
+                _consoleHelper.WriteLine("**************************************");
+                _consoleHelper.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu");
+                _consoleHelper.WriteLine($"{products.Count + 2}" + ". Checkout\n");
                 try
                 {
-                    var selectedProduct = Convert.ToInt32(Helper.WriteToConsole("> "));
+                    var selectedProduct = Convert.ToInt32(_consoleHelper.WriteAndReadFromConsole("> "));
                 
                     if (selectedProduct >= 1 && selectedProduct <= products.Count)
                     {
@@ -49,7 +51,7 @@ namespace BangazonTerminalInterface.Controllers
                         }
                         var cartDetail = new CartDetailRepository();
                         cartDetail.AddProduct(activeCart.CartId, selectedProduct, 1);
-                        Console.WriteLine("One item has been put into your cart.");
+                        _consoleHelper.WriteLine("One item has been put into your cart.");
                         Thread.Sleep(1500);
                         goto SHOWPRODUCTS;
                     }
@@ -63,13 +65,15 @@ namespace BangazonTerminalInterface.Controllers
                     }
                     else
                     {
-                        Console.WriteLine("Please choose a valid product number!");
+                        _consoleHelper.WriteLine("Please choose a valid product number!");
                         goto SHOWPRODUCTS;
                     }
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Please enter the numbers showed on screen!");
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                _consoleHelper.WriteLine("Please enter the numbers showed on screen!");
                     Thread.Sleep(1000);
                     goto SHOWPRODUCTS;
                 }
@@ -79,15 +83,15 @@ namespace BangazonTerminalInterface.Controllers
         {
             CHOOSEPAYMENT:
             Console.Clear();
-            Helper.WriteHeaderToConsole("Check Out");
+            _consoleHelper.WriteHeaderToConsole("Check Out");
             var cartRepo = new CartRepository();
             var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
             if (activeCart != null)
             {
                 var cartDetail = new CartDetailRepository();
               
-                _consoleHelper.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
-                _consoleHelper.Write("Y/N > ");
+                _consoleHelper.Write($"Your order total is {cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase?\n");
+                _consoleHelper.Write("(Y/N) > ");
                 var userInput = _consoleHelper.ReadKey();
               
                 if (userInput.ToLower() == "y")
@@ -107,7 +111,7 @@ namespace BangazonTerminalInterface.Controllers
                     _consoleHelper.WriteLine(counter + ". " + "Go Back To Main Menu\n");
 
                     // read userinput
-                    var paymentChoice = Convert.ToInt32(_consoleHelper.WriteToConsole("Choose payment option >\n"));
+                    var paymentChoice = Convert.ToInt32(_consoleHelper.WriteAndReadFromConsole("Choose payment option >\n"));
                     if (paymentChoice == counter) return;
                     else if (paymentChoice > 0 && paymentChoice < counter)
                     {

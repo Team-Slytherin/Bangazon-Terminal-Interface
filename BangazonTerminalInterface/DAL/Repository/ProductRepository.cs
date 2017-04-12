@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using BangazonTerminalInterface.Helpers;
+using System.Globalization;
 
 namespace BangazonTerminalInterface.DAL.Repository
 {
@@ -100,7 +101,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 var getProductCommand = slytherBangConnection.CreateCommand();
                 getProductCommand.CommandText = @"
-                    SELECT ProductId, ProductName, ProductPrice 
+                    SELECT ProductId, ProductName, CONVERT(decimal(10,2),ProductPrice) as ProductPrice
                     FROM Product";
 
                 var reader = getProductCommand.ExecuteReader();
@@ -112,8 +113,8 @@ namespace BangazonTerminalInterface.DAL.Repository
                     {
                         ProductId = reader.GetInt32(0),
                         ProductName = reader.GetString(1),
-                        ProductPrice = reader.GetSqlMoney(2).ToDecimal()
-                    };
+                        ProductPrice = reader.GetDecimal(2)
+                };
 
                     products.Add(product);
                 }

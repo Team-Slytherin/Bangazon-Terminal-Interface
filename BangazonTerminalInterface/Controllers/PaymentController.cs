@@ -9,6 +9,8 @@ using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Components;
 using BangazonTerminalInterface.Models;
 using BangazonTerminalInterface.Helpers;
+using System.Threading;
+using System.Diagnostics;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -40,12 +42,18 @@ namespace BangazonTerminalInterface.Controllers
 
         private void requestPaymentType() // Ask for payment Type
         {
-            _consoleHelper.WriteHeaderToConsole("Payment Type");
-
             PaymentTypeValid repo = new PaymentTypeValid();
+                     
+            ENTERTYPE:
+            _consoleHelper.WriteHeaderToConsole("Payment Type");
             _consoleHelper.WriteExitCommand();
-
-        EnterType:
+            string[] paymentOptions = new string[] { "Visa", "MasterCard", "Discover", "American Express" };
+            int counter = 1;
+            foreach (var option in paymentOptions)
+            {
+                _consoleHelper.WriteLine($"{counter}. {option} ");
+                counter++;
+            }
             string input = _consoleHelper.WriteAndReadFromConsole("Enter Payment Type > ");
 
             bool userContinue = _consoleHelper.CheckForUserExit(input);
@@ -56,23 +64,53 @@ namespace BangazonTerminalInterface.Controllers
                 return;
             }
 
+            string selectedPaymentType = "";
+
+            try
+
+            {
+                if (!(input.Equals("")) && Convert.ToInt32(input) <= paymentOptions.Count())
+                {
+                    selectedPaymentType = paymentOptions[Convert.ToInt32(input) - 1];
+                }
+
+                else
+                {
+                    _consoleHelper.WriteLine("Invalid input, please select an option from the menu above.");
+                    Thread.Sleep(1000);
+                    Console.Clear();
+                    goto ENTERTYPE;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                _consoleHelper.WriteLine("Invalid payment type");
+                Thread.Sleep(1000);
+                Console.Clear();
+                goto ENTERTYPE;
+            }
+
             if (!repo.ValidatePaymentType(input))
             {
-                _consoleHelper.WriteAndReadFromConsole("Invalid input." + "/n" + "We only accept visa / mastercard / discover / american express." + "\n" + "> ");
-                goto EnterType;
+
             }
-            payment.PaymentType = input;
+            payment.PaymentType = selectedPaymentType;
         }
 
         private void requestPaymentActNumber()
         {
+            Console.Clear();
             _consoleHelper.WriteHeaderToConsole("Account Number");
 
             AccountNumberValid repo = new AccountNumberValid();
             _consoleHelper.WriteExitCommand();
 
             EnterAccount:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter Payment Type > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Account Number > ");
 
             bool userContinue = _consoleHelper.CheckForUserExit(input);
 
@@ -87,7 +125,7 @@ namespace BangazonTerminalInterface.Controllers
                 _consoleHelper.WriteAndReadFromConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
                 goto EnterAccount;
             }
-            payment.PaymentAccountNumber = Convert.ToInt64(input);
+            payment.PaymentAccountNumber = Convert.ToInt64(input.Replace("-",""));
         }
 
         public void addPaymentToDb()
