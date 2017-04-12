@@ -34,50 +34,65 @@ namespace BangazonTerminalInterface.Controllers
 
         public void CreateCustomer ()
         {
-            while (!IsComplete)
+            while(true)
             {
-                EnterName();
-                if (!UserContinue) break;
-                EnterStreetAddress();
-                if (!UserContinue) break;
-                EnterCity();
-                if (!UserContinue) break;
-                EnterPhoneNumber();
-                if (!UserContinue) break;
-                EnterZip();
-                if (!UserContinue) break;
-                EnterState();
-                if (!UserContinue) break;
-                WriteToDb();
-                if (!UserContinue) break;
+                var input = EnterName();
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if(_customerName.ValidateName(input)) { break; };
             }
+
+            //while (!IsComplete)
+            //{
+
+            //EnterName();
+            //if (!UserContinue) break;
+            //EnterStreetAddress();
+            //if (!UserContinue) break;
+            //EnterCity();
+            //if (!UserContinue) break;
+            //EnterPhoneNumber();
+            //if (!UserContinue) break;
+            //EnterZip();
+            //if (!UserContinue) break;
+            //EnterState();
+            //if (!UserContinue) break;
+            //WriteToDb();
+            //if (!UserContinue) break;
+            //}
         }
 
-        public bool EnterName()
+        //public bool EnterName()
+        //{
+        //    _consoleHelper.WriteHeaderToConsole("Customer Name");
+
+            
+        //    _consoleHelper.WriteExitCommand();
+
+        //    ENTERNAME:
+        //    string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
+
+        //    bool userExit = _consoleHelper.CheckForUserExit(input);
+
+        //    if(userExit)
+        //    {
+        //        return false;
+        //    }
+
+        //    if (!_customerName.ValidateName(input))
+        //    {
+        //        _consoleHelper.WriteLine("Invalid input please enter in the format John Smith.");
+        //        goto ENTERNAME;
+        //    }
+
+        //    customer.CustomerName = input;
+        //    return true;
+        //}
+
+        public string EnterName()
         {
             _consoleHelper.WriteHeaderToConsole("Customer Name");
 
-            
-            _consoleHelper.WriteExitCommand();
-
-            ENTERNAME:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
-
-            bool userExit = _consoleHelper.CheckForUserExit(input);
-
-            if(userExit)
-            {
-                return false;
-            }
-
-            if (!_customerName.ValidateName(input))
-            {
-                _consoleHelper.WriteLine("Invalid input please enter in the format John Smith.");
-                goto ENTERNAME;
-            }
-
-            customer.CustomerName = input;
-            return true;
+            return _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
         }
 
         private bool EnterStreetAddress()
