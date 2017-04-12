@@ -23,6 +23,7 @@ namespace BangazonTerminalInterface.Controllers
         private Interfaces.IConsoleHelper _consoleHelper;
         private ICustomerAddressValidator _customerAddress;
         private ICustomerCityValidation _customerCity;
+        private ICustomerStateValidation _customerState;
 
         public CustomerController()
         {
@@ -30,14 +31,16 @@ namespace BangazonTerminalInterface.Controllers
             _consoleHelper = new ConsoleHelper();
             _customerAddress = new CustomerAddressValidator();
             _customerCity = new CustomerCityValidator();
+            _customerState = new CustomerStateValidator();
         }
 
-        public CustomerController (ICustomerNameValidator nameValidator, IConsoleHelper consoleHelper, ICustomerAddressValidator addressValidator, ICustomerCityValidation cityValidator)
+        public CustomerController (ICustomerNameValidator nameValidator, IConsoleHelper consoleHelper, ICustomerAddressValidator addressValidator, ICustomerCityValidation cityValidator, ICustomerStateValidation stateValidator)
         {
             _customerName = nameValidator;
             _consoleHelper = consoleHelper;
             _customerAddress = addressValidator;
             _customerCity = cityValidator;
+            _customerState = stateValidator;
         }
 
 
@@ -84,13 +87,30 @@ namespace BangazonTerminalInterface.Controllers
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerCity.ValidateCity(input))
                 {
-                    customer.CustomerStreetAddress = input;
+                    customer.CustomerCity = input;
+                    firstAttempt = true;
                     break;
                 }
                 else
                 {
                     firstAttempt = false;
                     _consoleHelper.WriteLine("Invalid. City must contain 2 characters.");
+                }
+            }
+            // Get/Validate New Customer's State
+            while (true)
+            {
+                var input = EnterState(firstAttempt);
+                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_customerState.ValidateState(input))
+                {
+                    customer.CustomerState = input;
+                    break;
+                }
+                else
+                {
+                    firstAttempt = false;
+                    _consoleHelper.WriteLine("Invalid. State must be Abbreviated.");
                 }
             }
 
@@ -220,28 +240,14 @@ namespace BangazonTerminalInterface.Controllers
             return true;
         }
 
-        private bool EnterState()
+        private string EnterState(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer State");
-
-            StateValid repo = new StateValid();
-
-            EnterState:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
-
-            bool userContinue = _consoleHelper.CheckForUserExit(input);
-
-            if (userContinue)
+            if (attempt)
             {
-                return false;
+                _consoleHelper.WriteHeaderToConsole("Customer State");
             }
-            while (!repo.ValidateState(input))
-            {
-                _consoleHelper.WriteLine("Invalid input must be in the format TN. ");
-                goto EnterState;
-            }
-            customer.CustomerState = input;
-            return true;
+
+            return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation(TN) > ");
         }
       
         private void WriteToDb()
