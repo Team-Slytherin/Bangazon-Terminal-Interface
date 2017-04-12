@@ -9,18 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces;
+using BangazonTerminalInterface.Interfaces;
 
 namespace BangazonTerminalInterface.Controllers
 {
     public class CustomerController
     {
         Customer customer = new Customer();
-
-        private bool UserContinue = true;
         private bool IsComplete = false;
         private bool firstAttempt = true;
         private ICustomerNameValidation _customerName;
-        private Interfaces.IConsoleHelper _consoleHelper;
+        private IConsoleHelper _consoleHelper;
         private ICustomerAddressValidation _customerAddress;
         private ICustomerCityValidation _customerCity;
         private ICustomerStateValidation _customerState;
@@ -183,32 +182,32 @@ namespace BangazonTerminalInterface.Controllers
             return _consoleHelper.WriteAndReadFromConsole("Enter Name > ");
         }
 
-        private string EnterStreetAddress()
+        public string EnterStreetAddress()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter Address > ");
         }
 
-        private string EnterCity()
+        public string EnterCity()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter City > ");
         }
 
-        private string EnterPhoneNumber()
+        public string EnterPhoneNumber()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter Phone Number > ");
         }
 
-        private string EnterZip()
+        public string EnterZip()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter Zip > ");
         }
 
-        private string EnterState()
+        public string EnterState()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
         }
-      
-        private void WriteToDb(Customer addCustomer)
+
+        public void WriteToDb(Customer addCustomer)
         {
             CustomerRepository repo = new CustomerRepository();
             repo.AddCustomer(addCustomer);

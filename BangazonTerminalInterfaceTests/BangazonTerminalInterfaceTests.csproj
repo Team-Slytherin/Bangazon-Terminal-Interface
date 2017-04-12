@@ -61,6 +61,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ControllerTest\CustomerControllerTest.cs" />
+    <Compile Include="DataValidationtest\CustomerValidationTest\CustomerPhoneValidatorTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,6 +73,10 @@
       <Project>{753C5720-ACC4-4CE1-A658-A83C8978DB48}</Project>
       <Name>BangazonTerminalInterface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataValidationtest\CartValidationTest\" />
+    <Folder Include="DataValidationtest\PaymentValidationTest\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

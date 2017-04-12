@@ -50,12 +50,12 @@ namespace BangazonTerminalInterface.Helpers
             Console.WriteLine(input);
         }
 
-        public void Write (string input)
+        public void Write(string input)
         {
             Console.Write(input);
         }
 
-        public string ReadLine ()
+        public string ReadLine()
         {
             return Console.ReadLine();
         }
