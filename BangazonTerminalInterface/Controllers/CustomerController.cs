@@ -61,7 +61,9 @@ namespace BangazonTerminalInterface.Controllers
             // Get/Validate New Customer's Name
             while (true)
             {
-                var input = EnterName(firstAttempt);
+                if(firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer Name");
+                var input = EnterName();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerName.ValidateName(input))
                 {
@@ -78,7 +80,9 @@ namespace BangazonTerminalInterface.Controllers
             // Get/Validate New Customer's Address
             while (true)
             {
-                var input = EnterStreetAddress(firstAttempt);
+                if (firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer Address");
+                var input = EnterStreetAddress();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerAddress.ValidateStreetAddress(input))
                 {
@@ -88,14 +92,17 @@ namespace BangazonTerminalInterface.Controllers
                 }
                 else
                 {
-                    firstAttempt = false;
                     _consoleHelper.WriteLine("Invalid. Please enter address as 123 main st.");
+                    firstAttempt = false;
                 }
+                
             }
             // Get/Validate New Customer's City
             while (true)
             {
-                var input = EnterCity(firstAttempt);
+                if (firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer City");
+                var input = EnterCity();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerCity.ValidateCity(input))
                 {
@@ -105,14 +112,16 @@ namespace BangazonTerminalInterface.Controllers
                 }
                 else
                 {
+                    _consoleHelper.WriteLine("Invalid. City must contain more than 2 characters.");
                     firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. City must contain 2 characters.");
                 }
             }
             // Get/Validate New Customer's State
             while (true)
             {
-                var input = EnterState(firstAttempt);
+                if (firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer State");
+                var input = EnterState();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerState.ValidateState(input))
                 {
@@ -129,7 +138,9 @@ namespace BangazonTerminalInterface.Controllers
             // Get/Validate New Customer's Zip
             while (true)
             {
-                var input = EnterZip(firstAttempt);
+                if (firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer Zip");
+                var input = EnterZip();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerZip.ValidateZip(input))
                 {
@@ -146,7 +157,9 @@ namespace BangazonTerminalInterface.Controllers
             // Get/Validate New Customer's Phone Number
             while (true)
             {
-                var input = EnterPhoneNumber(firstAttempt);
+                if (firstAttempt == true)
+                    _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
+                var input = EnterPhoneNumber();
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
                 if (_customerPhone.ValidatePhone(input))
                 {
@@ -165,63 +178,33 @@ namespace BangazonTerminalInterface.Controllers
                 WriteToDb(customer);
         }
 
-        public string EnterName(bool attempt)
+        public string EnterName()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer Name");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter Name > ");
         }
 
-        private string EnterStreetAddress(bool attempt)
+        private string EnterStreetAddress()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer Street Address");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter Address > ");
         }
 
-        private string EnterCity(bool attempt)
+        private string EnterCity()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer City");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter City > ");
         }
 
-        private string EnterPhoneNumber(bool attempt)
+        private string EnterPhoneNumber()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter Phone Number > ");
         }
 
-        private string EnterZip(bool attempt)
+        private string EnterZip()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer Zip");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter Zip > ");
         }
 
-        private string EnterState(bool attempt)
+        private string EnterState()
         {
-            if (attempt)
-            {
-                _consoleHelper.WriteHeaderToConsole("Customer State");
-            }
-
             return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
         }
       
