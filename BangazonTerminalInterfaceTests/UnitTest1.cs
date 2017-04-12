@@ -4,6 +4,7 @@ using BangazonTerminalInterface.Helpers;
 using Moq;
 using BangazonTerminalInterface.DataValidation.CustomerValidation;
 using BangazonTerminalInterface.Controllers;
+using BangazonTerminalInterface.Interfaces;
 
 namespace BangazonTerminalInterfaceTests
 {

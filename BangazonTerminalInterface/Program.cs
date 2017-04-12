@@ -122,7 +122,8 @@ namespace BangazonTerminalInterface
 
                         break;
                     case "8":
-                        consoleHelper.WriteLine("Goodbye!");
+                        Console.Clear();
+                        consoleHelper.WriteHeaderToConsole("Logging out...");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
                         break;
