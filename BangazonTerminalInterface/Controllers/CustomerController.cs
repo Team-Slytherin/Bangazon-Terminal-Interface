@@ -2,6 +2,7 @@
 using BangazonTerminalInterface.DataValidation.CustomerValidation;
 using BangazonTerminalInterface.Helpers;
 using BangazonTerminalInterface.Models;
+using BangazonTerminalInterface.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,22 @@ namespace BangazonTerminalInterface.Controllers
     {
         Customer customer = new Customer();
 
+        public CustomerController()
+        {
+            _customerName = new CustomerNameValid();
+            _consoleHelper = new ConsoleHelper();
+        }
+
+        public CustomerController (ICustomerNameValid nameValidator, IConsoleHelper consoleHelper)
+        {
+            _customerName = nameValidator;
+            _consoleHelper = consoleHelper;
+        }
+
         private bool UserContinue = true;
         private bool IsComplete = false;
+        private ICustomerNameValid _customerName;
+        private Interfaces.IConsoleHelper _consoleHelper;
 
         public void CreateCustomer ()
         {
@@ -38,43 +53,43 @@ namespace BangazonTerminalInterface.Controllers
             }
         }
 
-        private void EnterName()
+        public bool EnterName()
         {
-            Helper.WriteHeaderToConsole("Customer Name");
+            _consoleHelper.WriteHeaderToConsole("Customer Name");
 
-            CustomerNameValid repo = new CustomerNameValid();
-            Helper.WriteExitCommand();
+            
+            _consoleHelper.WriteExitCommand();
 
-            EnterName:
-            string input = Helper.WriteToConsole("Enter Customer Name > ");
+            ENTERNAME:
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userExit = _consoleHelper.CheckForUserExit(input);
 
-            if(userContinue)
+            if(userExit)
             {
-                UserContinue = false;
-                return;
+                return false;
             }
 
-            if (!repo.ValidateName(input))
+            if (!_customerName.ValidateName(input))
             {
-                Console.WriteLine("Invalid input please enter in the format John Smith.");
-                goto EnterName;
+                _consoleHelper.WriteLine("Invalid input please enter in the format John Smith.");
+                goto ENTERNAME;
             }
 
             customer.CustomerName = input;
+            return true;
         }
 
         private bool EnterStreetAddress()
         {
-            Helper.WriteHeaderToConsole("Customer Address");
+            _consoleHelper.WriteHeaderToConsole("Customer Address");
 
             StreetAddressValid repo = new StreetAddressValid();
 
             EnterAddress:
-            string input = Helper.WriteToConsole("Enter Customer Address > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Address > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -83,7 +98,7 @@ namespace BangazonTerminalInterface.Controllers
 
             if (!repo.ValidateStreetAddress(input))
             {
-                Console.WriteLine("Invalid input please enter in the format 123 Main St.");
+                _consoleHelper.WriteLine("Invalid input please enter in the format 123 Main St.");
                 goto EnterAddress;
             }
 
@@ -93,14 +108,14 @@ namespace BangazonTerminalInterface.Controllers
 
         private bool EnterCity()
         {
-            Helper.WriteHeaderToConsole("Customer City");
+            _consoleHelper.WriteHeaderToConsole("Customer City");
 
             CityValid repo = new CityValid();
 
             EnterCity:
-            string input = Helper.WriteToConsole("Enter City > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter City > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -108,7 +123,7 @@ namespace BangazonTerminalInterface.Controllers
             }
             while (!repo.ValidateCity(input))
             {
-                Console.WriteLine("Invalid input City must have 3 Characters. ");
+                _consoleHelper.WriteLine("Invalid input City must have 3 Characters. ");
                 goto EnterCity;
             }
             customer.CustomerCity = input;
@@ -117,14 +132,14 @@ namespace BangazonTerminalInterface.Controllers
 
         private bool EnterPhoneNumber()
         {
-            Helper.WriteHeaderToConsole("Customer Phone Number");
+            _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
 
             PhoneValid repo = new PhoneValid();
 
             EnterPhoneNumber:
-            string input = Helper.WriteToConsole("Enter Phone Number > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Phone Number > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -132,7 +147,7 @@ namespace BangazonTerminalInterface.Controllers
             }
             while (!repo.ValidatePhone(input))
             {
-                Console.WriteLine("Invalid Phone Number Must be in the format 555-555-5555. ");
+                _consoleHelper.WriteLine("Invalid Phone Number Must be in the format 555-555-5555. ");
                 goto EnterPhoneNumber;
             }
             customer.CustomerPhone = input;
@@ -141,14 +156,14 @@ namespace BangazonTerminalInterface.Controllers
 
         private bool EnterZip()
         {
-            Helper.WriteHeaderToConsole("Customer Zip");
+            _consoleHelper.WriteHeaderToConsole("Customer Zip");
 
             ZipValid repo = new ZipValid();
 
             EnterZip:
-            string input = Helper.WriteToConsole("Enter Zip Code > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Zip Code > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -156,7 +171,7 @@ namespace BangazonTerminalInterface.Controllers
             }
             while (!repo.ValidateZip(input))
             {
-                Console.WriteLine("Invalid Zip Must be in the format 12345. ");
+                _consoleHelper.WriteLine("Invalid Zip Must be in the format 12345. ");
                 goto EnterZip;
             }
             customer.CustomerZip = input;
@@ -165,14 +180,14 @@ namespace BangazonTerminalInterface.Controllers
 
         private bool EnterState()
         {
-            Helper.WriteHeaderToConsole("Customer State");
+            _consoleHelper.WriteHeaderToConsole("Customer State");
 
             StateValid repo = new StateValid();
 
             EnterState:
-            string input = Helper.WriteToConsole("Enter State Abbreviation > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -180,7 +195,7 @@ namespace BangazonTerminalInterface.Controllers
             }
             while (!repo.ValidateState(input))
             {
-                Console.WriteLine("Invalid input must be in the format TN. ");
+                _consoleHelper.WriteLine("Invalid input must be in the format TN. ");
                 goto EnterState;
             }
             customer.CustomerState = input;

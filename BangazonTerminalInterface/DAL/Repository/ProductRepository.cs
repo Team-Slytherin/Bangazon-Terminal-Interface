@@ -15,13 +15,20 @@ namespace BangazonTerminalInterface.DAL.Repository
     {
         SqlConnection slytherBangConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
 
-        private class ProductPopularity
+        ConsoleHelper _consoleHelper;
+
+        public ProductRepository()
+        {
+            _consoleHelper = new ConsoleHelper();
+        }
+        private class ProductPopularity 
         {
             public string ProductName { get; set; }
             public int Orders { get; set; }
             public int Customers { get; set; }
             public decimal Revenue { get; set; }
         }
+
         public void GetProductPopularity()
         {
             slytherBangConnection.Open();
@@ -42,10 +49,10 @@ namespace BangazonTerminalInterface.DAL.Repository
                 GROUP BY ProductName
                 ORDER BY COUNT(distinct CartDetailId) desc; ";
                 Console.Clear();
-                Helper.WriteHeaderToConsole("Product Popularity Report");
-                Console.WriteLine("Product           Orders     Customers  Revenue          ");
+                _consoleHelper.WriteHeaderToConsole("Product Popularity Report");
+                _consoleHelper.WriteLine("Product           Orders     Customers  Revenue          ");
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("*********************************************************");
+                _consoleHelper.WriteLine("*********************************************************");
                 Console.ForegroundColor = ConsoleColor.White;
                 var listedPopularity = new List<ProductPopularity>();
                 var reader = getProductsCommand.ExecuteReader();
@@ -60,17 +67,17 @@ namespace BangazonTerminalInterface.DAL.Repository
                         Revenue = reader.GetDecimal(3)
                     };
                     listedPopularity.Add(product);
-                    Console.WriteLine(product.ProductName.PadRight(18, spacePad).Substring(0, 17) + spacePad + product.Orders.ToString().PadRight(11, spacePad).Substring(0, 11) + product.Customers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + product.Revenue);
+                    _consoleHelper.WriteLine(product.ProductName.PadRight(18, spacePad).Substring(0, 17) + spacePad + product.Orders.ToString().PadRight(11, spacePad).Substring(0, 11) + product.Customers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + product.Revenue);
                 }
                 decimal totalOrders = listedPopularity.Sum(item => item.Orders);
                 decimal totalCustomers = listedPopularity.Sum(item => item.Customers);
                 decimal totalRevenue = listedPopularity.Sum(item => item.Revenue);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("*********************************************************");
+                _consoleHelper.WriteLine("*********************************************************");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Totals:           " + totalOrders.ToString().PadRight(11, spacePad).Substring(0, 10) + spacePad + totalCustomers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + totalRevenue.ToString());
-                Console.WriteLine("Press any key to return to main menu");
-                Console.ReadKey();
+                _consoleHelper.WriteLine("Totals:           " + totalOrders.ToString().PadRight(11, spacePad).Substring(0, 10) + spacePad + totalCustomers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + totalRevenue.ToString());
+                _consoleHelper.WriteLine("Press any key to return to main menu");
+                _consoleHelper.ReadKey();
             }
             catch (SqlException ex)
             {

@@ -18,6 +18,11 @@ namespace BangazonTerminalInterface.Controllers
 
         private bool UserContinue = true;
         private bool IsComplete = false;
+        ConsoleHelper _consoleHelper;
+        public PaymentController ()
+        {
+            _consoleHelper = new ConsoleHelper();
+        }
 
         public void RequestPayment(Customer customer)
         {
@@ -35,15 +40,15 @@ namespace BangazonTerminalInterface.Controllers
 
         private void requestPaymentType() // Ask for payment Type
         {
-            Helper.WriteHeaderToConsole("Payment Type");
+            _consoleHelper.WriteHeaderToConsole("Payment Type");
 
             PaymentTypeValid repo = new PaymentTypeValid();
-            Helper.WriteExitCommand();
+            _consoleHelper.WriteExitCommand();
 
         EnterType:
-            string input = Helper.WriteToConsole("Enter Payment Type > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Payment Type > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -53,7 +58,7 @@ namespace BangazonTerminalInterface.Controllers
 
             if (!repo.ValidatePaymentType(input))
             {
-                Helper.WriteToConsole("Invalid input." + "/n" + "We only accept visa / mastercard / discover / american express." + "\n" + "> ");
+                _consoleHelper.WriteAndReadFromConsole("Invalid input." + "/n" + "We only accept visa / mastercard / discover / american express." + "\n" + "> ");
                 goto EnterType;
             }
             payment.PaymentType = input;
@@ -61,15 +66,15 @@ namespace BangazonTerminalInterface.Controllers
 
         private void requestPaymentActNumber()
         {
-            Helper.WriteHeaderToConsole("Account Number");
+            _consoleHelper.WriteHeaderToConsole("Account Number");
 
             AccountNumberValid repo = new AccountNumberValid();
-            Helper.WriteExitCommand();
+            _consoleHelper.WriteExitCommand();
 
             EnterAccount:
-            string input = Helper.WriteToConsole("Enter Payment Type > ");
+            string input = _consoleHelper.WriteAndReadFromConsole("Enter Payment Type > ");
 
-            bool userContinue = Helper.CheckForUserExit(input);
+            bool userContinue = _consoleHelper.CheckForUserExit(input);
 
             if (userContinue)
             {
@@ -79,7 +84,7 @@ namespace BangazonTerminalInterface.Controllers
 
             if (!repo.ValidatePaymentAccountNumber(input))
             {
-                Helper.WriteToConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
+                _consoleHelper.WriteAndReadFromConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
                 goto EnterAccount;
             }
             payment.PaymentAccountNumber = Convert.ToInt64(input);

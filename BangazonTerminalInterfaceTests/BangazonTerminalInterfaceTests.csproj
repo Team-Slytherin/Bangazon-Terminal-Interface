@@ -64,6 +64,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BangazonTerminalInterface\BangazonTerminalInterface.csproj">
+      <Project>{753C5720-ACC4-4CE1-A658-A83C8978DB48}</Project>
+      <Name>BangazonTerminalInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -15,18 +15,24 @@ namespace BangazonTerminalInterface.Controllers
 
         CustomerRepository repo = new CustomerRepository();
 
+        ConsoleHelper _consoleHelper;
+
+        public SelectCustomerController ()
+        {
+            _consoleHelper = new ConsoleHelper();
+        }
         public Customer SelectActiveCustomer()
         {
             int ctr = 0;
-            Helper.WriteHeaderToConsole("Select a Bangazon Customer");
+            _consoleHelper.WriteHeaderToConsole("Select a Bangazon Customer");
             var allCustomers = repo.GetAllCustomers();
             foreach (Customer customer in allCustomers)
             {
                 ctr++;
-                Console.WriteLine($"{ctr}. {customer.CustomerName} - {customer.CustomerStreetAddress} {customer.CustomerCity} {customer.CustomerState}, {customer.CustomerZip}");
+                _consoleHelper.WriteLine($"{ctr}. {customer.CustomerName} - {customer.CustomerStreetAddress} {customer.CustomerCity} {customer.CustomerState}, {customer.CustomerZip}");
             }
 
-            var selection = Helper.WriteToConsole("> ");
+            var selection = _consoleHelper.WriteAndReadFromConsole("> ");
 
             if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
             {
@@ -38,7 +44,7 @@ namespace BangazonTerminalInterface.Controllers
 
         private Customer InvalidCustomer()
         {
-            Console.WriteLine("Invalid Customer selected");
+            _consoleHelper.WriteLine("Invalid Customer selected");
             Thread.Sleep(2000);
             Console.Clear();
             return SelectActiveCustomer();
