@@ -40,13 +40,14 @@ namespace BangazonTerminalInterface
                     else
                     {
                         var cartDetail = new CartDetailRepository();
-                        cartString = $"Cart({cartDetail.GetTotleItemsInCart(activeCart.CartId)}) {cartDetail.GetCartPrice(activeCart.CartId)}";
+                        cartString = $"Cart({cartDetail.GetTotalItemsInCart(activeCart.CartId)}) {cartDetail.GetCartPrice(activeCart.CartId)}";
                     }
                     string space = new string(' ', (56 - cartString.Length - custString.Length));
-                    if(cartString.Length < 1)
+                    if (cartString.Length < 1)
                     {
                         consoleHelper.WriteLine($"{custString}\n");
-                    }else
+                    }
+                    else
                     {
                         consoleHelper.WriteLine($"{custString}{space}{cartString}\n");
                     }
@@ -56,10 +57,11 @@ namespace BangazonTerminalInterface
                 + "2.Choose an existing customer" + "\n"
                 + "3.Create a new payment option" + "\n"
                 + "4.Add product(s) to shopping cart" + "\n"
-                + "5.Complete an order" + "\n"
-                + "6.View product popularity" + "\n"
-                + "7.Logout Current User" + "\n"
-                + "8.Leave Bangazon!");
+                + "5.View Items in Cart\n"
+                + "6.Complete an order" + "\n"
+                + "7.View product popularity" + "\n"
+                + "8.Logout Current User" + "\n"
+                + "9.Leave Bangazon!");
                 Console.ForegroundColor = ConsoleColor.White;
                 var userInput = consoleHelper.WriteAndReadFromConsole("> ");
                 switch (userInput)
@@ -89,13 +91,23 @@ namespace BangazonTerminalInterface
                         if (activeCustomer == null)
                         {
                             Console.Clear();
-                          
+
                             activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
                         }
                         (new CartController()).addProduct(activeCustomer);
-                    
+
                         break;
                     case "5":
+                        if (activeCustomer == null)
+                        {
+                            Console.Clear();
+
+                            activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
+                        }
+                        (new ViewCartController()).getItemsInCart(activeCustomer);
+
+                        break;
+                    case "6":
                         if (activeCustomer == null)
                         {
                             Console.Clear();
@@ -103,11 +115,11 @@ namespace BangazonTerminalInterface
                         }
                         (new CartController()).checkout(activeCustomer);
                         break;
-                    case "6":
+                    case "7":
                         ProductRepository popularityRepo = new ProductRepository();
                         popularityRepo.GetProductPopularity();
                         break;
-                    case "7":
+                    case "8":
                         if (activeCustomer != null)
                         {
                             consoleHelper.WriteLine($"\nUser {activeCustomer.CustomerName} is being logged out!");
@@ -121,7 +133,7 @@ namespace BangazonTerminalInterface
                         }
 
                         break;
-                    case "8":
+                    case "9":
                         Console.Clear();
                         consoleHelper.WriteHeaderToConsole("Logging out...");
                         Thread.Sleep(1500);

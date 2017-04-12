@@ -89,7 +89,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             return totalPrice.ToString("C", CultureInfo.CurrentCulture); ;
         }
 
-        public int GetTotleItemsInCart(int cartId)
+        public int GetTotalItemsInCart(int cartId)
         {
             _bangzonConnection.Open();
 
