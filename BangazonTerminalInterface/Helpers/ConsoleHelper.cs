@@ -9,6 +9,7 @@ namespace BangazonTerminalInterface.Helpers
 {
     public class ConsoleHelper : IConsoleHelper
     {
+
         public string WriteAndReadFromConsole(string input)
         {
             Write(input);
@@ -19,7 +20,7 @@ namespace BangazonTerminalInterface.Helpers
         {
             Write("Type");
             Console.ForegroundColor = ConsoleColor.Red;
-            Write(" \"exit\" ");
+            Write(" \"x\" ");
             Console.ForegroundColor = ConsoleColor.White;
             Write("if you would like to return to the main menu. \n");
         }
@@ -50,12 +51,12 @@ namespace BangazonTerminalInterface.Helpers
             Console.WriteLine(input);
         }
 
-        public void Write (string input)
+        public void Write(string input)
         {
             Console.Write(input);
         }
 
-        public string ReadLine ()
+        public string ReadLine()
         {
             return Console.ReadLine();
         }
