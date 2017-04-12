@@ -2,17 +2,17 @@
 using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.Controllers
 {
     class CartController
     {
+        ConsoleHelper _consoleHelper;
+        public CartController ()
+        {
+            _consoleHelper = new ConsoleHelper();
+        }
         public void addProduct(Customer activeCustomer, int selectedProductId)
         {
             var cartRepo = new CartRepository();
@@ -33,36 +33,36 @@ namespace BangazonTerminalInterface.Controllers
             if (activeCart != null)
             {
                 var cartDetail = new CartDetailRepository();
-                Console.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
-                Console.Write("Y/N > ");
-                var userInput = Console.ReadKey(true).KeyChar.ToString();
+                _consoleHelper.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
+                _consoleHelper.Write("Y/N > ");
+                var userInput = _consoleHelper.ReadKey();
                 if (userInput.ToLower() == "y")
                 {
                     // get active customer payment option and show
                     var paymentRepo = new PaymentRepository();
                     var payments = paymentRepo.GetAllPayments(activeCustomer.CustomerId);
 
-                    Console.WriteLine("\nYour payment options:\n");
+                    _consoleHelper.WriteLine("\nYour payment options:\n");
                     int counter = 1;
                     foreach (Payment payment in payments)
                     {
-                        Console.WriteLine(counter + ". " + payment.PaymentType + "\n");
+                        _consoleHelper.WriteLine(counter + ". " + payment.PaymentType + "\n");
                         counter++;
                     }
-                    Console.WriteLine("Choose payment type by number>\n");
+                    _consoleHelper.WriteLine("Choose payment type by number>\n");
 
                     // read userinput
                     var paymentId = Convert.ToInt32(Console.ReadLine());
 
                     // update order active to false
                     cartRepo.EditCartStatus(activeCart.CartId, paymentId);
-                    Console.WriteLine("Your order is complete! Press any key to return to main menu.\n");
+                    _consoleHelper.WriteLine("Your order is complete! Press any key to return to main menu.\n");
                     Console.ReadKey();
                     return;
                 }
                 return;
             }
-            Console.WriteLine("Please add some products to your order first. Press any key to return to main menu.\n");
+            _consoleHelper.WriteLine("Please add some products to your order first. Press any key to return to main menu.\n");
             Console.ReadKey();
         }
     }

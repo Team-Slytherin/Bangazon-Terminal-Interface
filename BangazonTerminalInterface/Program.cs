@@ -21,10 +21,11 @@ namespace BangazonTerminalInterface
             splash.GenerateSplashScreen();
             Console.SetWindowSize(57, 35);
             Customer activeCustomer = null;
+            ConsoleHelper consoleHelper = new ConsoleHelper();
             SHOWMENU:
             {
                 Console.Clear();
-                Helper.WriteHeaderToConsole("Welcome to Bangazon!");
+                consoleHelper.WriteHeaderToConsole("Welcome to Bangazon!");
                 if (activeCustomer != null)
                 {
                     string custString = $"Logged In As: {activeCustomer.CustomerName}";
@@ -44,13 +45,13 @@ namespace BangazonTerminalInterface
                     string space = new string(' ', (56 - cartString.Length - custString.Length));
                     if(cartString.Length < 1)
                     {
-                        Console.WriteLine($"{custString}\n");
+                        consoleHelper.WriteLine($"{custString}\n");
                     }else
                     {
-                        Console.WriteLine($"{custString}{space}{cartString}\n");
+                        consoleHelper.WriteLine($"{custString}{space}{cartString}\n");
                     }
                 }
-                Console.WriteLine(
+                consoleHelper.WriteLine(
                   "1.Create a new customer account" + "\n"
                 + "2.Choose an existing customer" + "\n"
                 + "3.Create a new payment option" + "\n"
@@ -60,7 +61,7 @@ namespace BangazonTerminalInterface
                 + "7.Logout Current User" + "\n"
                 + "8.Leave Bangazon!");
                 Console.ForegroundColor = ConsoleColor.White;
-                var userInput = Helper.WriteToConsole("> ");
+                var userInput = consoleHelper.WriteAndReadFromConsole("> ");
                 switch (userInput)
                 {
                     case "1":
@@ -93,15 +94,15 @@ namespace BangazonTerminalInterface
                         }
                         SHOWPRODUCTS:
                         Console.Clear();
-                        Helper.WriteHeaderToConsole("Add Products to Cart");
+                        consoleHelper.WriteHeaderToConsole("Add Products to Cart");
                         ProductRepository repo = new ProductRepository();
 
                         var products = repo.GetAllProducts();                      
                         foreach (Product product in products)
                         {
-                            Console.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
+                            consoleHelper.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
                         }
-                        Console.WriteLine($"{products.Count + 1}" + ". Done adding products.\n");
+                        consoleHelper.WriteLine($"{products.Count + 1}" + ". Done adding products.\n");
                         
 
                         var selectedProduct = Convert.ToInt32(Console.ReadLine());
@@ -112,7 +113,7 @@ namespace BangazonTerminalInterface
                         }
                         else if (selectedProduct > products.Count + 1)
                         {
-                            Console.WriteLine("Please choose a valid product number!");
+                            consoleHelper.WriteLine("Please choose a valid product number!");
                             goto SHOWPRODUCTS;
                         }
                         break;
@@ -133,24 +134,24 @@ namespace BangazonTerminalInterface
                     case "7":
                         if (activeCustomer != null)
                         {
-                            Console.WriteLine($"\nUser {activeCustomer.CustomerName} is being logged out!");
+                            consoleHelper.WriteLine($"\nUser {activeCustomer.CustomerName} is being logged out!");
                             activeCustomer = null;
                             Thread.Sleep(1500);
                         }
                         else
                         {
-                            Console.WriteLine($"\nNo customer currently logged in!");
+                            consoleHelper.WriteLine($"\nNo customer currently logged in!");
                             Thread.Sleep(1500);
                         }
 
                         break;
                     case "8":
-                        Console.WriteLine("Goodbye!");
+                        consoleHelper.WriteLine("Goodbye!");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("please select a valid menu item...");
+                        consoleHelper.WriteLine("please select a valid menu item...");
                         Thread.Sleep(1000);
                         break;
                 }

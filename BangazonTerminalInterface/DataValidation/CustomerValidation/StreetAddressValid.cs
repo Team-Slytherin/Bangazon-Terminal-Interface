@@ -29,7 +29,7 @@ namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 //            }
 //            else
 //            {
-//                Console.WriteLine("Invalid Please enter the abbreviate for the state." + "\n"
+//                consoleHelper.WriteLine("Invalid Please enter the abbreviate for the state." + "\n"
 //                    + "> ");
 //                return false;
 //            }

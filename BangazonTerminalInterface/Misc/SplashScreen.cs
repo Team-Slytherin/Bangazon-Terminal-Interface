@@ -1,29 +1,37 @@
-﻿using System;
+﻿using BangazonTerminalInterface.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace BangazonTerminalInterface.Misc
 {
     class SplashScreen
     {
+        ConsoleHelper _consoleHelper;
+
+        public SplashScreen ()
+        {
+            _consoleHelper = new ConsoleHelper();
+        }
         public void GenerateSplashScreen ()
         {
             Console.SetWindowSize(57, 15);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(Environment.NewLine + "   ███   ██      ▄     ▄▀  ██   ▄▄▄▄▄▄   ████▄    ▄    ");
-            Console.WriteLine("   █  █  █ █      █  ▄▀    █ █ ▀   ▄▄▀   █   █     █   ");
-            Console.WriteLine("   █▀▀ ▄ █▄▄█ ██   █ █ ▀▄  █▄▄█ ▄▀▀   ▄▀ █   █ ██   █  ");
+            _consoleHelper.WriteLine(Environment.NewLine + "   ███   ██      ▄     ▄▀  ██   ▄▄▄▄▄▄   ████▄    ▄    ");
+            _consoleHelper.WriteLine("   █  █  █ █      █  ▄▀    █ █ ▀   ▄▄▀   █   █     █   ");
+            _consoleHelper.WriteLine("   █▀▀ ▄ █▄▄█ ██   █ █ ▀▄  █▄▄█ ▄▀▀   ▄▀ █   █ ██   █  ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("   █  ▄▀ █  █ █ █  █ █   █ █  █ ▀▀▀▀▀▀   ▀████ █ █  █  ");
+            _consoleHelper.WriteLine("   █  ▄▀ █  █ █ █  █ █   █ █  █ ▀▀▀▀▀▀   ▀████ █ █  █  ");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("   ███      █ █  █ █  ███     █                █  █ █  ");
-            Console.WriteLine("           █  █   ██         █                 █   ██  ");
-            Console.WriteLine("          ▀                 ▀                          ");
+            _consoleHelper.WriteLine("   ███      █ █  █ █  ███     █                █  █ █  ");
+            _consoleHelper.WriteLine("           █  █   ██         █                 █   ██  ");
+            _consoleHelper.WriteLine("          ▀                 ▀                          ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(Environment.NewLine + "              A TeamSlytherin Application       ");
-            Console.Write(Environment.NewLine + "                Press any key to enter");
+            _consoleHelper.WriteLine(Environment.NewLine + "              A TeamSlytherin Application       ");
+            _consoleHelper.Write(Environment.NewLine + "                Press any key to enter");
             Console.ReadKey();
         }
     }
