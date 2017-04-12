@@ -1,41 +1,95 @@
-﻿using BangazonTerminalInterface.Components;
+using BangazonTerminalInterface.Components;
 using BangazonTerminalInterface.DAL.Repository;
+using BangazonTerminalInterface.Helpers;
 using BangazonTerminalInterface.Models;
 using System;
-using BangazonTerminalInterface.Helpers;
 
 namespace BangazonTerminalInterface.Controllers
 {
     class CartController
     {
         ConsoleHelper _consoleHelper;
+        
         public CartController ()
         {
             _consoleHelper = new ConsoleHelper();
         }
-        public void addProduct(Customer activeCustomer, int selectedProductId)
+        public void addProduct(Customer activeCustomer)
         {
-            var cartRepo = new CartRepository();
-            var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            if (activeCart == null)
-            {
-                cartRepo.AddCart(activeCustomer.CustomerId);
-                activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            }
-            var cartDetail = new CartDetailRepository();
-            cartDetail.AddProduct(activeCart.CartId, selectedProductId, 1);
+            SHOWPRODUCTS:
+                Console.Clear();
+                Helper.WriteHeaderToConsole("Add Products to Cart");
+                ProductRepository repo = new ProductRepository();
+
+                var products = repo.GetAllProducts();
+                Console.WriteLine("Product                   Price       ");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("**************************************");
+                char spacePad = ' ';
+                foreach (Product product in products)
+                {
+                    Console.WriteLine(product.ProductId + ". " + product.ProductName.PadRight(24, spacePad).Substring(0, 23) + "$" + product.ProductPrice);
+                }
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("**************************************");
+                Console.WriteLine($"{products.Count + 1}" + ". Save order and back to main menu");
+                Console.WriteLine($"{products.Count + 2}" + ". Checkout\n");
+                try
+                {
+                    var selectedProduct = Convert.ToInt32(Helper.WriteToConsole("> "));
+                
+                    if (selectedProduct >= 1 && selectedProduct <= products.Count)
+                    {
+                        var cartRepo = new CartRepository();
+                        var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                        if (activeCart == null)
+                        {
+                            cartRepo.AddCart(activeCustomer.CustomerId);
+                            activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
+                        }
+                        var cartDetail = new CartDetailRepository();
+                        cartDetail.AddProduct(activeCart.CartId, selectedProduct, 1);
+                        Console.WriteLine("One item has been put into your cart.");
+                        Thread.Sleep(1500);
+                        goto SHOWPRODUCTS;
+                    }
+                    else if (selectedProduct == products.Count + 1)
+                    {
+                        return;
+                    }
+                    else if (selectedProduct == products.Count + 2)
+                    {
+                        checkout(activeCustomer);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please choose a valid product number!");
+                        goto SHOWPRODUCTS;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Please enter the numbers showed on screen!");
+                    Thread.Sleep(1000);
+                    goto SHOWPRODUCTS;
+                }
         }
 
         public void checkout(Customer activeCustomer)
         {
+            CHOOSEPAYMENT:
+            Console.Clear();
+            Helper.WriteHeaderToConsole("Check Out");
             var cartRepo = new CartRepository();
             var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
             if (activeCart != null)
             {
                 var cartDetail = new CartDetailRepository();
+              
                 _consoleHelper.Write($"Your order total is ${cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase\n");
                 _consoleHelper.Write("Y/N > ");
                 var userInput = _consoleHelper.ReadKey();
+              
                 if (userInput.ToLower() == "y")
                 {
                     // get active customer payment option and show
@@ -49,21 +103,31 @@ namespace BangazonTerminalInterface.Controllers
                         _consoleHelper.WriteLine(counter + ". " + payment.PaymentType + "\n");
                         counter++;
                     }
-                    _consoleHelper.WriteLine("Choose payment type by number>\n");
+                  
+                    _consoleHelper.WriteLine(counter + ". " + "Go Back To Main Menu\n");
 
                     // read userinput
-                    var paymentId = Convert.ToInt32(Console.ReadLine());
-
-                    // update order active to false
-                    cartRepo.EditCartStatus(activeCart.CartId, paymentId);
-                    _consoleHelper.WriteLine("Your order is complete! Press any key to return to main menu.\n");
-                    Console.ReadKey();
-                    return;
+                    var paymentChoice = Convert.ToInt32(_consoleHelper.WriteToConsole("Choose payment option >\n"));
+                    if (paymentChoice == counter) return;
+                    else if (paymentChoice > 0 && paymentChoice < counter)
+                    {
+                        var paymentId = payments[paymentChoice - 1].PaymentId;
+                        // update order active to false
+                        cartRepo.EditCartStatus(activeCart.CartId, paymentId);
+                        _consoleHelper.WriteLine("Your order is complete! Press any key to return to main menu.\n");
+                        _consoleHelper.ReadKey();
+                        return;
+                    }
+                    else
+                    {
+                        _consoleHelper.WriteLine("Please enter the numbers showed on screen!");
+                        goto CHOOSEPAYMENT;
+                    }
                 }
                 return;
             }
             _consoleHelper.WriteLine("Please add some products to your order first. Press any key to return to main menu.\n");
-            Console.ReadKey();
+            _consoleHelper.ReadKey();
         }
     }
 }

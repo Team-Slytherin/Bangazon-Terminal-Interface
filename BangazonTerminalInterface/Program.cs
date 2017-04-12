@@ -1,4 +1,4 @@
-﻿using BangazonTerminalInterface.Components;
+using BangazonTerminalInterface.Components;
 using BangazonTerminalInterface.Controllers;
 using BangazonTerminalInterface.DAL.Repository;
 using BangazonTerminalInterface.Models;
@@ -89,43 +89,19 @@ namespace BangazonTerminalInterface
                         if (activeCustomer == null)
                         {
                             Console.Clear();
-                            var selectCustomerCtrl2 = new SelectCustomerController();
-                            activeCustomer = selectCustomerCtrl2.SelectActiveCustomer();
+                          
+                            activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
                         }
-                        SHOWPRODUCTS:
-                        Console.Clear();
-                        consoleHelper.WriteHeaderToConsole("Add Products to Cart");
-                        ProductRepository repo = new ProductRepository();
-
-                        var products = repo.GetAllProducts();                      
-                        foreach (Product product in products)
-                        {
-                            consoleHelper.WriteLine(product.ProductId + ". " + product.ProductName + "\n");
-                        }
-                        consoleHelper.WriteLine($"{products.Count + 1}" + ". Done adding products.\n");
-                        
-
-                        var selectedProduct = Convert.ToInt32(Console.ReadLine());
-                        if (selectedProduct >= 1 && selectedProduct <= products.Count)
-                        {
-                            (new CartController()).addProduct(activeCustomer, selectedProduct);
-                            goto SHOWPRODUCTS;
-                        }
-                        else if (selectedProduct > products.Count + 1)
-                        {
-                            consoleHelper.WriteLine("Please choose a valid product number!");
-                            goto SHOWPRODUCTS;
-                        }
+                        (new CartController()).addProduct(activeCustomer);
+                    
                         break;
                     case "5":
                         if (activeCustomer == null)
                         {
                             Console.Clear();
-                            var selectCustomerCtrl2 = new SelectCustomerController();
-                            activeCustomer = selectCustomerCtrl2.SelectActiveCustomer();
+                            activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
                         }
-                        var CartAction = new CartController();
-                        CartAction.checkout(activeCustomer);
+                        (new CartController()).checkout(activeCustomer);
                         break;
                     case "6":
                         ProductRepository popularityRepo = new ProductRepository();
