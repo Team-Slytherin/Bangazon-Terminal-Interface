@@ -19,7 +19,7 @@ namespace BangazonTerminalInterface.Helpers
         {
             Write("Type");
             Console.ForegroundColor = ConsoleColor.Red;
-            Write(" \"exit\" ");
+            Write(" \"x\" ");
             Console.ForegroundColor = ConsoleColor.White;
             Write("if you would like to return to the main menu. \n");
         }

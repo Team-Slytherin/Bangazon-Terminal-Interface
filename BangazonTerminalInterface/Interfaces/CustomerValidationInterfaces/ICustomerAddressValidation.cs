@@ -1,6 +1,6 @@
 ﻿namespace BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces
 {
-    public interface ICustomerAddressValidator
+    public interface ICustomerAddressValidation
     {
         bool ValidateStreetAddress(string name);
     }

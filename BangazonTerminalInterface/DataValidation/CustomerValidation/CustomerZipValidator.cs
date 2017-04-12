@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 {
-    class CustomerZipValidator : ICustomerZipValidator
+    class CustomerZipValidator : ICustomerZipValidation
     {
         public bool ValidateZip(string zip)
         {

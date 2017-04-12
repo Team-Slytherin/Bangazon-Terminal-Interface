@@ -19,12 +19,13 @@ namespace BangazonTerminalInterface.Controllers
         private bool UserContinue = true;
         private bool IsComplete = false;
         private bool firstAttempt = true;
-        private ICustomerNameValidator _customerName;
+        private ICustomerNameValidation _customerName;
         private Interfaces.IConsoleHelper _consoleHelper;
-        private ICustomerAddressValidator _customerAddress;
+        private ICustomerAddressValidation _customerAddress;
         private ICustomerCityValidation _customerCity;
         private ICustomerStateValidation _customerState;
-        private ICustomerZipValidator _customerZip;
+        private ICustomerZipValidation _customerZip;
+        private ICustomerPhoneValidation _customerPhone;
 
         public CustomerController()
         {
@@ -34,14 +35,16 @@ namespace BangazonTerminalInterface.Controllers
             _customerCity = new CustomerCityValidator();
             _customerState = new CustomerStateValidator();
             _customerZip = new CustomerZipValidator();
+            _customerPhone = new CustomerPhoneValidator();
         }
 
-        public CustomerController (ICustomerNameValidator nameValidator, 
+        public CustomerController (ICustomerNameValidation nameValidator, 
                                     IConsoleHelper consoleHelper, 
-                                    ICustomerAddressValidator addressValidator, 
+                                    ICustomerAddressValidation addressValidator, 
                                     ICustomerCityValidation cityValidator, 
                                     ICustomerStateValidation stateValidator,
-                                    ICustomerZipValidator zipValidator)
+                                    ICustomerZipValidation zipValidator,
+                                    ICustomerPhoneValidation phoneValidator)
         {
             _customerName = nameValidator;
             _consoleHelper = consoleHelper;
@@ -49,13 +52,14 @@ namespace BangazonTerminalInterface.Controllers
             _customerCity = cityValidator;
             _customerState = stateValidator;
             _customerZip = zipValidator;
+            _customerPhone = phoneValidator;
         }
 
 
         public void CreateCustomer ()
         {
             // Get/Validate New Customer's Name
-            while(true)
+            while (true)
             {
                 var input = EnterName(firstAttempt);
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
@@ -142,68 +146,24 @@ namespace BangazonTerminalInterface.Controllers
             // Get/Validate New Customer's Phone Number
             while (true)
             {
-                var input = EnterZip(firstAttempt);
+                var input = EnterPhoneNumber(firstAttempt);
                 if (_consoleHelper.CheckForUserExit(input)) { break; };
-                if (_customerZip.ValidateZip(input))
+                if (_customerPhone.ValidatePhone(input))
                 {
-                    customer.CustomerZip = input;
-                    firstAttempt = true;
+                    customer.CustomerPhone = input;
+                    IsComplete = true;
                     break;
                 }
                 else
                 {
                     firstAttempt = false;
-                    _consoleHelper.WriteLine("Invalid. Zip must be 5 numbers.");
+                    _consoleHelper.WriteLine("Invalid. Phone number must be in the formatt 111-111-1111.");
                 }
             }
-
-
-            //while (!IsComplete)
-            //{
-
-            //EnterName();
-            //if (!UserContinue) break;
-            //EnterStreetAddress();
-            //if (!UserContinue) break;
-            //EnterCity();
-            //if (!UserContinue) break;
-            //EnterPhoneNumber();
-            //if (!UserContinue) break;
-            //EnterZip();
-            //if (!UserContinue) break;
-            //EnterState();
-            //if (!UserContinue) break;
-            //WriteToDb();
-            //if (!UserContinue) break;
-            //}
+            // Add To Database
+            if (IsComplete)
+                WriteToDb(customer);
         }
-
-        //public bool EnterName()
-        //{
-        //    _consoleHelper.WriteHeaderToConsole("Customer Name");
-
-            
-        //    _consoleHelper.WriteExitCommand();
-
-        //    ENTERNAME:
-        //    string input = _consoleHelper.WriteAndReadFromConsole("Enter Customer Name > ");
-
-        //    bool userExit = _consoleHelper.CheckForUserExit(input);
-
-        //    if(userExit)
-        //    {
-        //        return false;
-        //    }
-
-        //    if (!_customerName.ValidateName(input))
-        //    {
-        //        _consoleHelper.WriteLine("Invalid input please enter in the format John Smith.");
-        //        goto ENTERNAME;
-        //    }
-
-        //    customer.CustomerName = input;
-        //    return true;
-        //}
 
         public string EnterName(bool attempt)
         {
@@ -235,28 +195,14 @@ namespace BangazonTerminalInterface.Controllers
             return _consoleHelper.WriteAndReadFromConsole("Enter City > ");
         }
 
-        private bool EnterPhoneNumber()
+        private string EnterPhoneNumber(bool attempt)
         {
-            _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
-
-            PhoneValid repo = new PhoneValid();
-
-            EnterPhoneNumber:
-            string input = _consoleHelper.WriteAndReadFromConsole("Enter Phone Number > ");
-
-            bool userContinue = _consoleHelper.CheckForUserExit(input);
-
-            if (userContinue)
+            if (attempt)
             {
-                return false;
+                _consoleHelper.WriteHeaderToConsole("Customer Phone Number");
             }
-            while (!repo.ValidatePhone(input))
-            {
-                _consoleHelper.WriteLine("Invalid Phone Number Must be in the format 555-555-5555. ");
-                goto EnterPhoneNumber;
-            }
-            customer.CustomerPhone = input;
-            return true;
+
+            return _consoleHelper.WriteAndReadFromConsole("Enter Phone Number > ");
         }
 
         private string EnterZip(bool attempt)
@@ -279,11 +225,11 @@ namespace BangazonTerminalInterface.Controllers
             return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
         }
       
-        private void WriteToDb()
+        private void WriteToDb(Customer addCustomer)
         {
             CustomerRepository repo = new CustomerRepository();
-            repo.AddCustomer(customer);
-            IsComplete = true; // Seems a little hacky, but I have to do this to break out of the while look.
+            repo.AddCustomer(addCustomer);
+            //IsComplete = true; // Seems a little hacky, but I have to do this to break out of the while look.
         }
 
     }

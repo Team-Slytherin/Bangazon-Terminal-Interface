@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 {
-    class CustomerNameValidator : ICustomerNameValidator
+    class CustomerNameValidator : ICustomerNameValidation
     {
 
         public bool ValidateName(string name)

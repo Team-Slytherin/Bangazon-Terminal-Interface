@@ -60,8 +60,8 @@
     <Compile Include="DataValidation\CustomerValidation\CustomerNameValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\ExistingCustomer.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerCityValidation.cs" />
-    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerNameValidator.cs" />
-    <Compile Include="DataValidation\CustomerValidation\PhoneValid.cs" />
+    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerNameValidation.cs" />
+    <Compile Include="DataValidation\CustomerValidation\CustomerPhoneValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerStateValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerAddressValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerZipValidator.cs" />
@@ -69,9 +69,10 @@
     <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
     <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
     <Compile Include="Helpers\ConsoleHelper.cs" />
-    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerAddressValidator.cs" />
+    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerAddressValidation.cs" />
+    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerPhoneValidation.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerStateValidation.cs" />
-    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerZipValidator.cs" />
+    <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerZipValidation.cs" />
     <Compile Include="Interfaces\IConsoleHelper.cs" />
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IPayment.cs" />

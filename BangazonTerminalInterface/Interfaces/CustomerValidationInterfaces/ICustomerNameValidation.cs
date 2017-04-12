@@ -1,7 +1,7 @@
 ﻿namespace BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces
 {
-    public interface ICustomerZipValidator
+    public interface ICustomerNameValidation
     {
-        bool ValidateZip(string zip);
+        bool ValidateName(string name);
     }
 }
