@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.DataValidation.CustomerValidation
 {
-    class ZipValid
+    class CustomerZipValidator : ICustomerZipValidation
     {
         public bool ValidateZip(string zip)
         {
