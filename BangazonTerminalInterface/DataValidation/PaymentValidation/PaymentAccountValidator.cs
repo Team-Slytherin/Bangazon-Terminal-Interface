@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BangazonTerminalInterface.Interfaces.PaymentValidationInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.DataValidation.PaymentValidation
 {
-    public class AccountNumberValid
+    public class PaymentAccountValidator : IPaymentAccountValidation
     {
         public bool ValidatePaymentAccountNumber(string accountNumberStr)
         {
