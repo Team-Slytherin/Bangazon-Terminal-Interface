@@ -38,7 +38,7 @@ namespace BangazonTerminalInterfaceTests.ControllerTest
             //act
             var expectedResult = "Justin Leggett";
             var result = controller.EnterName();
-            controller.CreateCustomer();
+            //controller.CreateCustomer();
 
             //assert
             Assert.AreEqual(result, expectedResult);
