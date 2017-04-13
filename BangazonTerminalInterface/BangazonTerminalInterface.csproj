@@ -65,9 +65,8 @@
     <Compile Include="DataValidation\CustomerValidation\CustomerStateValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerAddressValidator.cs" />
     <Compile Include="DataValidation\CustomerValidation\CustomerZipValidator.cs" />
-    <Compile Include="DataValidation\PaymentValidation\AccountNumberValid.cs" />
-    <Compile Include="DataValidation\PaymentValidation\ExistingPayment.cs" />
-    <Compile Include="DataValidation\PaymentValidation\PaymentTypeValid.cs" />
+    <Compile Include="DataValidation\PaymentValidation\PaymentAccountValidator.cs" />
+    <Compile Include="DataValidation\PaymentValidation\PaymentTypeValidator.cs" />
     <Compile Include="Helpers\ConsoleHelper.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerAddressValidation.cs" />
     <Compile Include="Interfaces\CustomerValidationInterfaces\ICustomerPhoneValidation.cs" />
@@ -77,6 +76,8 @@
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IPayment.cs" />
     <Compile Include="Interfaces\IProduct.cs" />
+    <Compile Include="Interfaces\PaymentValidationInterfaces\IPaymentAccountValidation.cs" />
+    <Compile Include="Interfaces\PaymentValidationInterfaces\IPaymentTypeValidation.cs" />
     <Compile Include="Misc\SplashScreen.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartDetail.cs" />

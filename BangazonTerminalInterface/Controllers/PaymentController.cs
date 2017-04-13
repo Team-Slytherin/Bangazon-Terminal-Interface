@@ -12,19 +12,30 @@ using BangazonTerminalInterface.Helpers;
 using System.Threading;
 using System.Diagnostics;
 using BangazonTerminalInterface.Interfaces;
+using BangazonTerminalInterface.Interfaces.PaymentValidationInterfaces;
 
 namespace BangazonTerminalInterface.Controllers
 {
-    public class PaymentController : IPayment
+    public class PaymentController
     {
         Payment payment = new Payment();
-
         private bool UserContinue = true;
         private bool IsComplete = false;
-        ConsoleHelper _consoleHelper;
+        private IConsoleHelper _consoleHelper;
+        private IPaymentAccountValidation _paymentAccount;
+        private IPaymentTypeValidation _paymentType;
         public PaymentController()
         {
             _consoleHelper = new ConsoleHelper();
+            _paymentType = new PaymentTypeValidator();
+            _paymentAccount = new PaymentAccountValidator();
+        }
+
+        public PaymentController(IPaymentTypeValidation typeValidator, IPaymentAccountValidation accountValidator, IConsoleHelper consoleHelper)
+        {
+            _consoleHelper = consoleHelper;
+            _paymentType = typeValidator;
+            _paymentAccount = accountValidator;
         }
 
         public void RequestPayment(Customer customer)
@@ -43,9 +54,9 @@ namespace BangazonTerminalInterface.Controllers
 
         private void requestPaymentType() // Ask for payment Type
         {
-            PaymentTypeValid repo = new PaymentTypeValid();
+            PaymentTypeValidator repo = new PaymentTypeValidator();
 
-            ENTERTYPE:
+        ENTERTYPE:
             _consoleHelper.WriteHeaderToConsole("Payment Type");
             _consoleHelper.WriteExitCommand();
             string[] paymentOptions = new string[] { "Visa", "MasterCard", "Discover", "American Express" };
@@ -77,9 +88,7 @@ namespace BangazonTerminalInterface.Controllers
 
                 else
                 {
-                    _consoleHelper.WriteLine("Invalid input, please select an option from the menu above.");
-                    Thread.Sleep(1000);
-                    Console.Clear();
+                    _consoleHelper.ErrorMessage("Invalid input, please select an option from the menu above.");
                     goto ENTERTYPE;
                 }
 
@@ -89,9 +98,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
-                _consoleHelper.WriteLine("Invalid payment type");
-                Thread.Sleep(1000);
-                Console.Clear();
+                _consoleHelper.ErrorMessage("Invalid payment type");
                 goto ENTERTYPE;
             }
 
@@ -102,15 +109,16 @@ namespace BangazonTerminalInterface.Controllers
             payment.PaymentType = selectedPaymentType;
         }
 
+
         private void requestPaymentActNumber()
         {
+            ENTERACCOUNT:
             Console.Clear();
             _consoleHelper.WriteHeaderToConsole("Account Number");
 
-            AccountNumberValid repo = new AccountNumberValid();
+            PaymentAccountValidator repo = new PaymentAccountValidator();
             _consoleHelper.WriteExitCommand();
 
-            EnterAccount:
             string input = _consoleHelper.WriteAndReadFromConsole("Enter Account Number > ");
 
             bool userContinue = _consoleHelper.CheckForUserExit(input);
@@ -123,8 +131,8 @@ namespace BangazonTerminalInterface.Controllers
 
             if (!repo.ValidatePaymentAccountNumber(input))
             {
-                _consoleHelper.WriteAndReadFromConsole("Invalid input." + "\n" + "Please input 16 digits in this format" + "\n" + "0000-0000-0000-0000." + "\n" + "> ");
-                goto EnterAccount;
+                _consoleHelper.ErrorMessage("Invalid input. Enter 16 digits in this format" + "\n" + "0000-0000-0000-0000.");
+                goto ENTERACCOUNT;
             }
             payment.PaymentAccountNumber = Convert.ToInt64(input.Replace("-", ""));
         }
