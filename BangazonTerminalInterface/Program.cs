@@ -67,7 +67,7 @@ namespace BangazonTerminalInterface
                     case "1":
                         Console.Clear();
                         var CustomerInfo = new CustomerController();
-                        CustomerInfo.CreateCustomer();
+                        activeCustomer =  CustomerInfo.CreateCustomer();
                         break;
                     case "2":
                         Console.Clear();

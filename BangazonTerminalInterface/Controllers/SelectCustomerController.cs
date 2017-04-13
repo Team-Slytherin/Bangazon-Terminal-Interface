@@ -41,10 +41,18 @@ namespace BangazonTerminalInterface.Controllers
 
             var selection = _consoleHelper.WriteAndReadFromConsole("> ");
 
-            if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
+            try
             {
-                return allCustomers[Convert.ToInt32(selection) - 1];
+                if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
+                {
+                    return allCustomers[Convert.ToInt32(selection) - 1];
+                }
             }
+            catch (Exception)
+            {
+                return InvalidCustomer();
+            }
+
             return InvalidCustomer();
         }
             
