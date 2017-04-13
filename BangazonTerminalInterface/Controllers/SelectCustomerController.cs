@@ -7,25 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using BangazonTerminalInterface.Interfaces;
 
 namespace BangazonTerminalInterface.Controllers
 {
     public class SelectCustomerController
     {
 
-        CustomerRepository repo = new CustomerRepository();
+        ICustomer _repo { set; get; }
 
-        ConsoleHelper _consoleHelper;
+        IConsoleHelper _consoleHelper { set; get; }
 
         public SelectCustomerController ()
         {
             _consoleHelper = new ConsoleHelper();
+            _repo = new CustomerRepository();
+        }
+        public SelectCustomerController(ICustomer repo, IConsoleHelper consoleHelper)
+        {
+            _consoleHelper = consoleHelper;
+            _repo = repo;
         }
         public Customer SelectActiveCustomer()
         {
             int ctr = 0;
             _consoleHelper.WriteHeaderToConsole("Select a Bangazon Customer");
-            var allCustomers = repo.GetAllCustomers();
+            var allCustomers = _repo.GetAllCustomers();
             foreach (Customer customer in allCustomers)
             {
                 ctr++;
@@ -50,7 +57,7 @@ namespace BangazonTerminalInterface.Controllers
         }
             
 
-        private Customer InvalidCustomer()
+        public Customer InvalidCustomer()
         {
             _consoleHelper.WriteLine("Invalid Customer selected");
             Thread.Sleep(2000);
