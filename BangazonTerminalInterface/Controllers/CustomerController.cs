@@ -53,7 +53,6 @@ namespace BangazonTerminalInterface.Controllers
             _customerPhone = phoneValidator;
         }
 
-
         public Customer CreateCustomer ()
         {
             // Get/Validate New Customer's Name

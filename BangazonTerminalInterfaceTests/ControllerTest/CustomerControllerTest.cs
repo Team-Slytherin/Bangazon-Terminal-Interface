@@ -52,10 +52,10 @@ namespace BangazonTerminalInterfaceTests.ControllerTest
             //act
             var expectedResult = "Justin Leggett";
             var result = controller.EnterName();
+            //controller.CreateCustomer();
 
             //assert
             Assert.AreEqual(result, expectedResult);
-            //mockedCustomerController.Verify(x => x.EnterName(), Times.Once);
         }
 
         [TestMethod]
