@@ -138,7 +138,7 @@ namespace BangazonTerminalInterface
                         consoleHelper.WriteHeaderToConsole("Logging out...");
                         Thread.Sleep(1500);
                         Environment.Exit(0);
-                        break;
+                        break;                        
                     default:
                         consoleHelper.WriteLine("please select a valid menu item...");
                         Thread.Sleep(1000);

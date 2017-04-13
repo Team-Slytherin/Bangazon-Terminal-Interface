@@ -123,5 +123,66 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
             return 0;
         }
+
+        public List<CartItem> GetItemsInCart(int customerId)
+        {
+            _bangzonConnection.Open();
+
+            try
+            {
+                var getCartDetailCommand = _bangzonConnection.CreateCommand();
+                getCartDetailCommand.CommandText = @"
+                    SELECT DISTINCT ProductName, ProductPrice, count(distinct CartDetailId) as Qty, ProductPrice*count(distinct CartDetailId) as Total
+                    FROM SlytherBang.dbo.Customer cust
+                    JOIN SlytherBang.dbo.Cart cart
+                     ON cust.CustomerId = cart.CustomerId
+                    JOIN SlytherBang.dbo.CartDetail cdt
+                     ON cart.CartId = cdt.CartId
+                    JOIN SlytherBang.dbo.Product p
+                     ON cdt.ProductId = p.ProductId
+                    WHERE Active = '1'
+                    AND cust.CustomerId = @customerId
+                    GROUP BY ProductName, ProductPrice;";
+                var customerIdParameter = new SqlParameter("customerId", SqlDbType.Int);
+                customerIdParameter.Value = customerId;
+                getCartDetailCommand.Parameters.Add(customerIdParameter);
+                var cartItems = new List<CartItem>();
+                var reader = getCartDetailCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    var cartItem = new CartItem
+                    {
+                        ProductName = reader.GetString(0),
+                        ProductPrice = reader.GetDecimal(1),
+                        ProductQuantity = reader.GetInt32(2),
+                        Total = reader.GetDecimal(3)
+                        
+                    };
+
+                    cartItems.Add(cartItem);
+                }
+
+                return cartItems;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                _bangzonConnection.Close();
+            }
+            return new List<CartItem>();
+        }
+    }
+
+    public class CartItem
+    {
+        public string ProductName { get; set; }
+        public decimal ProductPrice { get; set; }
+        public int ProductQuantity { get; set; }
+        public decimal Total { get; set; }
     }
 }

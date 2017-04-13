@@ -30,7 +30,7 @@ namespace BangazonTerminalInterface.Controllers
         private bool UserContinue = true;
         private bool IsComplete = false;
         private ICustomerNameValid _customerName;
-        private Interfaces.IConsoleHelper _consoleHelper;
+        private IConsoleHelper _consoleHelper;
 
         public void CreateCustomer ()
         {
