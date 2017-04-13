@@ -11,41 +11,67 @@
 //    [TestClass]
 //    public class CustomerPhoneValidatorTest
 //    {
-//        [TestMethod]
-//        public void EnsureIAmAbleToWriteToConsole()
+//        public CustomerPhoneValidator phoneValidation { get; set; }
+//        public Mock<IConsoleHelper> mockedConsoleHelper { get; set; }
+//        public Mock<ICustomerNameValidation> mockedNameValidator { get; set; }
+//        public Mock<ICustomerAddressValidation> mockedAddressValidator { get; set; }
+//        public Mock<ICustomerCityValidation> mockedCityValidator { get; set; }
+//        public Mock<ICustomerStateValidation> mockedStateValidator { get; set; }
+//        public Mock<ICustomerZipValidation> mockedZipValidator { get; set; }
+//        public Mock<ICustomerPhoneValidation> mockedPhoneValidator { get; set; }
+//        public Mock<CustomerController> mockedCustomerController { get; set; }
+//        public CustomerController controller { get; set; }
+
+
+//        [TestInitialize]
+//        public void Setup()
 //        {
-//            //arrange
-//            //This probably needs to move to a test helper method
-//            var mockedConsoleHelper = new Mock<IConsoleHelper>();
-//            //var mockedNameValidator = new Mock<ICustomerNameValidation>();
-//            //var mockedAddressValidator = new Mock<ICustomerAddressValidation>();
-//            //var mockedCityValidator = new Mock<ICustomerCityValidation>();
-//            //var mockedStateValidator = new Mock<ICustomerStateValidation>();
-//            //var mockedZipValidator = new Mock<ICustomerZipValidation>();
-//            //var mockedPhoneValidator = new Mock<ICustomerPhoneValidation>();
-//            //var consoleHelper = new ConsoleHelper(mockedConsoleHelper.Object);
-//            //var mockCustomerController = new Mock<CustomerController>();
-//            //var controller = new CustomerController(mockedNameValidator.Object,
+//            phoneValidation = new CustomerPhoneValidator();
+//            //mockedConsoleHelper = new Mock<IConsoleHelper>();
+//            //mockedNameValidator = new Mock<ICustomerNameValidation>();
+//            //mockedAddressValidator = new Mock<ICustomerAddressValidation>();
+//            //mockedCityValidator = new Mock<ICustomerCityValidation>();
+//            //mockedStateValidator = new Mock<ICustomerStateValidation>();
+//            //mockedZipValidator = new Mock<ICustomerZipValidation>();
+//            mockedPhoneValidator = new Mock<ICustomerPhoneValidation>();
+//            //mockedCustomerController = new Mock<CustomerController>();
+//            //controller = new CustomerController(mockedNameValidator.Object,
 //            //                                        mockedConsoleHelper.Object,
 //            //                                        mockedAddressValidator.Object,
 //            //                                        mockedCityValidator.Object,
 //            //                                        mockedStateValidator.Object,
 //            //                                        mockedZipValidator.Object,
 //            //                                        mockedPhoneValidator.Object);
-
-//            mockedConsoleHelper.Setup(x => x.WriteAndReadFromConsole(It.IsAny<string>())).Returns("Justin Leggett");
-//            //mockedConsoleHelper.Setup(x => x.Write("Justin Leggett"));
-//            //mockedConsoleHelper.Setup(x => x.ReadLine()).Returns("Justin Leggett");
+//        }
 
 
+//        [TestMethod]
+//        public void WhenAStringIsEnteredANameIsReturned()
+//        {
+//            //arrange
+//            //mockedConsoleHelper.Setup(x => x.WriteAndReadFromConsole(It.IsAny<string>())).Returns("Justin Leggett");
+//            mockedPhoneValidator.Setup(x => x.ValidatePhone(It.IsAny<string>())).Returns(true);
 //            //act
-//            var expectedResult = "Justin Leggett";
-//            //var result = consoleHelper.WriteAndReadFromConsole("Justin Leggett");
+//            var expectedResult = true;
+//            var result = controller.EnterName();
 
 //            //assert
-//            //Assert.AreEqual(result, expectedResult);
-//            //mockCustomerController.Verify(x => x.EnterName());
-//            //mockedConsoleHelper.Verify(x => x.WriteAndReadFromConsole(It.IsAny<string>()), Times.Once);
+//            Assert.AreEqual(result, expectedResult);
+//            //mockedCustomerController.Verify(x => x.EnterName(), Times.Once);
+//        }
+
+//        [TestMethod]
+//        public void WhenAStringIsEnteredAStreetIsReturned()
+//        {
+//            //arrange
+//            mockedConsoleHelper.Setup(x => x.WriteAndReadFromConsole(It.IsAny<string>())).Returns("123 Main St.");
+//            //act
+//            var expectedResult = "123 Main St.";
+//            var result = controller.EnterName();
+
+//            //assert
+//            Assert.AreEqual(result, expectedResult);
+//            mockedConsoleHelper.Verify(x => x.WriteAndReadFromConsole(It.IsAny<string>()), Times.Once);
 //        }
 //    }
 //}

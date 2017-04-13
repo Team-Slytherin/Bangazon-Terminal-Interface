@@ -165,7 +165,7 @@ namespace BangazonTerminalInterface.Controllers
             return customer;
         }
 
-        public string EnterName()
+        public virtual string EnterName()
         {
             return _consoleHelper.WriteAndReadFromConsole("Enter Name > ");
         }
