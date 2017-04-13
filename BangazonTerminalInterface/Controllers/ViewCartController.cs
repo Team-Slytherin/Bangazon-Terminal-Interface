@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +12,7 @@ namespace BangazonTerminalInterface.Controllers
 {
     class ViewCartController
     {
-
         CartDetailRepository cartDetail = new CartDetailRepository();
-
         ConsoleHelper _consoleHelper;
 
         public ViewCartController()
@@ -93,9 +91,6 @@ namespace BangazonTerminalInterface.Controllers
                 Console.Clear();
                 goto START;
             }
-
-
     }
-
 }
 }

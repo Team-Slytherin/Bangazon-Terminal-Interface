@@ -69,7 +69,7 @@ namespace BangazonTerminalInterface
                     case "1":
                         Console.Clear();
                         var CustomerInfo = new CustomerController();
-                        CustomerInfo.CreateCustomer();
+                        activeCustomer =  CustomerInfo.CreateCustomer();
                         break;
                     case "2":
                         Console.Clear();
@@ -108,6 +108,7 @@ namespace BangazonTerminalInterface
 
                         break;
                     case "6":
+
                         if (activeCustomer == null)
                         {
                             Console.Clear();
@@ -116,8 +117,10 @@ namespace BangazonTerminalInterface
                         (new CartController()).checkout(activeCustomer);
                         break;
                     case "7":
-                        ProductRepository popularityRepo = new ProductRepository();
-                        popularityRepo.GetProductPopularity();
+                        Console.Clear();
+                        var productPopularityController = new ProductPopularityController();
+                        productPopularityController.DisplayPopularProducts();
+
                         break;
                     case "8":
                         if (activeCustomer != null)

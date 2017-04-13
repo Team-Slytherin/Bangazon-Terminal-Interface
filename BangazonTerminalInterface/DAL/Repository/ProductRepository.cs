@@ -22,7 +22,7 @@ namespace BangazonTerminalInterface.DAL.Repository
         {
             _consoleHelper = new ConsoleHelper();
         }
-        private class ProductPopularity 
+        public class ProductPopularity
         {
             public string ProductName { get; set; }
             public int Orders { get; set; }
@@ -30,7 +30,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             public decimal Revenue { get; set; }
         }
 
-        public void GetProductPopularity()
+        public List<ProductPopularity> GetProductPopularity()
         {
             slytherBangConnection.Open();
             try
@@ -49,15 +49,9 @@ namespace BangazonTerminalInterface.DAL.Repository
                   ON cc.ProductId = p.ProductId
                 GROUP BY ProductName
                 ORDER BY COUNT(distinct CartDetailId) desc; ";
-                Console.Clear();
-                _consoleHelper.WriteHeaderToConsole("Product Popularity Report");
-                _consoleHelper.WriteLine("Product           Orders     Customers  Revenue          ");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                _consoleHelper.WriteLine("*********************************************************");
-                Console.ForegroundColor = ConsoleColor.White;
+
                 var listedPopularity = new List<ProductPopularity>();
                 var reader = getProductsCommand.ExecuteReader();
-                char spacePad = ' ';
                 while (reader.Read())
                 {
                     var product = new ProductPopularity
@@ -68,17 +62,8 @@ namespace BangazonTerminalInterface.DAL.Repository
                         Revenue = reader.GetDecimal(3)
                     };
                     listedPopularity.Add(product);
-                    _consoleHelper.WriteLine(product.ProductName.PadRight(18, spacePad).Substring(0, 17) + spacePad + product.Orders.ToString().PadRight(11, spacePad).Substring(0, 11) + product.Customers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + product.Revenue);
                 }
-                decimal totalOrders = listedPopularity.Sum(item => item.Orders);
-                decimal totalCustomers = listedPopularity.Sum(item => item.Customers);
-                decimal totalRevenue = listedPopularity.Sum(item => item.Revenue);
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                _consoleHelper.WriteLine("*********************************************************");
-                Console.ForegroundColor = ConsoleColor.White;
-                _consoleHelper.WriteLine("Totals:           " + totalOrders.ToString().PadRight(11, spacePad).Substring(0, 10) + spacePad + totalCustomers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + totalRevenue.ToString());
-                _consoleHelper.WriteLine("Press any key to return to main menu");
-                _consoleHelper.ReadKey();
+                return listedPopularity;
             }
             catch (SqlException ex)
             {
@@ -89,6 +74,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 slytherBangConnection.Close();
             }
+            return new List<ProductPopularity>();
         }
 
         // replaced with function located above by TH 
@@ -114,7 +100,7 @@ namespace BangazonTerminalInterface.DAL.Repository
                         ProductId = reader.GetInt32(0),
                         ProductName = reader.GetString(1),
                         ProductPrice = reader.GetDecimal(2)
-                };
+                    };
 
                     products.Add(product);
                 }
@@ -162,7 +148,8 @@ namespace BangazonTerminalInterface.DAL.Repository
                     return product;
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
             }
