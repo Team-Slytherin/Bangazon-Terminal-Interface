@@ -26,14 +26,14 @@ namespace BangazonTerminalInterface.Controllers
             Console.Clear();
             _consoleHelper.WriteHeaderToConsole("Items in Cart");
             char spacePad = ' ';
-            _consoleHelper.WriteLine("Product           Qty     Unit Price    Total         ");
+            _consoleHelper.WriteLine("Product                Qty     Unit Price    Total       ");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             _consoleHelper.WriteLine("*********************************************************");
             Console.ForegroundColor = ConsoleColor.White;
             var cartItems = cartDetail.GetItemsInCart(activeCustomer.CustomerId);
             foreach (var item in cartItems)
             {
-                _consoleHelper.WriteLine(item.ProductName.PadRight(20, spacePad).Substring(0, 19) + spacePad + item.ProductQuantity.ToString().PadRight(9, spacePad).Substring(0, 9) + item.ProductPrice.ToString("C").PadRight(11, spacePad).Substring(0, 11) + item.Total.ToString("C"));
+                _consoleHelper.WriteLine(item.ProductName.PadRight(23, spacePad).Substring(0, 23) + item.ProductQuantity.ToString().PadRight(8, spacePad).Substring(0, 8) + '$' + item.ProductPrice.ToString().Remove(item.ProductPrice.ToString().Length - 2).PadLeft(7, spacePad).PadRight(13, spacePad).Substring(0, 13) + '$' + item.Total.ToString().Remove(item.ProductPrice.ToString().Length - 2).PadLeft(7, spacePad));
             }
             var cartRepo = new CartRepository();
             var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
