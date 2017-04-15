@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BangazonTerminalInterface.Components
 {
-    class Payment
+   public class Payment
     {
         public int PaymentId { get; set; }
 

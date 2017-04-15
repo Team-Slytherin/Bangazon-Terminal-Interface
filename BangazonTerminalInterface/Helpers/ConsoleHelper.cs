@@ -19,11 +19,12 @@ namespace BangazonTerminalInterface.Helpers
 
         public void WriteExitCommand()
         {
+            WriteLine("\n");
             Write("Type");
             Console.ForegroundColor = ConsoleColor.Red;
             Write(" \"x\" ");
             Console.ForegroundColor = ConsoleColor.White;
-            Write("if you would like to return to the main menu. \n");
+            WriteLine("if you would like to return to the main menu. \n");
         }
 
         public void WriteHeaderToConsole(string headerText)

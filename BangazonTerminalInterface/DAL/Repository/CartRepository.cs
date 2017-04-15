@@ -119,5 +119,40 @@ namespace BangazonTerminalInterface.DAL.Repository
             }
 
         }
+
+        public void EmptyCart(int customerId)
+        {
+            _bangzonConnection.Open();
+
+            try
+            {
+                var emptyCardCommand = _bangzonConnection.CreateCommand();
+                emptyCardCommand.CommandText =
+                @" DELETE cdt
+                    FROM SlytherBang.dbo.Customer cust
+                    JOIN SlytherBang.dbo.Cart cart
+                      ON cust.CustomerId = cart.CustomerId
+                    JOIN SlytherBang.dbo.CartDetail cdt
+                      ON cart.CartId = cdt.CartId
+                    WHERE Active = '1'
+                     AND cust.CustomerId = @customerId";
+                var customerIdParamter = new SqlParameter("customerId", SqlDbType.Int);
+                customerIdParamter.Value = customerId;
+                emptyCardCommand.Parameters.Add(customerIdParamter);
+
+                emptyCardCommand.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                _bangzonConnection.Close();
+            }
+
+        }
     }
 }

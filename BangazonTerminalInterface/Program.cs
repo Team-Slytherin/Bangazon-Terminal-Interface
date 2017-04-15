@@ -70,7 +70,7 @@ namespace BangazonTerminalInterface
                         Console.Clear();
                         var CustomerInfo = new CustomerController();
                         activeCustomer =  CustomerInfo.CreateCustomer();
-                        break;
+                        goto SHOWMENU;
                     case "2":
                         Console.Clear();
                         var selectCustomerCtrl = new SelectCustomerController();
@@ -80,8 +80,9 @@ namespace BangazonTerminalInterface
                         if (activeCustomer == null)
                         {
                             Console.Clear();
-                            var selectCustomerCtrl1 = new SelectCustomerController();
-                            activeCustomer = selectCustomerCtrl1.SelectActiveCustomer();
+                            selectCustomerCtrl = new SelectCustomerController();
+                            activeCustomer = selectCustomerCtrl.SelectActiveCustomer();
+                            if(activeCustomer == null) { break; }
                         }
                         Console.Clear();
                         var PaymentCtrl = new PaymentController();
@@ -93,6 +94,7 @@ namespace BangazonTerminalInterface
                             Console.Clear();
 
                             activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
+                            if (activeCustomer == null) { break; }
                         }
                         (new CartController()).addProduct(activeCustomer);
 
@@ -103,6 +105,7 @@ namespace BangazonTerminalInterface
                             Console.Clear();
 
                             activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
+                            if (activeCustomer == null) { break; }
                         }
                         (new ViewCartController()).getItemsInCart(activeCustomer);
 
@@ -113,6 +116,7 @@ namespace BangazonTerminalInterface
                         {
                             Console.Clear();
                             activeCustomer = (new SelectCustomerController()).SelectActiveCustomer();
+                            if (activeCustomer == null) { break; }
                         }
                         (new CartController()).checkout(activeCustomer);
                         break;

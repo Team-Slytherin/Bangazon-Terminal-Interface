@@ -2,11 +2,8 @@
 using BangazonTerminalInterface.Models;
 using BangazonTerminalInterface.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using BangazonTerminalInterface.Interfaces;
 
 namespace BangazonTerminalInterface.Controllers
@@ -38,11 +35,14 @@ namespace BangazonTerminalInterface.Controllers
                 ctr++;
                 _consoleHelper.WriteLine($"{ctr}. {customer.CustomerName} - {customer.CustomerStreetAddress} {customer.CustomerCity} {customer.CustomerState}, {customer.CustomerZip}");
             }
+            
+            _consoleHelper.WriteExitCommand();
 
             var selection = _consoleHelper.WriteAndReadFromConsole("> ");
 
             try
             {
+                if (_consoleHelper.CheckForUserExit(selection)) { return null; };
                 if (!(selection.Equals("")) && Convert.ToInt32(selection) <= allCustomers.Count())
                 {
                     return allCustomers[Convert.ToInt32(selection) - 1];

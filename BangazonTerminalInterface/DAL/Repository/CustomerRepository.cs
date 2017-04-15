@@ -23,16 +23,17 @@ namespace BangazonTerminalInterface.DAL.Repository
             _sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["SlytherBangConnection"].ConnectionString);
         }
 
-        public void AddCustomer(Customer customer)
+        public int AddCustomer(Customer customer)
         {
             _sqlConnection.Open();
-
+            var newestCustomerId = 0;
             try
             {
                 var addCustomerCommand = _sqlConnection.CreateCommand();
                 addCustomerCommand.CommandText = @"
                 INSERT INTO Customer(CustomerName,CustomerStreetAddress,CustomerCity,CustomerState,CustomerZip,CustomerPhone)
-                VALUES(@name,@address,@city,@state,@zip,@phone)";
+                VALUES(@name,@address,@city,@state,@zip,@phone) 
+                Select SCOPE_IDENTITY()";
                 var nameParameter = new SqlParameter("name", SqlDbType.VarChar);
                 nameParameter.Value = customer.CustomerName;
                 addCustomerCommand.Parameters.Add(nameParameter);
@@ -52,7 +53,15 @@ namespace BangazonTerminalInterface.DAL.Repository
                 phoneParameter.Value = customer.CustomerPhone;
                 addCustomerCommand.Parameters.Add(phoneParameter);
 
-                addCustomerCommand.ExecuteNonQuery();
+                try
+                {
+                    newestCustomerId = Convert.ToInt32(addCustomerCommand.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }                
             }
             catch (SqlException ex)
             {
@@ -63,6 +72,7 @@ namespace BangazonTerminalInterface.DAL.Repository
             {
                 _sqlConnection.Close();
             }
+            return newestCustomerId;
         }
 
         public List<Customer> GetAllCustomers()

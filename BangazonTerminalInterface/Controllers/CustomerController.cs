@@ -4,12 +4,7 @@ using BangazonTerminalInterface.Helpers;
 using BangazonTerminalInterface.Models;
 using BangazonTerminalInterface.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BangazonTerminalInterface.Interfaces.CustomerValidationInterfaces;
-using System.Threading;
 
 namespace BangazonTerminalInterface.Controllers
 {
@@ -60,7 +55,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterName();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerName.ValidateName(input))
                 {
                     Console.Clear();
@@ -77,7 +72,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterStreetAddress();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerAddress.ValidateStreetAddress(input))
                 {
                     Console.Clear();
@@ -94,7 +89,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterCity();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerCity.ValidateCity(input))
                 {
                     Console.Clear();
@@ -111,7 +106,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterState();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerState.ValidateState(input))
                 {
                     customer.CustomerState = input;
@@ -128,7 +123,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterZip();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerZip.ValidateZip(input))
                 {
                     Console.Clear();
@@ -145,7 +140,7 @@ namespace BangazonTerminalInterface.Controllers
             {
                 CurrentCustomer();
                 var input = EnterPhoneNumber();
-                if (_consoleHelper.CheckForUserExit(input)) { break; };
+                if (_consoleHelper.CheckForUserExit(input)) { return null; };
                 if (_customerPhone.ValidatePhone(input))
                 {
                     Console.Clear();
@@ -160,8 +155,10 @@ namespace BangazonTerminalInterface.Controllers
             }
             // Add To Database
             if (IsComplete)
-                WriteToDb(customer);
-            return customer;
+            {
+                return WriteToDb(customer);
+            }                
+            return null;
         }
 
         public string EnterName()
@@ -194,10 +191,11 @@ namespace BangazonTerminalInterface.Controllers
             return _consoleHelper.WriteAndReadFromConsole("Enter State Abbreviation > ");
         }
 
-        public void WriteToDb(Customer addCustomer)
+        public Customer WriteToDb(Customer addCustomer)
         {
             CustomerRepository repo = new CustomerRepository();
-            repo.AddCustomer(addCustomer);
+            var newestCustomerId = repo.AddCustomer(addCustomer);
+            return repo.GetCustomerById(newestCustomerId);
             //IsComplete = true; // Seems a little hacky, but I have to do this to break out of the while look.
         }
 
@@ -210,6 +208,7 @@ namespace BangazonTerminalInterface.Controllers
             _consoleHelper.WriteLine($"State: {customer.CustomerState}");
             _consoleHelper.WriteLine($"Zip: {customer.CustomerZip}");
             _consoleHelper.WriteLine($"Phone: {customer.CustomerPhone}");
+            _consoleHelper.WriteExitCommand();
         }
 
     }

@@ -38,7 +38,7 @@ namespace BangazonTerminalInterface.Controllers
             _paymentAccount = accountValidator;
         }
 
-        public void RequestPayment(Customer customer)
+        public Payment RequestPayment(Customer customer)
         {
             payment.CustomerId = customer.CustomerId;
             while (!IsComplete)
@@ -48,17 +48,18 @@ namespace BangazonTerminalInterface.Controllers
                 requestPaymentActNumber();
                 if (!UserContinue) break;
                 addPaymentToDb();
-                if (!UserContinue) break;
+                return payment;
             }
+            return null;
         }
 
         private void requestPaymentType() // Ask for payment Type
         {
             PaymentTypeValidator repo = new PaymentTypeValidator();
 
-        ENTERTYPE:
+            ENTERTYPE:
+            Console.Clear();
             _consoleHelper.WriteHeaderToConsole("Payment Type");
-            _consoleHelper.WriteExitCommand();
             string[] paymentOptions = new string[] { "Visa", "MasterCard", "Discover", "American Express" };
             int counter = 1;
             foreach (var option in paymentOptions)
@@ -66,6 +67,9 @@ namespace BangazonTerminalInterface.Controllers
                 _consoleHelper.WriteLine($"{counter}. {option} ");
                 counter++;
             }
+            
+            _consoleHelper.WriteExitCommand();
+
             string input = _consoleHelper.WriteAndReadFromConsole("Enter Payment Type > ");
 
             bool userContinue = _consoleHelper.CheckForUserExit(input);
