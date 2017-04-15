@@ -49,31 +49,28 @@ namespace BangazonTerminalInterface.Controllers
             string space = new string(' ', (56 - cartTotalLine.Length));
             _consoleHelper.WriteLine(space + cartTotalLine);
 
-            string[] menuOptions = new string[] { "Checkout", "Empty Cart", "Return to Main Menu"};
+            string[] menuOptions = new string[] { "Checkout", "Empty Cart"};
             int counter = 1;
             foreach (var option in menuOptions)
             {
                 _consoleHelper.WriteLine($"{counter}. {option} ");
                 counter++;
             }
-            _consoleHelper.WriteLine("\n");
+            _consoleHelper.WriteExitCommand();
             var selection = _consoleHelper.WriteAndReadFromConsole("> ");
 
             if (!(selection.Equals("")))
             {
+                if (_consoleHelper.CheckForUserExit(selection)) { return; };
                 if (selection.Equals("1"))
                 {
                     (new CartController()).checkout(activeCustomer);
                 }
                 else if (selection.Equals("2"))
                 {
-                    //TODO: Implement Empty Cart here
-                    _consoleHelper.WriteLine("Empty Cart");
+                    cartRepo.EmptyCart(activeCustomer.CustomerId);
+                    _consoleHelper.WriteLine("Cart has been emptied!");
                     Thread.Sleep(2000);
-                    return;
-                }
-                else if (selection.Equals("3"))
-                {
                     return;
                 }
                 else

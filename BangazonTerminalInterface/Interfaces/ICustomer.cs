@@ -11,7 +11,7 @@ namespace BangazonTerminalInterface.Interfaces
     {
         // Create
 
-        void AddCustomer(Customer customer);
+        int AddCustomer(Customer customer);
 
         // Read
         Customer GetCustomerById(int customerId);

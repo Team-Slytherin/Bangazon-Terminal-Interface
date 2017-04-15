@@ -40,7 +40,7 @@ namespace BangazonTerminalInterface.Controllers
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             _consoleHelper.WriteLine("*********************************************************");
             Console.ForegroundColor = ConsoleColor.White;
-            _consoleHelper.WriteLine("Totals:           " + totalOrders.ToString().PadRight(11, spacePad).Substring(0, 10) + spacePad + totalCustomers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + totalRevenue.ToString());
+            _consoleHelper.WriteLine("Totals:           " + totalOrders.ToString().PadRight(11, spacePad).Substring(0, 10) + spacePad + totalCustomers.ToString().PadRight(11, spacePad).Substring(0, 11) + "$" + totalRevenue.ToString()+"\n");
             _consoleHelper.WriteLine("Press any key to return to main menu");
             _consoleHelper.ReadKey();
         }
