@@ -42,11 +42,6 @@ namespace BangazonTerminalInterface.Controllers
             Console.ForegroundColor = ConsoleColor.White;
             var cartRepo = new CartRepository();
             var activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            if (activeCart == null)
-            {
-                cartRepo.AddCart(activeCustomer.CustomerId);
-                activeCart = cartRepo.GetActiveCart(activeCustomer.CustomerId);
-            }
             string cartTotalLine = $"Total: ({cartDetail.GetTotalItemsInCart(activeCart.CartId)}) {cartDetail.GetCartPrice(activeCart.CartId)}";
             string space = new string(' ', (56 - cartTotalLine.Length));
             _consoleHelper.WriteLine(space + cartTotalLine);
@@ -103,6 +98,7 @@ namespace BangazonTerminalInterface.Controllers
                 {
                     _consoleHelper.ErrorMessage("Your cart is empty. Please continue shopping.");
                     (new CartController()).addProduct(activeCustomer);
+                    return;
                 }
                 _consoleHelper.Write($"Your order total is {cartDetail.GetCartPrice(activeCart.CartId)}. Ready to purchase?\n");
                 _consoleHelper.WriteExitCommand();
